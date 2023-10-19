@@ -195,3 +195,8 @@ REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY':False
 }
+
+####### swagger #######
+INSTALLED_APPS+= [
+   'drf_yasg',
+]
