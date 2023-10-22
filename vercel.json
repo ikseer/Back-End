@@ -15,10 +15,16 @@
       }
     ],
     "routes": [
-      
       {
-        "src": "/(.*)",
-        "dest": "project/wsgi.py"
+          "src": "/static/(.*)",
+          "dest": "/static/$1"
+      },
+      {
+          "src": "/(.*)",
+          "dest": "social/wsgi.py"
       }
-    ]
+  ],
+
+  "outputDirectory": "staticfiles_build"
+
   }
