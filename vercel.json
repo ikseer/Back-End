@@ -21,7 +21,7 @@
       },
       {
           "src": "/(.*)",
-          "dest": "social/wsgi.py"
+          "dest": "project/wsgi.py"
       }
   ],
 
