@@ -203,10 +203,9 @@ INSTALLED_APPS+= [
 
 ####### static files #######
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 ###### database #######
 # settings.py
@@ -227,5 +226,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-###### WSGI #######
-WSGI_APPLICATION = 'vercel_app.wsgi.app'
+
+##### cors headers  #######
+# CORS_ORIGIN_ALLOW_ALL = True
