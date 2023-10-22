@@ -202,5 +202,22 @@ INSTALLED_APPS+= [
 ]
 
 ####### static files #######
-STATICFILES_DIRS = [BASE_DIR/'static',]
-STATIC_ROOT = BASE_DIR/'staticfiles'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+
+###### database #######
+# settings.py
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'pr0oject123',
+        'HOST': 'db.lxuthyjpwmolmdwrzaug.supabase.co',
+        'PORT': '5432',
+    }
+}
