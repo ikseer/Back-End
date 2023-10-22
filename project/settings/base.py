@@ -225,3 +225,7 @@ DATABASES = {
 ###### Media #######
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+###### WSGI #######
+WSGI_APPLICATION = 'vercel_app.wsgi.app'
