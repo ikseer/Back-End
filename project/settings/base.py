@@ -200,3 +200,7 @@ REST_AUTH = {
 INSTALLED_APPS+= [
    'drf_yasg',
 ]
+
+####### static files #######
+STATICFILES_DIRS = [BASE_DIR/'static',]
+STATIC_ROOT = BASE_DIR/'staticfiles'
