@@ -12,11 +12,15 @@ urlpatterns = [
     # path('register/', include('dj_rest_auth.registration.urls')),
     path('dj-rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
     path('dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
-    # path('allauth/', include('allauth.urls'))
+    path('allauth/', include('allauth.urls')),
+    # path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),
+    #         name='password_reset_confirm'),
+    # path('password/reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),
             name='password_reset_confirm'),
-    # path('password/reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-
 ]
+from django.conf import settings
+from django.conf.urls.static import static
 
-
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
