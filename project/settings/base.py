@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     # dj-rest-auth
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    # cors headers
+    'corsheaders'
 
 
 ]
@@ -70,6 +72,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # allauth
     "allauth.account.middleware.AccountMiddleware",
+    # cors headers
+     'corsheaders.middleware.CorsMiddleware',
 
 ]
 
@@ -229,4 +233,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 ##### cors headers  #######
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ALLOW_CREDENTIALS = True
+#CORS_ALLOW_HEADERS = ['*']
+# CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)

@@ -6,7 +6,7 @@ from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r'profiles', ProfileViewSet)
+router.register(r'profiles', ProfileViewSet, basename='profile')
 
 urlpatterns = [
     ### profile ###
