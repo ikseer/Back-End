@@ -6,8 +6,8 @@ from pharmacy.models import Pharmacy
 class PharmacyViewSetTests(TestCase):
     def setUp(self):
         self.category = Category.objects.create(name="Test Category")
-        self.product = Product.objects.create(name="Test Product", price=10.0, strength=5, category=self.category)
         self.pharmacy = Pharmacy.objects.create(name="Test Pharmacy", phone="1234567890")
+        self.product = Product.objects.create(name="Test Product", price=10.0, strength=5, category=self.category,pharmacy=self.pharmacy)
 
         self.url =reverse('pharmacy-list')
 
