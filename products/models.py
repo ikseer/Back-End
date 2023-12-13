@@ -31,6 +31,7 @@ class Product(models.Model):
         return self.name
 
 
+
 class OrderItem(models.Model):
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     order = models.ForeignKey('orders.Order', on_delete=models.CASCADE)
