@@ -11,28 +11,26 @@ import random
 fake = Faker()
 
 def generate_image():
-
-    try:
-        folder_path='images/pharmacies'
-        image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+    file_path='test_data/images/pharmacy'
+    if os.path.exists(file_path):
+        image_files = [f for f in os.listdir(file_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
 
         # Choose a random image file
         selected_image = random.choice(image_files)
 
         # Open the selected image file and read its content
-        with open(os.path.join(folder_path, selected_image), 'rb') as file:
+        with open(os.path.join(file_path, selected_image), 'rb') as file:
             image_content = file.read()
 
         # Return a SimpleUploadedFile with the selected image content
         return SimpleUploadedFile(selected_image, image_content)
     
-    except:
 
-        # Create a simple random image using Pillow
-        image = Image.new('RGB', (100, 100), 'rgb(0, 255, 0)')
-        buffer = io.BytesIO()
-        image.save(buffer, format='JPEG')
-        return SimpleUploadedFile("image.jpg", buffer.getvalue())
+    # Create a simple random image using Pillow
+    image = Image.new('RGB', (100, 100), 'rgb(0, 255, 0)')
+    buffer = io.BytesIO()
+    image.save(buffer, format='JPEG')
+    return SimpleUploadedFile("image.jpg", buffer.getvalue())
 
 class PharmacyFactory(factory.Factory):
     class Meta:

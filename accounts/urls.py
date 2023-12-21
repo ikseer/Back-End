@@ -1,16 +1,23 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from accounts.views import CustomRegisterView, FacebookLogin, GoogleLogin, ProfileViewSet, getPhoneNumberRegistered_TimeBased
+from accounts.views import CustomRegisterView, CustomTokenObtainPairView, FacebookLogin, GoogleLogin, ProfileViewSet, getPhoneNumberRegistered_TimeBased, signupVerify
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r'profiles', ProfileViewSet, basename='profile')
+router.register(r'profile', ProfileViewSet, basename='profile')
 
 urlpatterns = [
     ### profile ###
     path('', include(router.urls)),
+    # path('api/token/', CustomTokenObtainPairView.as_view(), name='rest_login'),
+    path('login/', CustomTokenObtainPairView.as_view(), name='rest_login'),
+
+
+    ### Usre ###
+    path('signup_verify/<int:otp>/', signupVerify,name = "signup_verify"),
+
     ### phone ###
     path("phone/<phone>/", getPhoneNumberRegistered_TimeBased.as_view(), name="OTP_Gen"),
 
@@ -19,6 +26,7 @@ urlpatterns = [
     path('dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
 
     ### dj-rest-auth ###
+    
     path('', include('dj_rest_auth.urls')),
     path('register/', CustomRegisterView.as_view(), name='rest_register'),
     path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
