@@ -33,7 +33,7 @@ class Profile(models.Model):
     last_name=models.CharField(max_length=30,blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=255,blank=True)
-
+    is_completed = models.BooleanField(default=False)
     def __str__(self):
         return str(self.first_name+' '+self.last_name)
 

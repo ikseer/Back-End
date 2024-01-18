@@ -19,6 +19,8 @@ class UserProfileUpdateTest(APITestCase):
             'first_name': 'John',
             'last_name': 'Doe',
             'bio': 'This is a test bio.',
+            'date_of_birth': '1990-01-01',
+            'gender': 'Male',
         }
 
         # Create a user and obtain a token for authentication

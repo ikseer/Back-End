@@ -22,13 +22,14 @@ class UserTest(APITestCase):
         
         response = self.client.post(url, self.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    def test_created_profile(self):
+    def test_not_created_profile(self):
         self.test_registration()
 
         profile = Profile.objects.get(user__email=self.data['email'])
-        self.assertEqual(profile.user.email, self.data['email'])
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(User.objects.get().email, 'test@example.com')
+        self.assertEqual(profile.user.email, self.data['email'])
+        # self.assertEqual(User.objects.count(), 1)
+        # self.assertEqual(User.objects.get().email, 'test@example.com')
    
     def test_login_unconfirmed_email(self):
         url = reverse('rest_login')
@@ -43,6 +44,7 @@ class UserTest(APITestCase):
         otp=mail.outbox[-1].body[st:].strip()
         url=reverse('signup_verify', kwargs={'otp':otp})
         response=self.client.post(url)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     def test_login_confirmed_email(self):
         self.test_email_confirmation()
