@@ -42,8 +42,11 @@ class UserTest(APITestCase):
         
         st=mail.outbox[-1].body.find(":")+1
         otp=mail.outbox[-1].body[st:].strip()
-        url=reverse('signup_verify', kwargs={'otp':otp})
-        response=self.client.post(url)
+        url=reverse('verify_email_otp' )
+        # self.client.post(url,{'otp':otp})
+
+        response=self.client.post(url ,{'otp':otp})
+        # print(response.data)
         # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     def test_login_confirmed_email(self):
@@ -54,7 +57,12 @@ class UserTest(APITestCase):
         self.assertEqual(response.status_code,200)
 
     
-
+    def test_otp_by_email(self):
+        self.test_login_confirmed_email()
+        url = reverse('otp_by_email')
+        response=self.client.post(url,{   'email': 'test@example.com'})
+      
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         
 

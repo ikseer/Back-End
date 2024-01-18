@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from accounts.views import CustomRegisterView, CustomTokenObtainPairView, FacebookLogin, GoogleLogin, ProfileViewSet, getPhoneNumberRegistered_TimeBased, signupVerify
+from accounts.views import *
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework.routers import DefaultRouter
 
@@ -16,7 +16,8 @@ urlpatterns = [
 
 
     ### Usre ###
-    path('signup_verify/<int:otp>/', signupVerify,name = "signup_verify"),
+    path('otp_by_email' , otp_by_email ,name = "otp_by_email"),
+    path('verify_email_otp', verify_email_otp ,name = "verify_email_otp"),
 
     ### phone ###
     path("phone/<phone>/", getPhoneNumberRegistered_TimeBased.as_view(), name="OTP_Gen"),

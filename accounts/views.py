@@ -1,11 +1,9 @@
-import profile
-from urllib import response
+import email
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
-from django.views import View
 from accounts.serializers import *
 from .utils import *
 from rest_framework import status
@@ -13,21 +11,15 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import EmailVerificationOTP, PhoneModel
 import base64
 from dj_rest_auth.registration.views import RegisterView
 from rest_framework import viewsets
-from .models import Profile
+from .models import *
 from .serializers import ProfileSerializer
 from rest_framework.permissions import IsAuthenticated , AllowAny
-from rest_framework import viewsets, permissions  
 from rest_framework.decorators import api_view, permission_classes
-from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC, EmailAddress
 from .utils import *
-
 from rest_framework_simplejwt.tokens import RefreshToken
-
-from rest_framework_simplejwt.views import TokenObtainPairView
 from dj_rest_auth.views import LoginView
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -47,21 +39,33 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class CustomRegisterView(RegisterView):
 
     def post(self, request, *args, **kwargs):
-
         response = super().post(request, *args, **kwargs)
-
-        if response.status_code == status.HTTP_201_CREATED:
-
+        if response.status_code == status.HTTP_201_CREATED:    
             user=User.objects.filter(email=self.request.data['email']).last()
             SendEmail.send_otp(user)
         return Response({'detail': 'Verify your email' }, status=status.HTTP_201_CREATED)
     
 
+@api_view(['POST'])
+@permission_classes([AllowAny,])
+def otp_by_email(request):
+    try:
+        email = request.data['email']
+        user= User.objects.get(email=email)
+    except:
+        return Response({"detail": "Invalid Email"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    SendEmail.send_otp(user) 
+    return Response({"detail": "OTP sent to your email"}, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny,])
-
-def signupVerify(request,otp):
+def verify_email_otp(request):
+    try:
+        otp = str(request.data['otp'])
+    except:
+        return Response({"detail": "Invalid OTPe"}, status=status.HTTP_400_BAD_REQUEST)
     user= Otp.virify_otp(otp)
     if not  user:
         return Response({"detail": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
@@ -74,8 +78,6 @@ def signupVerify(request,otp):
         'user': UserDetailsSerializer(user).data
     }
     return Response(data, status=status.HTTP_200_OK)
-    # print(data)   
-    # return Response({"detail": "OTP verified successfully"}, status=status.HTTP_200_OK)
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
@@ -97,7 +99,7 @@ class generateKey:
 
 
 # Time after which OTP will expire
-EXPIRY_TIME = 50 # seconds
+EXPIRY_TIME = 120 # seconds
 
 class getPhoneNumberRegistered_TimeBased(APIView):
     permission_classes = [IsAuthenticated]  # Require authentication for this view
@@ -123,9 +125,6 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
-        # print(OTP.now())
-        # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
-        # return Response({"OTP": OTP.now()}, status=200)  # Just for demonstration
 
 #     # This Method verifies the OTP
     @staticmethod
