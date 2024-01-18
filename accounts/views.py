@@ -13,9 +13,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 import base64
 from dj_rest_auth.registration.views import RegisterView
-from rest_framework import viewsets
+from rest_framework import viewsets , generics
+from rest_framework.generics import GenericAPIView
 from .models import *
-from .serializers import ProfileSerializer
 from rest_framework.permissions import IsAuthenticated , AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from .utils import *
@@ -46,38 +46,49 @@ class CustomRegisterView(RegisterView):
         return Response({'detail': 'Verify your email' }, status=status.HTTP_201_CREATED)
     
 
-@api_view(['POST'])
-@permission_classes([AllowAny,])
-def otp_by_email(request):
-    try:
-        email = request.data['email']
-        user= User.objects.get(email=email)
-    except:
-        return Response({"detail": "Invalid Email"}, status=status.HTTP_400_BAD_REQUEST)
+
+class OtpByEmailView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = OtpByEmailSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = OtpByEmailSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({"detail": "Invalid Email"}, status=status.HTTP_400_BAD_REQUEST)
+
+            SendEmail.send_otp(user)
+            return Response({"detail": "OTP sent to your email"}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    SendEmail.send_otp(user) 
-    return Response({"detail": "OTP sent to your email"}, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-@permission_classes([AllowAny,])
-def verify_email_otp(request):
-    try:
-        otp = str(request.data['otp'])
-    except:
-        return Response({"detail": "Invalid OTPe"}, status=status.HTTP_400_BAD_REQUEST)
-    user= Otp.virify_otp(otp)
-    if not  user:
-        return Response({"detail": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
-    
-    refresh = RefreshToken.for_user(user)
+class VerifyEmailOtpView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = VerifyEmailOtpSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = VerifyEmailOtpSerializer(data=request.data)
+        if serializer.is_valid():
+            otp = serializer.validated_data['otp']
 
-    data = {
-        'refresh': str(refresh),
-        'access': str(refresh.access_token),
-        'user': UserDetailsSerializer(user).data
-    }
-    return Response(data, status=status.HTTP_200_OK)
+            user = Otp.verify_otp(otp)
+            if not user:
+                return Response({"detail": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+            refresh = RefreshToken.for_user(user)
+
+            data = {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user': UserDetailsSerializer(user).data
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter

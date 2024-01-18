@@ -35,7 +35,7 @@ class Otp:
         OTP = totp.now()
         return {"totp":secret,"OTP":OTP}
     @staticmethod
-    def virify_otp(otp):
+    def verify_otp(otp):
         try:
             email_verification = EmailVerificationOTP.objects.get(otp=otp)
         except :

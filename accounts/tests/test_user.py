@@ -42,7 +42,7 @@ class UserTest(APITestCase):
         
         st=mail.outbox[-1].body.find(":")+1
         otp=mail.outbox[-1].body[st:].strip()
-        url=reverse('verify_email_otp' )
+        url=reverse('verify-email-otp' )
         # self.client.post(url,{'otp':otp})
 
         response=self.client.post(url ,{'otp':otp})
@@ -59,7 +59,7 @@ class UserTest(APITestCase):
     
     def test_otp_by_email(self):
         self.test_login_confirmed_email()
-        url = reverse('otp_by_email')
+        url = reverse('otp-by-email')
         response=self.client.post(url,{   'email': 'test@example.com'})
       
         self.assertEqual(response.status_code, status.HTTP_200_OK)

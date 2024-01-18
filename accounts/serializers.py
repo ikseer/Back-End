@@ -1,4 +1,5 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
+from pkg_resources import require
 from rest_framework import serializers
 from .models import Profile
 
@@ -58,4 +59,7 @@ class loginSerializer(LoginSerializer):
             raise serializers.ValidationError(_('E-mail is not verified.'))
         return value
     
-        
+class OtpByEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField( required=True)
+class VerifyEmailOtpSerializer(serializers.Serializer):
+    otp = serializers.CharField( required=True)

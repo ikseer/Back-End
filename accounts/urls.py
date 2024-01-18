@@ -16,8 +16,10 @@ urlpatterns = [
 
 
     ### Usre ###
-    path('otp_by_email' , otp_by_email ,name = "otp_by_email"),
-    path('verify_email_otp', verify_email_otp ,name = "verify_email_otp"),
+    path('otp-by-email/', OtpByEmailView.as_view(), name='otp-by-email'),
+
+    path('verify-email-otp/', VerifyEmailOtpView.as_view(), name='verify-email-otp'),
+
 
     ### phone ###
     path("phone/<phone>/", getPhoneNumberRegistered_TimeBased.as_view(), name="OTP_Gen"),
