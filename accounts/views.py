@@ -37,7 +37,18 @@ class CheckEmailView(GenericAPIView):
             return Response({'email_exists': True}, status=status.HTTP_200_OK)
         else:
             return Response({'email_exists': False}, status=status.HTTP_404_NOT_FOUND)
-
+class CheckUsernameView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = CheckUsernameSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = CheckUsernameSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        username = serializer.validated_data['username']
+        user = User.objects.filter(username=username).first()
+        if user:
+            return Response({'username_exists': True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'username_exists': False}, status=status.HTTP_404_NOT_FOUND)
 class CustomTokenObtainPairView(LoginView):
     pass
 
