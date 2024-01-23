@@ -27,8 +27,11 @@ class Product(models.Model):
     orders = models.ManyToManyField('orders.Order', through='products.OrderItem', related_name='products')
     pharmacy = models.ForeignKey('pharmacy.Pharmacy', on_delete=models.CASCADE)
 
+    image = models.ImageField(upload_to='product_images', null=True, blank=True)
+
     def __str__(self):
         return self.name
+
 
 
 class OrderItem(models.Model):

@@ -1,46 +1,113 @@
+import email
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
-from accounts.serializers import CustomRegistration
+from accounts.serializers import *
 from .utils import *
 from rest_framework import status
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
-import pyotp
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import PhoneModel
 import base64
 from dj_rest_auth.registration.views import RegisterView
-from rest_framework import viewsets
-from .models import Profile
-from .serializers import ProfileSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets , generics
+from rest_framework.generics import GenericAPIView
+from .models import *
+from rest_framework.permissions import IsAuthenticated , AllowAny
+from rest_framework.decorators import api_view, permission_classes
+from .utils import *
+from rest_framework_simplejwt.tokens import RefreshToken
+from dj_rest_auth.views import LoginView
+from dj_rest_auth.serializers import UserDetailsSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
+# check if email exists and verified 
+class CheckEmailView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = CheckEmailSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = CheckEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        email_address = EmailAddress.objects.filter(email=email, verified=True).first()
+        if email_address:
+            return Response({'email_exists': True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'email_exists': False}, status=status.HTTP_404_NOT_FOUND)
 
+class CustomTokenObtainPairView(LoginView):
+    pass
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]  
+    permission_classes = [IsAuthenticated]
 
+
+
+    
 
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegistration
+    # permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-        if response.status_code == status.HTTP_201_CREATED:
-           
-            profile=Profile.objects.get(user__email=self.request.data['email'])
-            profile.first_name=self.request.data['first_name']
-            profile.last_name=self.request.data['last_name']
-            profile.save()
-        return response
+        if response.status_code == status.HTTP_201_CREATED:    
+            user=User.objects.filter(email=self.request.data['email']).last()
+            SendEmail.send_otp(user)
+            # save to profile
+            # profile = Profile.objects.get(user=user)
+            # profile.gender = self.request.data['gender']
+            # profile.save()
+        return Response({'detail': 'Verify your email' }, status=status.HTTP_201_CREATED)
+    
 
 
+class OtpByEmailView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = OtpByEmailSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = OtpByEmailSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
 
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({"detail": "Invalid Email"}, status=status.HTTP_400_BAD_REQUEST)
+
+            SendEmail.send_otp(user)
+            return Response({"detail": "OTP sent to your email"}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class VerifyEmailOtpView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = VerifyEmailOtpSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = VerifyEmailOtpSerializer(data=request.data)
+        if serializer.is_valid():
+            otp = serializer.validated_data['otp']
+
+            user = Otp.verify_otp(otp)
+            if not user:
+                return Response({"detail": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+            refresh = RefreshToken.for_user(user)
+
+            data = {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user': UserDetailsSerializer(user).data
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
@@ -62,7 +129,7 @@ class generateKey:
 
 
 # Time after which OTP will expire
-EXPIRY_TIME = 50 # seconds
+EXPIRY_TIME = 120 # seconds
 
 class getPhoneNumberRegistered_TimeBased(APIView):
     permission_classes = [IsAuthenticated]  # Require authentication for this view
@@ -88,9 +155,6 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
-        # print(OTP.now())
-        # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
-        # return Response({"OTP": OTP.now()}, status=200)  # Just for demonstration
 
 #     # This Method verifies the OTP
     @staticmethod

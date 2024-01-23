@@ -1,3 +1,4 @@
+import email
 import profile
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -6,65 +7,97 @@ from rest_framework.test import APITestCase
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC, EmailAddress
 from django.core import mail
 import re
+#user serializer
 
-from accounts.models import Profile
+from dj_rest_auth.serializers import UserDetailsSerializer
+from accounts.models import EmailVerificationOTP, Profile
 User = get_user_model()
 class UserTest(APITestCase):
-    def test_registration(self):
-        url = reverse('rest_register')
-        data = {
+    def setUp(self) -> None:
+        self.data = {
             'email': 'test@example.com',
+            "first_name": "test",
+            "last_name": "test",
+            'username': 'testuser',
             'password1': 'testpassword',
             'password2': 'testpassword',
-            'first_name': 'Test',
-            'last_name': 'User',
         }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        profile = Profile.objects.get(user__email=data['email'])
-        self.assertEqual(profile.user.email, data['email'])
-        self.assertEqual(profile.first_name, data['first_name'])
-        self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(User.objects.get().email, 'test@example.com')
-
-  
-    
-    def test_email_confirmation(self):
-        user = User.objects.create_user(username='testuser',email='test@example.com', password='testpassword')
-        user.is_active = False
-        user.save()
-
-        email_address = EmailAddress.objects.create(user=user, email=user.email, verified=False, primary=True)
-        email_confirmation = EmailConfirmation.create(email_address)
-        key = EmailConfirmationHMAC(email_confirmation).key
-
-        url = reverse('account_confirm_email', kwargs={'key': key})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertEqual(response.data['detail'], 'ok')
-
-        # user.refresh_from_db()
-        # self.assertTrue(user.is_active)
-    def test_login(self):
-        # Create a user with valid credentials
-        user = User.objects.create_user(username='testuser',email='test@example.com', password='testpassword')
-
-        # Create an EmailAddress object for the user
-        email_address = EmailAddress.objects.create(user=user, email=user.email, verified=True, primary=True)
-
-        url = reverse('rest_login')
-        data = {
-            'email': 'test@example.com',
-            'password': 'testpassword',
-        }
-        response = self.client.post(url, data)
+    def test_registration(self):
+        url = reverse('rest_register')
         
+        response = self.client.post(url, self.data)
+        # get user
+        user = User.objects.get(email=self.data['email'])
+        # ser=UserDetailsSerializer(user)
+        # print(ser.data )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    def test_not_created_profile(self):
+        self.test_registration()
+
+        profile = Profile.objects.get(user__email=self.data['email'])
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(profile.user.email, self.data['email'])
+        # self.assertEqual(User.objects.count(), 1)
+        # self.assertEqual(User.objects.get().email, 'test@example.com')
+   
+    def test_login_unconfirmed_email(self):
+        url = reverse('rest_login')
+        response=self.client.post(url,{   'email': 'test@example.com',  'password': 'testpassword'})
+        self.assertEqual(response.status_code,400)
+
+    def test_email_confirmation(self):
+        self.test_registration()
+
+        
+        st=mail.outbox[-1].body.find(":")+1
+        otp=mail.outbox[-1].body[st:].strip()
+        url=reverse('verify-email-otp' )
+        # self.client.post(url,{'otp':otp})
+
+        response=self.client.post(url ,{'otp':otp})
+        # user= User.objects.get(email=self.data['email'])
+        # ser=UserDetailsSerializer(user)
+        # print(ser.data )
+        # print(response.data)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        return response
-        # self.assertIn('key', response.data)
+    def test_login_confirmed_email(self):
+        self.test_email_confirmation()
+        url = reverse('rest_login')
+        response=self.client.post(url,{   'email': 'test@example.com',  'password': 'testpassword'})
+        # print(response.data)
+        self.assertEqual(response.status_code,200)
 
+    
+    def test_otp_by_email(self):
+        self.test_login_confirmed_email()
+        url = reverse('otp-by-email')
+        response=self.client.post(url,{   'email': 'test@example.com'})
+      
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-
+    def test_user_data(self):
+        self.test_otp_by_email()
+        # user and token
+        user=User.objects.get(email=self.data['email'])
+        # access token
+        url = reverse('rest_login')
+        response=self.client.post(url,{   'email': 'test@example.com',  'password': 'testpassword'})
+        # print(response.data)
+        access_token=response.data['access']
+        url=reverse('rest_user_details')
+        response=self.client.get(url,HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_check_email(self):
+        self.test_user_data()
+        url = reverse('check-email')
+        response=self.client.post(url,{   'email': 'test@example.com'})
+      
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response=self.client.post(url,{   'email': 'test2@example.com'})
+  
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 class PasswordResetTests(APITestCase):
     def test_password_reset_request(self):

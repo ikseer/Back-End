@@ -179,9 +179,11 @@ REST_FRAMEWORK = {
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_PASSWORD_MIN_LENGTH = 8
 
 ###### SITE ######
@@ -251,3 +253,15 @@ CORS_ORIGIN_ALLOW_ALL = True
 #CORS_ALLOW_CREDENTIALS = True
 #CORS_ALLOW_HEADERS = ['*']
 # CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
+#swagger settings
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'JSON_EDITOR': True,
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+        },
+    },
+}
