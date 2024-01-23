@@ -98,6 +98,16 @@ class UserTest(APITestCase):
         response=self.client.post(url,{   'email': 'test2@example.com'})
   
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    def test_username(self):
+        self.test_user_data()
+        url = reverse('check-username')
+        response=self.client.post(url,{   'username': 'testuser'})
+      
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response=self.client.post(url,{   'username': 'test2user'})
+  
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
 class PasswordResetTests(APITestCase):
     def test_password_reset_request(self):

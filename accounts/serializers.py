@@ -5,6 +5,8 @@ from .models import Profile
 
 class CheckEmailSerializer(serializers.Serializer):
     email = serializers.EmailField()
+class CheckUsernameSerializer(serializers.Serializer):
+    username = serializers.CharField()
 # from dj_rest_auth.serializers import UserDetailsSerializer
 from django.contrib.auth.models import User
 class CustomRegistration(RegisterSerializer):
