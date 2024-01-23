@@ -3,10 +3,26 @@ from pkg_resources import require
 from rest_framework import serializers
 from .models import Profile
 
-from dj_rest_auth.serializers import UserDetailsSerializer
+class CheckEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+# from dj_rest_auth.serializers import UserDetailsSerializer
+from django.contrib.auth.models import User
+class CustomRegistration(RegisterSerializer):
+     first_name = serializers.CharField(write_only=True)
+     last_name = serializers.CharField(write_only=True)
+     def custom_signup(self, request, user):
+         first = request.POST.get("first_name")
+         last = request.POST.get("last_name")
+         user.first_name = first
+         user.last_name = last
+         user.save()
+# class CustomRegisterSerializer(RegisterSerializer):
+#     first_name= serializers.CharField(required=True)
+#     last_name= serializers.CharField(required=True)
 
-
-
+from django.contrib.auth.models import User
+from rest_framework import serializers
+from dj_rest_auth.registration.serializers import RegisterSerializer
 
 # def get_if_complete_profile(user):
 #     if Profile.objects.filter(user=user).exists():
@@ -33,12 +49,13 @@ class CustomUserSerializer(UserDetailsSerializer):
     # Add any additional fields or override existing fields as needed
     profile = ProfileSerializer()  # Replace with your actual profile serializer
 
-    class Meta(UserDetailsSerializer.Meta):
+    # class Meta(UserDetailsSerializer.Meta):
+
         # Include additional fields in the 'fields' list if needed
         # exclude the 'password' field from the 'fields' list
         # fields = UserDetailsSerializer.Meta.fields 
         # exclude = ['username']
-        fields = ('pk',  'email')+ ('profile', )
+        # fields = ('pk',  'email')+ ('profile', )
 
 
 from dj_rest_auth.serializers import LoginSerializer

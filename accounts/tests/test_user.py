@@ -7,13 +7,18 @@ from rest_framework.test import APITestCase
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC, EmailAddress
 from django.core import mail
 import re
+#user serializer
 
+from dj_rest_auth.serializers import UserDetailsSerializer
 from accounts.models import EmailVerificationOTP, Profile
 User = get_user_model()
 class UserTest(APITestCase):
     def setUp(self) -> None:
         self.data = {
             'email': 'test@example.com',
+            "first_name": "test",
+            "last_name": "test",
+            'username': 'testuser',
             'password1': 'testpassword',
             'password2': 'testpassword',
         }
@@ -21,6 +26,10 @@ class UserTest(APITestCase):
         url = reverse('rest_register')
         
         response = self.client.post(url, self.data)
+        # get user
+        user = User.objects.get(email=self.data['email'])
+        # ser=UserDetailsSerializer(user)
+        # print(ser.data )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     def test_not_created_profile(self):
         self.test_registration()
@@ -46,6 +55,9 @@ class UserTest(APITestCase):
         # self.client.post(url,{'otp':otp})
 
         response=self.client.post(url ,{'otp':otp})
+        # user= User.objects.get(email=self.data['email'])
+        # ser=UserDetailsSerializer(user)
+        # print(ser.data )
         # print(response.data)
         # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -64,11 +76,28 @@ class UserTest(APITestCase):
       
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        
-
-
-
-
+    def test_user_data(self):
+        self.test_otp_by_email()
+        # user and token
+        user=User.objects.get(email=self.data['email'])
+        # access token
+        url = reverse('rest_login')
+        response=self.client.post(url,{   'email': 'test@example.com',  'password': 'testpassword'})
+        # print(response.data)
+        access_token=response.data['access']
+        url=reverse('rest_user_details')
+        response=self.client.get(url,HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_check_email(self):
+        self.test_user_data()
+        url = reverse('check-email')
+        response=self.client.post(url,{   'email': 'test@example.com'})
+      
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response=self.client.post(url,{   'email': 'test2@example.com'})
+  
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 class PasswordResetTests(APITestCase):
     def test_password_reset_request(self):

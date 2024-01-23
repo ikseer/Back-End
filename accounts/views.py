@@ -24,6 +24,20 @@ from dj_rest_auth.views import LoginView
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
+# check if email exists and verified 
+class CheckEmailView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = CheckEmailSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = CheckEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        email_address = EmailAddress.objects.filter(email=email, verified=True).first()
+        if email_address:
+            return Response({'email_exists': True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'email_exists': False}, status=status.HTTP_404_NOT_FOUND)
+
 class CustomTokenObtainPairView(LoginView):
     pass
 
@@ -37,12 +51,17 @@ class ProfileViewSet(viewsets.ModelViewSet):
     
 
 class CustomRegisterView(RegisterView):
-
+    serializer_class = CustomRegistration
+    # permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == status.HTTP_201_CREATED:    
             user=User.objects.filter(email=self.request.data['email']).last()
             SendEmail.send_otp(user)
+            # save to profile
+            # profile = Profile.objects.get(user=user)
+            # profile.gender = self.request.data['gender']
+            # profile.save()
         return Response({'detail': 'Verify your email' }, status=status.HTTP_201_CREATED)
     
 

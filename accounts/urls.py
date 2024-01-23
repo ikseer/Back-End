@@ -16,6 +16,7 @@ urlpatterns = [
 
 
     ### Usre ###
+    path("check-email" , CheckEmailView.as_view(), name="check-email"),
     path('otp-by-email/', OtpByEmailView.as_view(), name='otp-by-email'),
 
     path('verify-email-otp/', VerifyEmailOtpView.as_view(), name='verify-email-otp'),
