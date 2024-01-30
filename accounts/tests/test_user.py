@@ -21,6 +21,7 @@ class UserTest(APITestCase):
             'username': 'testuser',
             'password1': 'testpassword',
             'password2': 'testpassword',
+            'gender': 'male'
         }
     def test_registration(self):
         url = reverse('rest_register')

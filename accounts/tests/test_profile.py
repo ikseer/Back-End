@@ -18,6 +18,7 @@ class UserProfileTest():
             'password2': 'testpassword',
             "first_name": "test",
             "last_name": "test",
+            'gender': 'male'
         }
         self.profile_data = {
             'first_name': 'John',
