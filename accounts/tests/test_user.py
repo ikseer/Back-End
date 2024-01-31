@@ -66,7 +66,10 @@ class UserTest(APITestCase):
         self.test_email_confirmation()
         url = reverse('rest_login')
         response=self.client.post(url,{   'email': 'test@example.com',  'password': 'testpassword'})
-        # print(response.data)
+        self.assertEqual(response.status_code,200)
+        # login with username 
+        url = reverse('rest_login')
+        response=self.client.post(url,{   'username': 'testuser',  'password': 'testpassword'})
         self.assertEqual(response.status_code,200)
 
     
