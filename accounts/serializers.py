@@ -12,12 +12,14 @@ from django.contrib.auth.models import User
 class CustomRegistration(RegisterSerializer):
      first_name = serializers.CharField(write_only=True)
      last_name = serializers.CharField(write_only=True)
-     def custom_signup(self, request, user):
-         first = request.POST.get("first_name")
-         last = request.POST.get("last_name")
-         user.first_name = first
-         user.last_name = last
-         user.save()
+     gender= serializers.CharField(write_only=True)
+    #  def custom_signup(self, request, user):
+    #      first = request.POST.get("first_name")
+    #      last = request.POST.get("last_name")
+    #      gender= request.POST.get("gender")
+    #     #  user.first_name = first
+    #     #  user.last_name = last
+    #      user.save()
 # class CustomRegisterSerializer(RegisterSerializer):
 #     first_name= serializers.CharField(required=True)
 #     last_name= serializers.CharField(required=True)

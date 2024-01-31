@@ -70,9 +70,11 @@ class CustomRegisterView(RegisterView):
             user=User.objects.filter(email=self.request.data['email']).last()
             SendEmail.send_otp(user)
             # save to profile
-            # profile = Profile.objects.get(user=user)
-            # profile.gender = self.request.data['gender']
-            # profile.save()
+            profile = Profile.objects.get(user=user)
+            profile.first_name = self.request.data['first_name']
+            profile.last_name = self.request.data['last_name']
+            profile.gender = self.request.data['gender']
+            profile.save()
         return Response({'detail': 'Verify your email' }, status=status.HTTP_201_CREATED)
     
 
