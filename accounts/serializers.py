@@ -3,6 +3,8 @@ from pkg_resources import require
 from rest_framework import serializers
 from .models import Profile
 
+class UnlinkProviderSerializer(serializers.Serializer):
+    provider = serializers.CharField()
 class CheckEmailSerializer(serializers.Serializer):
     email = serializers.EmailField()
 class CheckUsernameSerializer(serializers.Serializer):

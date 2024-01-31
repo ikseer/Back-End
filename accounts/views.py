@@ -23,8 +23,30 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from dj_rest_auth.views import LoginView
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from allauth.socialaccount.models import SocialAccount
+from allauth.socialaccount import signals
 
 # check if email exists and verified 
+class UnlinkProviderView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UnlinkProviderSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = UnlinkProviderSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        provider = serializer.validated_data['provider']
+        user = User.objects.get(email=serializer.validated_data['email'])
+        social_account = SocialAccount.objects.get(user=user, provider=provider)
+
+        if social_account:
+            # send unlink to provider
+
+            social_account.delete()
+            signals.social_account_removed.send(sender=SocialAccount,
+                                        request=self.request,
+                                        socialaccount=social_account)
+            return Response({'detail': 'Provider unlinked successfully'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Provider not found'}, status=status.HTTP_404_NOT_FOUND)
 class CheckEmailView(GenericAPIView):
     permission_classes = [AllowAny]
     serializer_class = CheckEmailSerializer
