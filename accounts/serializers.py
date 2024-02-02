@@ -44,13 +44,15 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['is_completed']
+        
         # fields = ('user','first_name', 'last_name', 'bio', 'image', 'date_of_birth', 'gender')
     first_name= serializers.CharField(required=True)
     last_name= serializers.CharField(required=True)
     date_of_birth= serializers.DateField(required=True)
     gender= serializers.CharField(required=True)
-    is_complete= serializers.BooleanField(read_only=True)
+    # is_complete= serializers.BooleanField(read_only=True)
 
 
 from dj_rest_auth.serializers import UserDetailsSerializer
