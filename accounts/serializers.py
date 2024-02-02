@@ -3,6 +3,11 @@ from pkg_resources import require
 from rest_framework import serializers
 from .models import Profile
 
+class PhoneRegisterSerializer(serializers.Serializer):
+    phone = serializers.CharField()
+class VerifyMobileOtpSerializer(serializers.Serializer):
+    otp = serializers.CharField()
+    phone = serializers.CharField()
 class UnlinkProviderSerializer(serializers.Serializer):
     provider = serializers.CharField()
 class CheckEmailSerializer(serializers.Serializer):

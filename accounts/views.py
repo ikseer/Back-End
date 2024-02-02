@@ -166,12 +166,13 @@ class generateKey:
 # Time after which OTP will expire
 EXPIRY_TIME = 120 # seconds
 
-class getPhoneNumberRegistered_TimeBased(APIView):
-    permission_classes = [IsAuthenticated]  # Require authentication for this view
-
-    # Get to Create a call for OTP
-    @staticmethod
-    def get(request, phone):
+class PhoneRegister(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhoneRegisterSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = PhoneRegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        phone = serializer.validated_data['phone']
         try:
             Mobile = PhoneModel.objects.get(Mobile=phone)  # if Mobile already exists the take this else create New One
         except ObjectDoesNotExist:
@@ -191,9 +192,14 @@ class getPhoneNumberRegistered_TimeBased(APIView):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
-#     # This Method verifies the OTP
-    @staticmethod
-    def post(request, phone):
+class VerifyMobileOTP(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class =  VerifyMobileOtpSerializer
+    def post(self, request, *args, **kwargs):
+        serializer =  VerifyMobileOtpSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        phone = serializer.validated_data['phone']
+        otp = serializer.validated_data['otp']
         try:
             Mobile = PhoneModel.objects.get(Mobile=phone)
         except ObjectDoesNotExist:
@@ -202,10 +208,11 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         keygen = generateKey()
         key = base64.b32encode(keygen.returnValue(phone).encode())  # Generating Key
         OTP = pyotp.TOTP(key,interval = EXPIRY_TIME)  # TOTP Model 
-        if OTP.verify(request.data["otp"]):  # Verifying the OTP
+        if OTP.verify(otp):  # Verifying the OTP
             Mobile.isVerified = True
             Mobile.user=request.user
             Mobile.save()
-            return Response("You are authorised", status=200)
+            return Response("OTP Verified", status=200)
             
         return Response("OTP is wrong/expired", status=400)
+    

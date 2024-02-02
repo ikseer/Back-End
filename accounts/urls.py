@@ -24,8 +24,8 @@ urlpatterns = [
 
 
     ### phone ###
-    path("phone/<phone>/", getPhoneNumberRegistered_TimeBased.as_view(), name="OTP_Gen"),
-
+    path('phone-register/', PhoneRegister.as_view(), name='phone-register'),
+    path('verify-mobile-otp/', VerifyMobileOTP.as_view(), name='verify-mobile-otp'),
     ### social  ###
     path('dj-rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
     path('dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login'),

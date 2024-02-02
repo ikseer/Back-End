@@ -25,21 +25,23 @@ class GetPhoneNumberRegisteredTimeBasedTestCase(TestCase):
 
     def test_get_request_creates_PhoneModel_if_not_exists(self):
       
-        response = self.client.get(reverse('OTP_Gen', args=[self.phone_number]))
+        # response = self.client.get(reverse('OTP_Gen', args=[self.phone_number]))
+        response = self.client.post(reverse('phone-register'), {"phone": self.phone_number})
        
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(PhoneModel.objects.filter(Mobile=self.phone_number).exists())
 
     def test_get_request_returns_otp(self):
-        response = self.client.get(reverse('OTP_Gen', args=[self.phone_number]))
+        response = self.client.post(reverse('phone-register'), {"phone": self.phone_number})
         # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("OTP" , response.data)
 
     def test_post_request_with_valid_otp(self):
-        response = self.client.get(reverse('OTP_Gen', args=[self.phone_number]))
+        response = self.client.post(reverse('phone-register'), {"phone": self.phone_number})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         otp=response.data["OTP"]
-        response = self.client.post(reverse('OTP_Gen', args=[self.phone_number]), {"otp": otp})
+        response = self.client.post(reverse('verify-mobile-otp'), {"otp": otp, "phone": self.phone_number})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         mobile = PhoneModel.objects.get(Mobile=self.phone_number)
         self.assertTrue(mobile.isVerified)
@@ -54,17 +56,17 @@ class GetPhoneNumberRegisteredTimeBasedTestCase(TestCase):
     def test_post_request_with_invalid_otp(self):
         PhoneModel.objects.create(Mobile=self.phone_number)
         otp = "000000"  # Replace with an invalid OTP
-        response = self.client.post(reverse('OTP_Gen', args=[self.phone_number]), {"otp": otp})
+        response = self.client.post(reverse('verify-mobile-otp'), {"otp": otp, "phone": self.phone_number})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_post_request_with_nonexistent_phone_number(self):
-        response = self.client.post(reverse('OTP_Gen', args=["nonexistent_number"]), {"otp": "123456"})
+        response = self.client.post(reverse('verify-mobile-otp'), {"otp": "123456", "phone": "9999999999"})
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_post_request_with_verified_user(self):
         PhoneModel.objects.create(Mobile=self.phone_number, isVerified=True)
-        otp = "123456"  # Replace with a valid OTP
-        response = self.client.post(reverse('OTP_Gen', args=[self.phone_number]), {"otp": otp})
+        otp = "123456"  
+        response = self.client.post(reverse('verify-mobile-otp'), {"otp": otp, "phone": self.phone_number})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-# # Ensure to update the URL name ('OTP_Gen') in the reverse calls.
+# # # Ensure to update the URL name ('OTP_Gen') in the reverse calls.
