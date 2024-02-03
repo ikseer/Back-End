@@ -2,7 +2,8 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from pkg_resources import require
 from rest_framework import serializers
 from .models import Profile
-
+class CheckPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField()
 class PhoneRegisterSerializer(serializers.Serializer):
     phone = serializers.CharField()
 class VerifyMobileOtpSerializer(serializers.Serializer):

@@ -26,6 +26,19 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from allauth.socialaccount.models import SocialAccount
 from allauth.socialaccount import signals
 
+# check if password of user is correct
+class CheckPasswordView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CheckPasswordSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = CheckPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        password = serializer.validated_data['password']
+        user = request.user
+        if user.check_password(password):
+            return Response({'detail': 'Password correct'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Password incorrect'}, status=status.HTTP_400_BAD_REQUEST)
 # check if email exists and verified 
 class UnlinkProviderView(GenericAPIView):
     permission_classes = [IsAuthenticated]
