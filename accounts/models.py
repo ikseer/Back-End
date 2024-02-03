@@ -34,6 +34,7 @@ class Profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=255,blank=True)
     is_completed = models.BooleanField(default=False)
+    timezone = models.CharField(max_length=50,default = 'Africa/Cairo')
     def __str__(self):
         return str(self.first_name+' '+self.last_name)
 
