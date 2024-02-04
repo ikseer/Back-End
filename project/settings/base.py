@@ -108,12 +108,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -275,4 +275,23 @@ SWAGGER_SETTINGS = {
             'name': 'Authorization',
         },
     },
+}
+
+### database Render ###
+user='ikseer_user'
+password='MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43'
+host='postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@postgres:5432/ikseer'
+port=5432
+
+
+database=os.environ.get('POSTGRES_DB')
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ikseer',
+        'USER': 'ikseer_user',
+        'PASSWORD': 'MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43',
+        'HOST': 'dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com',
+        'PORT': '5432',
+    }
 }
