@@ -241,19 +241,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 #         'PORT': '5432',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.lxuthyjpwmolmdwrzaug',
-        'PASSWORD': 'pr0oject123',
-        'HOST': 'aws-0-ap-southeast-2.pooler.supabase.com',
-        'PORT': '5432',
-        'TEST': {
-            'NAME': 'test_postgres',
-        },
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres.lxuthyjpwmolmdwrzaug',
+#         'PASSWORD': 'pr0oject123',
+#         'HOST': 'aws-0-ap-southeast-2.pooler.supabase.com',
+#         'PORT': '5432',
+#         'TEST': {
+#             'NAME': 'test_postgres',
+#         },
+#     }
+# }
 
 ###### Media #######
 MEDIA_URL = '/media/'
@@ -304,3 +304,31 @@ SWAGGER_SETTINGS = {
 # ?ssl=true 
 # postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
 # postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'bkuvudfm',
+#         'USER': 'bkuvudfm',
+#         'PASSWORD': 'cAwqKjn8YaiSlSkKnrZdJ70q6_egpeUq',
+#         'HOST': 'snuffleupagus.db.elephantsql.com',
+#         'PORT': '5432',
+#         'TEST': {
+#             'NAME': 'my_testdatabase',
+#         },
+#     }
+# }
+# postgresql://mohamoudh477:cTbSkH10BWjI@ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech/neondb?sslmode=require
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neondb',
+        'USER': 'mohamoudh477',
+        'PASSWORD': 'cTbSkH10BWjI',
+        'HOST': 'ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech',
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'my_testdatabase',
+        },
+    }
+}
