@@ -250,7 +250,7 @@ DATABASES = {
         'HOST': 'aws-0-ap-southeast-2.pooler.supabase.com',
         'PORT': '5432',
         'TEST': {
-            'NAME': 'ytestpostgres',
+            'NAME': 'test_postgres',
         },
     }
 }
