@@ -32,7 +32,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run tests
-      run: python manage.py test
+      run: python manage.py test --no-input
 
     # - name: Check code quality
     #   run: |
