@@ -33,10 +33,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Prepare database
-        run: |
-          python manage.py migrate --no-input
-          python manage.py collectstatic --no-input
+      # - name: Prepare database
+      #   run: |
+      #     python manage.py migrate --no-input
+      #     python manage.py collectstatic --no-input
 
       - name: Run tests
         run: python manage.py test --no-input
