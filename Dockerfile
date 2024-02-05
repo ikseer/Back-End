@@ -19,7 +19,7 @@ RUN python manage.py makemigrations
 RUN python manage.py migrate
 
 # create super 
-RUN echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@gmail.com', 'admin')" | python manage.py shell
+# RUN echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@gmail.com', 'admin')" 
 
 # Expose the port django is running on
 EXPOSE 8000
