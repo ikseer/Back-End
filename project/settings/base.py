@@ -294,7 +294,7 @@ DATABASES = {
         'HOST': 'dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com',
         'PORT': '5432',
         'TEST': {
-            'NAME': 'mytestdatabase',
+            'NAME': 'my_testdatabase',
         },
     }
 }
