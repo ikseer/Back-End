@@ -38,6 +38,13 @@ jobs:
 
     - name: Run tests
       run: python manage.py test --no-input
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  # - concurrency:
+      # group: example-group
+      # cancel-in-progress: true
+    
 
     # - name: Check code quality
     #   run: |
