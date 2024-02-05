@@ -301,3 +301,6 @@ SWAGGER_SETTINGS = {
 #         },
 #     }
 # }
+# ?ssl=true 
+# postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
+# postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
