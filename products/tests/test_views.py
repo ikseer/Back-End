@@ -79,10 +79,11 @@ class ProductViewSetTests(TestCase):
             'form': 'Form',
             'factory_company': 'Factory Company',
             'description': 'Description',
-            'pharmacy': 1
+            'pharmacy': self.pharmacy.id,
             
         }
         response = self.client.post(self.url, data, format='json') 
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['name'], 'New Product')
     def test_update_product(self):
@@ -95,10 +96,11 @@ class ProductViewSetTests(TestCase):
             'form': 'Form',
             'factory_company': 'Factory Company',
             'description': 'Description',
-            'pharmacy': 1
+            'pharmacy': self.pharmacy.id,
             
         }
         response = self.client.put(f'/products/product/{self.product.id}/', data, content_type='application/json') 
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Updated Product')
     def test_delete_product(self):

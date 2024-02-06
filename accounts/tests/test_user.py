@@ -194,3 +194,27 @@ class AccessTokenTest(TestCase):
         cls.access_token = response.data.get('access_token', None)
         # print(response.data,'*****')
         # print(cls.access_token)
+
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+from django.contrib.auth.models import User
+
+class CheckPasswordViewTest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test_user',email='test@example.com', password='test_password')
+        self.client.force_authenticate(user=self.user)
+
+    def test_check_valid_password(self):
+        url = reverse('check-password')  # Assuming you've named your URL pattern 'check-password'
+        data = {'password': 'test_password'}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # self.assertEqual(response.data['detail'], 'Password is valid')
+
+    def test_check_invalid_password(self):
+        url = reverse('check-password')  # Assuming you've named your URL pattern 'check-password'
+        data = {'password': 'wrong_password'}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # self.assertEqual(response.data['detail'], 'Password is invalid')

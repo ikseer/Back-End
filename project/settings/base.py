@@ -108,12 +108,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -241,6 +241,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 #         'PORT': '5432',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres.lxuthyjpwmolmdwrzaug',
+#         'PASSWORD': 'pr0oject123',
+#         'HOST': 'aws-0-ap-southeast-2.pooler.supabase.com',
+#         'PORT': '5432',
+#         'TEST': {
+#             'NAME': 'test_postgres',
+#         },
+#     }
+# }
 
 ###### Media #######
 MEDIA_URL = '/media/'
@@ -265,4 +278,57 @@ SWAGGER_SETTINGS = {
             'name': 'Authorization',
         },
     },
+}
+
+# ### database Render ###
+# user='ikseer_user'
+# password='MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43'
+# host='postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@postgres:5432/ikseer'
+# port=5432
+
+
+# database=os.environ.get('POSTGRES_DB')
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'ikseer',
+#         'USER': 'ikseer_user',
+#         'PASSWORD': 'MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43',
+#         'HOST': 'dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com',
+#         'PORT': '5432',
+#         'TEST': {
+#             'NAME': 'my_testdatabase',
+#         },
+#     }
+# }
+# ?ssl=true 
+# postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
+# postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'bkuvudfm',
+#         'USER': 'bkuvudfm',
+#         'PASSWORD': 'cAwqKjn8YaiSlSkKnrZdJ70q6_egpeUq',
+#         'HOST': 'snuffleupagus.db.elephantsql.com',
+#         'PORT': '5432',
+#         'TEST': {
+#             'NAME': 'my_testdatabase',
+#         },
+#     }
+# }
+# postgresql://mohamoudh477:cTbSkH10BWjI@ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech/neondb?sslmode=require
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neondb',
+        'USER': 'mohamoudh477',
+        'PASSWORD': 'cTbSkH10BWjI',
+        'HOST': 'ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech',
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'my_testdatabase',
+        },
+    }
 }

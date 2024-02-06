@@ -9,30 +9,89 @@ on:
       - main
 
 jobs:
+
   test:
     name: Run tests and check code quality
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [ "3.10", "3.11"]
+    # Remove the strategy matrix to run the job sequentially
+    # strategy:
+    #   matrix:
+    #     python-version: [ 3.11 ]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run tests
-      run: python manage.py test
+      # - name: Prepare database
+      #   run: |
+      #     python manage.py migrate --no-input
+      #     python manage.py collectstatic --no-input
+
+      - name: Run tests
+        run: python manage.py test --no-input
+
+# name: Django CI
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+# concurrency: 
+#   group: ${{ github.head_ref ||  github.ref }}
+
+
+# jobs:
+
+#   test:
+#     name: Run tests and check code quality
+#     runs-on: ubuntu-latest
+
+#     strategy:
+#       matrix:
+#         python-version: [ 3.11]
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+
+#     - name: Set up Python ${{ matrix.python-version }}
+#       uses: actions/setup-python@v4
+#       with:
+#         python-version: ${{ matrix.python-version }}
+
+#     - name: Install dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install -r requirements.txt
+
+#     - name: Prepare database
+#       run: |
+#           python manage.py migrate --no-input
+#           python manage.py collectstatic --no-input
+
+#     - name: Run tests
+#       run: python manage.py test --no-input
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
+  # - concurrency:
+      # group: example-group
+      # cancel-in-progress: true
+    
 
     # - name: Check code quality
     #   run: |

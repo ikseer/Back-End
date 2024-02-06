@@ -16,6 +16,8 @@ def reset_migrations(app_name):
     # Delete all migration files except '__init__.py'
     for file in migrations_folder.glob('[0-9]*.py'):
         file.unlink()
+    # remove __pycache__
+    rmtree(migrations_folder / '__pycache__')
 
     # Reset the database
     # call_command('migrate', app_name, 'zero', '--fake')
