@@ -5,6 +5,8 @@ from orders.views import *
 
 router=DefaultRouter()
 router.register('orders',OrderViewSet)
+router.register('orderItem',OrderItemViewSet)
+
 urlpatterns = [
     path('', include(router.urls)),
     # path('category/', CategoryViewSet.as_view({'get': 'list', 'post': 'create'}), name='category-list'),

@@ -16,7 +16,3 @@ class DiscountSerializer(serializers.ModelSerializer):
     class Meta:
         model =  Discount
         fields = '__all__'
-class OrderItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderItem  
-        fields = '__all__'

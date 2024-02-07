@@ -4,7 +4,7 @@ from rest_framework import status
 from products.models import *
 from products.serializers import CategorySerializer
 from pharmacy.models import Pharmacy
-from orders.models import Order
+from orders.models import *
 class CategoryViewSetTests(TestCase):
 
     def setUp(self):
@@ -58,7 +58,7 @@ class ProductViewSetTests(TestCase):
         self.product = Product.objects.create(name='Test Product1', price=20.0, strength=5, category=self.category,pharmacy=self.pharmacy)
         self.product2 = Product.objects.create(name='Test Product2', price=30.0, strength=5, category=self.category,pharmacy=self.pharmacy)
         self.product3 = Product.objects.create(name='Test Product3', price=25.0, strength=5, category=self.category,pharmacy=self.pharmacy)
-        order=Order.objects.create(pharmacy=self.pharmacy,total_price=30.0)
+        order=Order.objects.create(pharmacy=self.pharmacy)
         self.order_item = OrderItem.objects.create(product=self.product3, quantity=2, order=order)
         self.url = '/products/product/'  
 
