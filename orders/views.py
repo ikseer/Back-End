@@ -17,10 +17,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-    permission_classes = [ OrderPermission]
+    permission_classes = [ OrderItemPermission]
     def get_queryset(self):
         if self.request.user.is_staff:
             return OrderItem.objects.all()
-        order_id = self.kwargs.get('order_id')
-        return OrderItem.objects.filter(order=order_id)
+
+        return OrderItem.objects.filter(order__customer=self.request.user)
     
