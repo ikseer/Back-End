@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User=get_user_model()
 
-status=(
+STATUS_CHOICES=(
     ('Pending','Pending'),
     ('Shipped','Shipped'),
     ('Delivered','Delivered'),
@@ -15,7 +15,7 @@ class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     pharmacy = models.ForeignKey('pharmacy.Pharmacy', on_delete=models.SET_NULL, null=True, blank=True)
     products = models.ManyToManyField('products.Product', through='orders.OrderItem', related_name='products')
-    status = models.CharField(max_length=20, choices=status, default='Pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     def __str__(self):
         return self.customer.first_name
 class OrderItem(models.Model):
