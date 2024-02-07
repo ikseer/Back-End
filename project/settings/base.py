@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -319,16 +320,27 @@ SWAGGER_SETTINGS = {
 #     }
 # }
 # postgresql://mohamoudh477:cTbSkH10BWjI@ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech/neondb?sslmode=require
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'neondb',
-        'USER': 'mohamoudh477',
-        'PASSWORD': 'cTbSkH10BWjI',
-        'HOST': 'ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech',
-        'PORT': '5432',
-        'TEST': {
-            'NAME': 'my_testdatabase',
-        },
+
+if 'test' in sys.argv:
+    # sqlite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
+else:
+        
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'neondb',
+            'USER': 'mohamoudh477',
+            'PASSWORD': 'cTbSkH10BWjI',
+            'HOST': 'ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech',
+            'PORT': '5432',
+            'TEST': {
+                'NAME': 'my_testdatabase',
+            },
+        }
 }

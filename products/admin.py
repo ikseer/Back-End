@@ -6,4 +6,3 @@ from products.models import *
 admin.site.register(Product)
 admin.site.register(Discount)
 admin.site.register(Category)
-admin.site.register(OrderItem)

@@ -23,10 +23,9 @@ class Product(models.Model):
     factory_company = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
-    orders = models.ManyToManyField('orders.Order', through='products.OrderItem', related_name='products')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE) 
     pharmacy = models.ForeignKey('pharmacy.Pharmacy', on_delete=models.CASCADE)
-
+    quentity = models.IntegerField(null=True, blank=True)   
     image = models.ImageField(upload_to='product_images', null=True, blank=True)
 
     def __str__(self):
@@ -34,9 +33,3 @@ class Product(models.Model):
 
 
 
-class OrderItem(models.Model):
-    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
-    order = models.ForeignKey('orders.Order', on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(help_text='Quantity of the product')
-    def __str__(self):
-        return self.product.name

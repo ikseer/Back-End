@@ -7,9 +7,13 @@ from .serializers import *
 # from django_filters.rest_framework import DjangoFilterBackend
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.response import Response
+from orders.models import *
+from .permissions import *
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [ SafePermission]
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -25,6 +29,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [ SafePermission]
     filterset_class = ProductFilter
     filter_backends = [
         DjangoFilterBackend,
@@ -35,12 +40,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         top_products = Product.objects.annotate(total_sales=Sum('orderitem__quantity')).order_by('-total_sales')
         serializer = ProductSerializer(top_products, many=True)
         return Response(serializer.data)
+    
 class  DiscountViewSet(viewsets.ModelViewSet):
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
     filterset_class = DiscountFilter
+    permission_classes = [ SafePermission]
 
 
-class OrderItemViewSet(viewsets.ModelViewSet):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer

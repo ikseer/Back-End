@@ -2,7 +2,7 @@
 import django_filters as filters
 from .models import Product , Discount , Category
 from django.db.models import Sum
-
+from orders.models import OrderItem
 class CategoryFilter(filters.FilterSet):
  
     class Meta:
