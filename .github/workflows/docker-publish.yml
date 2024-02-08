@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        name: 'Create env file'
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+      -
         name: Checkout
         uses: actions/checkout@v4
       -
