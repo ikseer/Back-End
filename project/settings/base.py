@@ -320,6 +320,10 @@ SWAGGER_SETTINGS = {
 #     }
 # }
 # postgresql://mohamoudh477:cTbSkH10BWjI@ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech/neondb?sslmode=require
+from decouple import Config, RepositoryEnv
+
+config = Config(RepositoryEnv("project/.env"))
+# config = decouple.Config()  
 
 if 'test' in sys.argv:
     # sqlite
@@ -330,17 +334,30 @@ if 'test' in sys.argv:
         }
     }
 else:
-        
-    DATABASES = {
+    DATABASES ={    
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'neondb',
-            'USER': 'mohamoudh477',
-            'PASSWORD': 'cTbSkH10BWjI',
-            'HOST': 'ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech',
-            'PORT': '5432',
+            'ENGINE': config.get('DATABASE_ENGINE'),
+            'NAME': config.get('DATABASE_NAME'),
+            'USER': config.get('DATABASE_USER'),
+            'PASSWORD': config.get('DATABASE_PASSWORD'),
+            'HOST': config.get('DATABASE_HOST'),
+            'PORT': config.get('DATABASE_PORT'),
             'TEST': {
                 'NAME': 'my_testdatabase',
             },
         }
-}
+
+    }   
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'neondb',
+#             'USER': 'mohamoudh477',
+#             'PASSWORD': 'cTbSkH10BWjI',
+#             'HOST': 'ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech',
+#             'PORT': '5432',
+#             'TEST': {
+#                 'NAME': 'my_testdatabase',
+#             },
+#         }
+# }
