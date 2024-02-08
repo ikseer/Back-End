@@ -312,8 +312,8 @@ SWAGGER_SETTINGS = {
 #         },
 #     }
 # }
-from decouple import Config, RepositoryEnv
-config = Config(RepositoryEnv(".env"))
+from decouple import config
+
 # config = decouple.Config()  
 
 if 'test' in sys.argv:
@@ -327,12 +327,12 @@ if 'test' in sys.argv:
 else:
     DATABASES ={    
         'default': {
-            'ENGINE': config.get('DATABASE_ENGINE'),
-            'NAME': config.get('DATABASE_NAME'),
-            'USER': config.get('DATABASE_USER'),
-            'PASSWORD': config.get('DATABASE_PASSWORD'),
-            'HOST': config.get('DATABASE_HOST'),
-            'PORT': config.get('DATABASE_PORT'),
+            'ENGINE': config('DATABASE_ENGINE'),
+            'NAME': config('DATABASE_NAME'),
+            'USER': config('DATABASE_USER'),
+            'PASSWORD': config('DATABASE_PASSWORD'),
+            'HOST': config('DATABASE_HOST'),
+            'PORT': config('DATABASE_PORT'),
             'TEST': {
                 'NAME': 'my_testdatabase',
             },
