@@ -281,11 +281,6 @@ SWAGGER_SETTINGS = {
     },
 }
 
-# ### database Render ###
-# user='ikseer_user'
-# password='MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43'
-# host='postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@postgres:5432/ikseer'
-# port=5432
 
 
 # database=os.environ.get('POSTGRES_DB')
@@ -303,8 +298,6 @@ SWAGGER_SETTINGS = {
 #     }
 # }
 # ?ssl=true 
-# postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
-# postgres://ikseer_user:MuEeDvUoRQiRIsTVWt0qlINyO3UcOS43@dpg-cmvsquol5elc73egclb0-a.oregon-postgres.render.com/ikseer
 
 # DATABASES = {
 #     'default': {
@@ -319,7 +312,9 @@ SWAGGER_SETTINGS = {
 #         },
 #     }
 # }
-# postgresql://mohamoudh477:cTbSkH10BWjI@ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech/neondb?sslmode=require
+from decouple import config
+
+# config = decouple.Config()  
 
 if 'test' in sys.argv:
     # sqlite
@@ -330,17 +325,17 @@ if 'test' in sys.argv:
         }
     }
 else:
-        
-    DATABASES = {
+    DATABASES ={    
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'neondb',
-            'USER': 'mohamoudh477',
-            'PASSWORD': 'cTbSkH10BWjI',
-            'HOST': 'ep-shrill-darkness-a5ifb8bf.us-east-2.aws.neon.tech',
-            'PORT': '5432',
+            'ENGINE': config('DATABASE_ENGINE'),
+            'NAME': config('DATABASE_NAME'),
+            'USER': config('DATABASE_USER'),
+            'PASSWORD': config('DATABASE_PASSWORD'),
+            'HOST': config('DATABASE_HOST'),
+            'PORT': config('DATABASE_PORT'),
             'TEST': {
                 'NAME': 'my_testdatabase',
             },
         }
-}
+
+    }   
