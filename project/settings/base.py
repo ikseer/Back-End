@@ -313,8 +313,7 @@ SWAGGER_SETTINGS = {
 #     }
 # }
 from decouple import Config, RepositoryEnv
-
-config = Config(RepositoryEnv("project/.env"))
+config = Config(RepositoryEnv(".env"))
 # config = decouple.Config()  
 
 if 'test' in sys.argv:
