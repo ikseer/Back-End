@@ -327,12 +327,12 @@ if 'test' in sys.argv:
 else:
     DATABASES ={    
         'default': {
-            'ENGINE': config('DATABASE_ENGINE'),
+            'ENGINE': 'django.db.backends.postgresql',
             'NAME': config('DATABASE_NAME'),
             'USER': config('DATABASE_USER'),
             'PASSWORD': config('DATABASE_PASSWORD'),
             'HOST': config('DATABASE_HOST'),
-            'PORT': config('DATABASE_PORT'),
+            'PORT':'5432',
             'TEST': {
                 'NAME': 'my_testdatabase',
             },
