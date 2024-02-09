@@ -281,6 +281,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     },
 # }
 SWAGGER_URLS = None
+SWAGGER_SETTINGS = {
+    'SECURITY_SCHEMES': {
+        'Bearer': {'type': 'http', 'scheme': 'bearer', 'bearerFormat': 'JWT'}
+    }
+}
 
 
 
