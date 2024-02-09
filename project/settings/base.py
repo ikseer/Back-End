@@ -269,17 +269,18 @@ CORS_ALLOW_HEADERS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
 #swagger settings
-SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
-    'JSON_EDITOR': True,
-    'SECURITY_DEFINITIONS': {
-        'api_key': {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'Authorization',
-        },
-    },
-}
+# SWAGGER_SETTINGS = {
+#     'USE_SESSION_AUTH': False,
+#     'JSON_EDITOR': True,
+#     'SECURITY_DEFINITIONS': {
+#         'api_key': {
+#             'type': 'apiKey',
+#             'in': 'header',
+#             'name': 'Authorization',
+#         },
+#     },
+# }
+SWAGGER_URLS = None
 
 
 
