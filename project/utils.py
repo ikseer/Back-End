@@ -3,13 +3,19 @@ from django.urls import re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-
-
+from  rest_framework.schemas.generators import OpenAPISchemaGenerator
+class BothHttpAndHttpsSchemaGenerator(OpenAPISchemaGenerator):
+    def get_schema(self, request=None, public=False):
+        schema = super().get_schema(request, public)
+        schema.schemes = ["http", "https"]
+        return schema
 
 schema_view = get_schema_view(
    openapi.Info(
       title="Backend APIs",
       default_version='v1',
+         generator_class=BothHttpAndHttpsSchemaGenerator, # Here
+
       # description="Test description",
       description = (
          "This API powers the backend functionality of a pharmacy website, facilitating operations such as managing inventory, \n"
