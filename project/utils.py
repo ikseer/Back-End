@@ -14,7 +14,6 @@ schema_view = get_schema_view(
    openapi.Info(
       title="Backend APIs",
       default_version='v1',
-         generator_class=BothHttpAndHttpsSchemaGenerator, # Here
 
       # description="Test description",
       description = (
@@ -36,4 +35,7 @@ schema_view = get_schema_view(
    ),
    public=True,
    permission_classes=(permissions.AllowAny,),
+   generator_class=BothHttpAndHttpsSchemaGenerator, # Here
+
+
 )
