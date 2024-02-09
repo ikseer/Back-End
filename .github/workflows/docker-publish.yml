@@ -9,10 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: 'Create env file'
-        run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
+      
+     
       -
         name: Checkout
         uses: actions/checkout@v4
@@ -34,3 +32,9 @@ jobs:
           push: true
           tags: |
               ${{ secrets.DOCKERHUB_USERNAME }}/graduation:latest
+          secrets: |
+              DATABASE_NAME= ${{ secrets.DATABASE_NAME }}
+              DATABASE_USER= ${{ secrets.DATABASE_USER }}
+              DATABASE_PASSWORD= ${{ secrets.DATABASE_PASSWORD }}
+              DATABASE_HOST= ${{ secrets.DATABASE_HOST }}
+              

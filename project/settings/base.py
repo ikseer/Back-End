@@ -269,16 +269,22 @@ CORS_ALLOW_HEADERS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
 #swagger settings
+# SWAGGER_SETTINGS = {
+#     'USE_SESSION_AUTH': False,
+#     'JSON_EDITOR': True,
+#     'SECURITY_DEFINITIONS': {
+#         'api_key': {
+#             'type': 'apiKey',
+#             'in': 'header',
+#             'name': 'Authorization',
+#         },
+#     },
+# }
+SWAGGER_URLS = None
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
-    'JSON_EDITOR': True,
-    'SECURITY_DEFINITIONS': {
-        'api_key': {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'Authorization',
-        },
-    },
+    'SECURITY_SCHEMES': {
+        'Bearer': {'type': 'http', 'scheme': 'bearer', 'bearerFormat': 'JWT'}
+    }
 }
 
 
@@ -327,12 +333,12 @@ if 'test' in sys.argv:
 else:
     DATABASES ={    
         'default': {
-            'ENGINE': config('DATABASE_ENGINE'),
+            'ENGINE': 'django.db.backends.postgresql',
             'NAME': config('DATABASE_NAME'),
             'USER': config('DATABASE_USER'),
             'PASSWORD': config('DATABASE_PASSWORD'),
             'HOST': config('DATABASE_HOST'),
-            'PORT': config('DATABASE_PORT'),
+            'PORT':'5432',
             'TEST': {
                 'NAME': 'my_testdatabase',
             },
