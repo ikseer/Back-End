@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from .models import EmailVerificationOTP
 User = get_user_model()
-
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class SendEmail:
@@ -16,10 +16,16 @@ class SendEmail:
         value = Otp.returnValue_email()
         otp = value["OTP"]
         key = value["totp"]
-
-        email_verification = EmailVerificationOTP.objects.create(user=user, otp=otp, activation_key=key)
-        email_verification.save()
-        
+        try:
+            email_verification = EmailVerificationOTP.objects.get(user=user)
+            email_verification.otp = otp
+            email_verification.activation_key = key
+            email_verification.save()
+         
+        except ObjectDoesNotExist:
+            email_verification = EmailVerificationOTP.objects.create(user=user, otp=otp, activation_key=key)
+            email_verification.save()
+            
         # Send the OTP
         subject = 'Your OTP Code'
         body = f'Your OTP is: {otp}'

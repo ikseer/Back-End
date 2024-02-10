@@ -11,7 +11,7 @@ from django.core import mail
 from django.contrib.auth import get_user_model
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC, EmailAddress
 
-from accounts.tests.test_user import AccessTokenTest, UserTest 
+from accounts.tests.test_user import UserTest 
 User=get_user_model()
 
 
