@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 app.wsgi
+    volumes:
+      - ./app:/usr/src/app
+    expose:
+      - 8000
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./app/static:/usr/src/app/static  # Mount static files
+    depends_on:
+      - app
