@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  app:
+  project:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 app.wsgi
+    command: gunicorn --bind 0.0.0.0:8000 project.wsgi
     volumes:
-      - ./app:/usr/src/app
+      - ./project:/usr/src/project
     expose:
       - 8000
 
@@ -15,6 +15,52 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./app/static:/usr/src/app/static  # Mount static files
+      - ./project/static:/usr/src/project/static  
     depends_on:
-      - app
+      - project
+
+
+
+
+name: Build and Publish Images
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Django app image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.django  # Use separate Dockerfiles for each image
+          push: true
+          tags: your-username/django-app:latest  # Customize image names
+          build-args: DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}  # Inject secret environment variable
+
+      - name: Build and push Nginx image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.nginx
+          push: true
+          tags: your-username/nginx:latest  # Customize image names
+
+      - name: (Optional) Build tagged images for each commit (skip for production)
+        if: always()
+        run: |
+          # Build and push separate tags for Django and Nginx with commit SHA
+          # Consider separate jobs or workflow for production
+
