@@ -346,3 +346,4 @@ else:
 
     }   
 
+CSRF_TRUSTED_ORIGINS =['https://ikseer.azurewebsites.net']
