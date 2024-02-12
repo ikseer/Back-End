@@ -26,7 +26,7 @@ jobs:
           context: .
           file: Dockerfile.django  # Use separate Dockerfiles for each image
           push: true
-          tags:  ${{ secrets.DOCKERHUB_USERNAME }}/graduation:v2  # Customize image names
+          tags:  ${{ secrets.DOCKERHUB_USERNAME }}/graduation:v1  # Customize image names
         #   build-args: DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}  # Inject secret environment variable
 
       - name: Build and push Nginx image
