@@ -97,3 +97,8 @@ class UserProfileTest( APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_filters_by_user(self):
+        url = reverse('profile-list')
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+        response = self.client.get(url,{'user':self.user.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
