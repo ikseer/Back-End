@@ -25,7 +25,7 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from allauth.socialaccount.models import SocialAccount
 from allauth.socialaccount import signals
-
+from .filters import *
 # check if password of user is correct
 class CheckPasswordView(GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -91,7 +91,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
-    
+    filterset_class = ProfileFilter
+
 
 
 
