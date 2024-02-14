@@ -8,11 +8,10 @@ class ProfileFilter(filters.FilterSet):
         fields = {
             'first_name': ['exact', 'icontains', 'istartswith'],
             'last_name': ['exact', 'icontains', 'istartswith'],
-            'date_of_birth': ['exact', 'icontains', 'istartswith'],
-            'gender': ['exact', 'icontains', 'istartswith'],
-            'bio': ['exact', 'icontains', 'istartswith'],
-            'timezone': ['exact', 'icontains', 'istartswith'],
-            'user__email': ['exact', 'icontains', 'istartswith'],
-            'user__username': ['exact', 'icontains', 'istartswith'],
-            'user__id': ['exact', 'icontains', 'istartswith'],
+            'date_of_birth': ['exact'],
+            'gender': ['exact'],
+            'timezone': ['exact'],
+            'user__email': ['exact'],
+            'user__username': ['exact'],
+            'user__id': ['exact'],
         }

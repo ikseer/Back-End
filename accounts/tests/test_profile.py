@@ -98,9 +98,24 @@ class UserProfileTest( APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     def test_filters_by_user_id(self):
+        url = reverse('rest_register')
+        for i in range(30):
+            data={
+                'email': f'test{i}@test.com',
+                'username': f'test{i}',
+                'password': 'testpassword',
+                'first_name': 'test',
+                'last_name': 'test',
+                'date_of_birth': '1990-01-01',
+                'gender': 'Male',
+            }
+            self.client.post(url, self.user_data, format='json')
+
+
         url = '/accounts/profile/'
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
         response = self.client.get(url , {'user__id': self.user.id})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
         response = self.client.get(url , {'user__id': '10100'})
         self.assertEqual(len(response.data), 0)        
