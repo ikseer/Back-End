@@ -16,8 +16,8 @@ class Order(models.Model):
     pharmacy = models.ForeignKey('pharmacy.Pharmacy', on_delete=models.SET_NULL, null=True, blank=True)
     products = models.ManyToManyField('products.Product', through='orders.OrderItem', related_name='products')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
-    def __str__(self):
-        return self.customer.first_name
+    # def __str__(self):
+    #     return self.customer.first_name
 class OrderItem(models.Model):
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     order = models.ForeignKey('orders.Order', on_delete=models.CASCADE)

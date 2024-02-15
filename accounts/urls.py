@@ -33,14 +33,31 @@ urlpatterns = [
 
     ### dj-rest-auth ###
     
-    path('', include('dj_rest_auth.urls')),
+    # path('', include('dj_rest_auth.urls')),
     path('register/', CustomRegisterView.as_view(), name='rest_register'),
-    path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
+    # path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     
     ### allauth ###
-    path('allauth/', include('allauth.urls')),
+    # path('allauth/', include('allauth.urls')),
 
 ]
+
+from dj_rest_auth.views import LogoutView, PasswordChangeView,UserDetailsView
+from rest_framework_simplejwt.views import TokenVerifyView
+from dj_rest_auth.jwt_auth import get_refresh_view
+
+urlpatterns+=[
+
+    path('logout/', LogoutView.as_view(), name='rest_logout'),
+    path('user/', UserDetailsView.as_view(), name='rest_user_details'),
+    path('password/change/', PasswordChangeView.as_view(), name='rest_password_change'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('token/refresh/', get_refresh_view().as_view(), name='token_refresh'),
+    ]
+
+    
+    
+
 from django.conf import settings
 from django.conf.urls.static import static
 

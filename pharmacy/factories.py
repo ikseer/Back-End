@@ -41,4 +41,4 @@ class PharmacyFactory(factory.Factory):
     image = factory.LazyFunction(generate_image)
     open_time = factory.Faker('time_object')
     close_time = factory.Faker('time_object')
-    phone = factory.Faker('phone_number')
+    # phone = factory.Faker('phone_number')

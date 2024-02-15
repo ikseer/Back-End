@@ -11,6 +11,9 @@ class OrderFactory(factory.Factory):
         model = Order
 
     # patient = factory.SubFactory('accounts.factories.ProfileFactory')
-    patient=None
-    total_price = factory.Faker('random_int', min=1, max=1000)
+    # customer = factory.SubFactory('accounts.factories.ProfileFactory')
+    # customer=factory.SubFactory('accounts.factories.ProfileFactory')
+    
+    # total_price = factory.Faker('random_int', min=1, max=1000)
     pharmacy = factory.SubFactory('pharmacy.factories.PharmacyFactory')
+    status='Pending'

@@ -7,7 +7,8 @@ import factory
 from faker import Faker
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
-from products.models import Category, Discount, Product, OrderItem
+from products.models import Category, Discount, Product
+from orders.models import OrderItem
 
 fake = Faker()
 import io
@@ -70,6 +71,7 @@ class ProductFactory(factory.Factory):
     category = factory.SubFactory(CategoryFactory)
     pharmacy = factory.SubFactory('pharmacy.factories.PharmacyFactory')
     image = factory.LazyFunction(generate_product_image)
+    quantity = factory.Faker('random_int', min=1, max=100)
 
 class OrderItemFactory(factory.Factory):
     class Meta:

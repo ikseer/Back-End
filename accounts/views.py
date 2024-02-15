@@ -25,7 +25,7 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from allauth.socialaccount.models import SocialAccount
 from allauth.socialaccount import signals
-
+from .filters import *
 # check if password of user is correct
 class CheckPasswordView(GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -91,6 +91,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
+    filterset_class = ProfileFilter
+
 
 
 
@@ -193,6 +195,7 @@ class PhoneRegister(GenericAPIView):
                 Mobile=phone,
             )
             Mobile = PhoneModel.objects.get(Mobile=phone)  # user Newly created Model
+        Mobile.user = request.user
         Mobile.save()  # Save the data
         keygen = generateKey()
         key = base64.b32encode(keygen.returnValue(phone).encode())  # Key is generated

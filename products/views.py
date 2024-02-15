@@ -10,6 +10,7 @@ from rest_framework import filters
 from rest_framework.response import Response
 from orders.models import *
 from .permissions import *
+from .pagination import *
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -27,9 +28,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('id') 
     serializer_class = ProductSerializer
     permission_classes = [ SafePermission]
+    pagination_class = ProductPagination
     filterset_class = ProductFilter
     filter_backends = [
         DjangoFilterBackend,

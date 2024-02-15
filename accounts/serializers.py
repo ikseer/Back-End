@@ -53,6 +53,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     last_name= serializers.CharField(required=True)
     date_of_birth= serializers.DateField(required=True)
     gender= serializers.CharField(required=True)
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['email'] = instance.user.email
+        representation['username'] =  instance.user.username
+        return representation
+
     # is_complete= serializers.BooleanField(read_only=True)
 
 
