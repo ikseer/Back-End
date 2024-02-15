@@ -71,6 +71,7 @@ class ProductFactory(factory.Factory):
     category = factory.SubFactory(CategoryFactory)
     pharmacy = factory.SubFactory('pharmacy.factories.PharmacyFactory')
     image = factory.LazyFunction(generate_product_image)
+    quantity = factory.Faker('random_int', min=1, max=100)
 
 class OrderItemFactory(factory.Factory):
     class Meta:
