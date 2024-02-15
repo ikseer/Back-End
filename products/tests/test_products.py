@@ -48,7 +48,7 @@ class ProductViewSetTests(TestCase):
     def test_list_products(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3) 
+        self.assertEqual(len(response.data['results']), 3) 
     
     def test_retrieve_product(self):
         response = self.client.get(self.url + str(self.product.id) + '/')
@@ -111,14 +111,16 @@ class FilterProductViewSetTests(TestCase):
     def test_filter_by_name(self):
 
         response = self.client.get(self.url, {'name__icontains': 'Test Product1'})
+        # print(response.data['results'])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['name'], 'Test Product1')
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['name'], 'Test Product1')
     def test_filter_by_price(self):
 
         response = self.client.get(self.url, {'price__gte': 20, 'price__lte': 30})
+        data=response.data['results']
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        prices=[item['price'] for item in response.data]
+        prices=[item['price'] for item in data]
         self.assertEqual(max(prices)<=30, True)
         self.assertEqual(min(prices)>=20, True)
     def test_filter_by_top_sales(self):
@@ -128,6 +130,19 @@ class FilterProductViewSetTests(TestCase):
     def test_filter_by_category(self):
 
         response = self.client.get(self.url, {'category': self.category.id})
+        data=response.data['results']
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
-    
+        self.assertEqual(len(data), 3)
+    def test_pagination(self):
+
+        # create 25 products
+        for i in range(25):
+            Product.objects.create(name=f'Test Product {i}', price=20.0, strength=5, category=self.category,pharmacy=self.pharmacy)
+        response = self.client.get(self.url)
+        data=response.data['results']
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(data), 15)
+        response = self.client.get(self.url + '?page=2')
+        data=response.data['results']
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(data), 13)

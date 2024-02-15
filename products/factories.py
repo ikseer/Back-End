@@ -7,7 +7,8 @@ import factory
 from faker import Faker
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
-from products.models import Category, Discount, Product, OrderItem
+from products.models import Category, Discount, Product
+from orders.models import OrderItem
 
 fake = Faker()
 import io
