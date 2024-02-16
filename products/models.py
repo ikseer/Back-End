@@ -9,7 +9,8 @@ class Category(models.Model):
 class Discount(models.Model):
 
     percentage = models.IntegerField(help_text='Percentage of discount')
-    product = models.ForeignKey('Product', on_delete=models.CASCADE,help_text='Product for which the discount is applicable')
+    # product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    product = models.OneToOneField('products.Product', on_delete=models.CASCADE)
     start_date = models.DateField(null=True, blank=True, help_text='Start date of the discount')
     end_date = models.DateField(null=True, blank=True, help_text='End date of the discount')
 
