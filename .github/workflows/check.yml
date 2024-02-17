@@ -33,6 +33,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set up environment variables
+        env:
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+
+        run: |
+          echo "DATABASE_NAME=$DATABASE_NAME" >> $GITHUB_ENV
+          echo "DATABASE_USER=$DATABASE_USER" >> $GITHUB_ENV
+          echo "DATABASE_PASSWORD=$DATABASE_PASSWORD" >> $GITHUB_ENV
+          echo "DATABASE_HOST=$DATABASE_HOST" >> $GITHUB_ENV
+
       # - name: Prepare database
       #   run: |
       #     python manage.py migrate --no-input
@@ -50,7 +63,7 @@ jobs:
 #   pull_request:
 #     branches:
 #       - main
-# concurrency: 
+# concurrency:
 #   group: ${{ github.head_ref ||  github.ref }}
 
 
@@ -91,11 +104,9 @@ jobs:
   # - concurrency:
       # group: example-group
       # cancel-in-progress: true
-    
+
 
     # - name: Check code quality
     #   run: |
     #     flake8 .
     #     for app_dir in $(find . -maxdepth 1 -type d -name "*"); do pylint "$app_dir"; done
-
-
