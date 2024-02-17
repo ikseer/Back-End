@@ -66,8 +66,30 @@ class ProductRatingViewSet(viewsets.ModelViewSet):
     filterset_class = ProductRatingFilter
 
 
-class wishlistViewSet(viewsets.ModelViewSet):
+class WishlistViewSet(viewsets.ModelViewSet):
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
     permission_classes = [SafePermission]
     filterset_class = WishlistFilter
+    
+from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins
+
+class HomeView(GenericViewSet, mixins.ListModelMixin):
+    queryset = Product.objects.all().order_by("id")
+    serializer_class = HomeSerializer
+    # permission_classes = [SafePermission]
+    pagination_class = ProductPagination
+    filterset_class = ProductFilter
+    filter_backends = [
+        DjangoFilterBackend,
+        rest_filters.SearchFilter,
+        rest_filters.OrderingFilter,
+    ]
+
+    def get_top_selling_products(self):
+        top_products = Product.objects.annotate(
+            total_sales=Sum("orderitem__quantity")
+        ).order_by("-total_sales")
+        serializer = ProductSerializer(top_products, many=True)
+        return Response(serializer.data)

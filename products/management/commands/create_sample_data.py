@@ -73,6 +73,17 @@ class Command(BaseCommand):
             self.style.SUCCESS(f"Successfully created and saved {len(reviews)} reviews")
         )
 
+        # Create sample data for Discount
+        discounts = DiscountFactory.create_batch(
+            5,
+            product=factory.Iterator(cycle(products)),
+        )
+        for discount in discounts:
+            discount.save()
+
+        self.stdout.write(
+            self.style.SUCCESS(f"Successfully created and saved {len(discounts)} discounts")
+        )
         # for product in products_with_images:
         #     product.category.save()
         #     product.pharmacy.save()
