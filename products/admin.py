@@ -6,3 +6,6 @@ from products.models import *
 admin.site.register(Product)
 admin.site.register(Discount)
 admin.site.register(Category)
+admin.site.register(ProductImage)
+admin.site.register(ProductRating)
+admin.site.register(Wishlist)

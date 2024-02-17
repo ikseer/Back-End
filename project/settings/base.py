@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,88 +21,80 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5^31#!z1k!=(+*w7g+&qjw#in1sb7!(2bc7bsf(7kciy0_35@y'
+SECRET_KEY = "django-insecure-5^31#!z1k!=(+*w7g+&qjw#in1sb7!(2bc7bsf(7kciy0_35@y"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # added apps
-    'accounts',
-    'products',
-    'pharmacy',
-    'orders',
+    "accounts",
+    "products",
+    "pharmacy",
+    "orders",
     # rest framework
-    'rest_framework',
-    'rest_framework.authtoken',
-
+    "rest_framework",
+    "rest_framework.authtoken",
     # allauth
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.google",
     # dj-rest-auth
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
     # cors headers
-    'corsheaders',
-
+    "corsheaders",
     # filters
-    'django_filters',
-
-
+    "django_filters",
 ]
 
 MIDDLEWARE = [
     # cors headers
-    'corsheaders.middleware.CorsMiddleware',
-    #default
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    # default
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
     # 'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # allauth
     "allauth.account.middleware.AccountMiddleware",
-
 ]
 
-ROOT_URLCONF = 'project.urls'
+ROOT_URLCONF = "project.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.application'
+WSGI_APPLICATION = "project.wsgi.application"
 
 
 # Database
@@ -128,10 +119,10 @@ AUTH_PASSWORD_VALIDATORS = [
     #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     # },
     # {
-        # 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     # },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -139,9 +130,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -156,77 +147,69 @@ USE_TZ = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 ###### REST FRAMEWORK ######
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ),
-
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-        'rest_framework.filters.OrderingFilter',
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
     ),
-
 }
 
 
-
 ###### ALLAUTH ######
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 # ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = "none"
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_AUTHENTICATION_METHOD="username_email"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_PASSWORD_MIN_LENGTH = 8
 
 ###### SITE ######
 SITE_ID = 1
-SITE_NAME = 'Backend'
+SITE_NAME = "Backend"
 
 
 ##### EMAIL ######
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'backendbackend90@gmail.com'
-EMAIL_HOST_PASSWORD = 'fkgkonllykbobfin'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "backendbackend90@gmail.com"
+EMAIL_HOST_PASSWORD = "fkgkonllykbobfin"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 ##### AUTHENTICATION_BACKENDS  ######
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 ####### REST_AUTH #######
 # REST_AUTH_REGISTER_SERIALIZERS = {
 #       'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegistration',
 # }
-REST_AUTH = {
-    
-    'USE_JWT': True,
-    'JWT_AUTH_HTTPONLY':False
-}
+REST_AUTH = {"USE_JWT": True, "JWT_AUTH_HTTPONLY": False}
 
 ####### swagger #######
-INSTALLED_APPS+= [
-   'drf_yasg',
+INSTALLED_APPS += [
+    "drf_yasg",
 ]
 
 ####### static files #######
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 
 
 ###### database #######
@@ -257,18 +240,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 # }
 
 ###### Media #######
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 ##### cors headers  #######
-#CORS_ORIGIN_ALLOW_ALL = True
-#CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = ['*']
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
-#swagger settings
+# swagger settings
 # SWAGGER_SETTINGS = {
 #     'USE_SESSION_AUTH': False,
 #     'JSON_EDITOR': True,
@@ -282,11 +264,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 # }
 SWAGGER_URLS = None
 SWAGGER_SETTINGS = {
-    'SECURITY_SCHEMES': {
-        'Bearer': {'type': 'http', 'scheme': 'bearer', 'bearerFormat': 'JWT'}
+    "SECURITY_SCHEMES": {
+        "Bearer": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}
     }
 }
-
 
 
 # database=os.environ.get('POSTGRES_DB')
@@ -303,7 +284,7 @@ SWAGGER_SETTINGS = {
 #         },
 #     }
 # }
-# ?ssl=true 
+# ?ssl=true
 
 # DATABASES = {
 #     'default': {
@@ -318,37 +299,12 @@ SWAGGER_SETTINGS = {
 #         },
 #     }
 # }
-from decouple import config
 
-# config = decouple.Config()  
 
-if 'test' in sys.argv:
-    # sqlite
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-else:
-    DATABASES ={    
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DATABASE_NAME'),
-            'USER': config('DATABASE_USER'),
-            'PASSWORD': config('DATABASE_PASSWORD'),
-            'HOST': config('DATABASE_HOST'),
-            'PORT':'5432',
-            'TEST': {
-                'NAME': 'my_testdatabase',
-            },
-        }
-
-    }   
-
-CSRF_TRUSTED_ORIGINS =['https://ikseer.azurewebsites.net']
+CSRF_TRUSTED_ORIGINS = ["https://ikseer.azurewebsites.net"]
 from datetime import timedelta
+
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=20),  # Short expiration for security
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),  # Adjust based on requirements
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=20),  # Short expiration for security
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),  # Adjust based on requirements
 }
