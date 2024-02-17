@@ -82,12 +82,12 @@ class CategoryViewSetTests(TestCase):
     def test_update_category(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
         data = {"name": "Furniture"}
-        response = self.client.put("/products/category/1/", data, format="json")
+        response = self.client.put(f"/products/category/{ self.category1.id}/", data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_category(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
-        response = self.client.delete("/products/category/1/")
+        response = self.client.delete(f"/products/category/{ self.category1.id}/")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_get_category(self):
