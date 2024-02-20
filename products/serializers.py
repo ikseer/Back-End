@@ -65,8 +65,8 @@ class HomeSerializer(serializers.ModelSerializer):
         model = Product
         fields = ["generic_name", "name", "price", "image", "discount", "review"] 
     def get_image(self, obj):
-        image = ProductImage.objects.filter(product=obj).order_by("-priority").first()
-        return image.image.url
+        image = ProductImage.objects.filter(product=obj).order_by("-priority")[0:1]
+        return ProductImageSerializer(image, many=True).data
     def get_discount(self, obj):
         discount = Discount.objects.filter(product=obj).first()
         return DiscountSerializer(discount).data

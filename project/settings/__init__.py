@@ -8,4 +8,5 @@ if LOCAL:
     print("LOCAL MODE")
     from .local import *
 else:
+    print("PRODUCTION MODE")
     from .production import *
