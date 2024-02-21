@@ -7,8 +7,11 @@ from rest_framework.response import Response
 from .models import EmailVerificationOTP
 User = get_user_model()
 from django.core.exceptions import ObjectDoesNotExist
-
-
+# create new image 
+from PIL import Image
+def create_image():
+    image = Image.new('RGB', (200, 200), color = (255, 255, 255))
+    return image    
 class SendEmail:
     @staticmethod
     def send_otp(user):

@@ -1,7 +1,5 @@
-from email.mime import image
 from django.db import models
 from django.contrib.auth import get_user_model 
-from django.contrib.auth.models import AbstractUser
 User=get_user_model()
         
 class EmailVerificationOTP (models.Model):
@@ -27,7 +25,7 @@ class PhoneModel(models.Model):
 class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg',upload_to='profile_image', blank=True)
+    image = models.ImageField(upload_to='profile_image', blank=True, null=True)
     bio = models.TextField(blank=True)
     first_name=models.CharField(max_length=30,blank=True)
     last_name=models.CharField(max_length=30,blank=True)
