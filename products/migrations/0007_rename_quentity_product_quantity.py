@@ -3,7 +3,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("products", "0006_alter_productrating_comment_and_more"),
     ]

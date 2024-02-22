@@ -5,13 +5,11 @@ User = get_user_model()
 
 
 class Category(models.Model):
-
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to="category_images", null=True, blank=True)
 
 
 class Discount(models.Model):
-
     percentage = models.IntegerField(help_text="Percentage of discount")
     # product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     product = models.OneToOneField("products.Product", on_delete=models.CASCADE)
@@ -49,7 +47,6 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="product_images", null=True, blank=True)
     priority = models.IntegerField(default=1, null=True, blank=True)
@@ -58,11 +55,10 @@ class ProductImage(models.Model):
         return self.product.name
 
 
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class ProductRating(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     rating = models.IntegerField(

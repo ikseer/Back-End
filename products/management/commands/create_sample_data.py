@@ -82,7 +82,9 @@ class Command(BaseCommand):
             discount.save()
 
         self.stdout.write(
-            self.style.SUCCESS(f"Successfully created and saved {len(discounts)} discounts")
+            self.style.SUCCESS(
+                f"Successfully created and saved {len(discounts)} discounts"
+            )
         )
         # for product in products_with_images:
         #     product.category.save()

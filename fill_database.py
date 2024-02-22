@@ -1,9 +1,12 @@
 from django.conf import settings
+
 settings.configure()
 from django.apps import apps
+
 apps.get_app_config("products")
 
-from products.factories import CategoryFactory, ProductFactory , OrderItemFactory
+from products.factories import CategoryFactory, OrderItemFactory, ProductFactory
+
 # from orders.factories import OrderFactory
 # from pharmacy.factories import PharmacyFactory
 # import factory

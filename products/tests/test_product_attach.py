@@ -8,8 +8,9 @@ from pharmacy.models import *
 from products.models import *
 
 User = get_user_model()
-from django.core.files.uploadedfile import SimpleUploadedFile
 import os
+
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 def create_image_test():

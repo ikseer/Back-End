@@ -14,8 +14,8 @@ class Command(BaseCommand):
     help = "Populate the database with sample data"
 
     def handle(self, *args, **options):
-        products=Product.objects.all()
-        
+        products = Product.objects.all()
+
         discounts = DiscountFactory.create_batch(
             len(products),
             product=factory.Iterator(cycle(products)),
@@ -24,6 +24,7 @@ class Command(BaseCommand):
             discount.save()
 
         self.stdout.write(
-            self.style.SUCCESS(f"Successfully created and saved {len(discounts)} discounts")
+            self.style.SUCCESS(
+                f"Successfully created and saved {len(discounts)} discounts"
+            )
         )
-        

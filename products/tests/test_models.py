@@ -1,6 +1,7 @@
 from django.test import TestCase
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
+
 from products.models import Product
 
 # class ProductViewSetTests(TestCase):
@@ -26,4 +27,4 @@ from products.models import Product
 #         self.assertEqual(len(response.data), 1)
 #         self.assertEqual(response.data[0]['price'], '30.00')
 
-    # Add more tests for other filters as needed
+# Add more tests for other filters as needed

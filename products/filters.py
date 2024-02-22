@@ -2,8 +2,9 @@
 import django_filters as filters
 from django.db.models import Sum
 
-from .models import *
 from orders.models import OrderItem
+
+from .models import *
 
 
 class CategoryFilter(filters.FilterSet):

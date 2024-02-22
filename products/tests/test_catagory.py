@@ -47,7 +47,6 @@ class CategoryViewSetTests(TestCase):
         self.assertEqual(len(response.data), 2)
 
     def test_filter_by_name(self):
-
         response = self.client.get(
             "/products/category/", {"name__icontains": "Electronics"}
         )
@@ -82,7 +81,9 @@ class CategoryViewSetTests(TestCase):
     def test_update_category(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
         data = {"name": "Furniture"}
-        response = self.client.put(f"/products/category/{ self.category1.id}/", data, format="json")
+        response = self.client.put(
+            f"/products/category/{ self.category1.id}/", data, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_category(self):
