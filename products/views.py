@@ -1,9 +1,8 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from requests import delete
-from rest_framework import filters
 from rest_framework import filters as rest_filters
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from orders.models import *
 
@@ -72,10 +71,6 @@ class WishlistViewSet(viewsets.ModelViewSet):
     serializer_class = WishlistSerializer
     permission_classes = [SafePermission]
     filterset_class = WishlistFilter
-
-
-from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
 
 
 class HomeView(GenericViewSet, mixins.ListModelMixin):

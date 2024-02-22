@@ -1,22 +1,20 @@
 import base64
-import email
 from datetime import datetime
 
 from allauth.socialaccount import signals
 from allauth.socialaccount.models import SocialAccount
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from allauth.socialaccount.providers.facebook.views import \
+    FacebookOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import RegisterView, SocialLoginView
 from dj_rest_auth.serializers import UserDetailsSerializer
 from dj_rest_auth.views import LoginView
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import generics, status, viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status, viewsets
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.serializers import *
@@ -194,10 +192,6 @@ class GoogleLogin(
     adapter_class = GoogleOAuth2Adapter
     # callback_url = CALLBACK_URL_YOU_SET_ON_GOOGLE
     client_class = OAuth2Client
-
-
-class GoogleLogin(SocialLoginView):  # if you want to use Implicit Grant, use this
-    adapter_class = GoogleOAuth2Adapter
 
 
 # This class returns the string needed to generate the key

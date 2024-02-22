@@ -1,7 +1,7 @@
 # filters.py
 import django_filters as filters
 
-from .models import *
+from .models import Profile
 
 
 class ProfileFilter(filters.FilterSet):

@@ -1,5 +1,5 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from pkg_resources import require
+from dj_rest_auth.serializers import LoginSerializer, UserDetailsSerializer
 from rest_framework import serializers
 
 from .models import Profile
@@ -31,18 +31,12 @@ class CheckUsernameSerializer(serializers.Serializer):
 
 
 # from dj_rest_auth.serializers import UserDetailsSerializer
-from django.contrib.auth.models import User
 
 
 class CustomRegistration(RegisterSerializer):
     first_name = serializers.CharField(write_only=True)
     last_name = serializers.CharField(write_only=True)
     gender = serializers.CharField(write_only=True)
-
-
-from dj_rest_auth.registration.serializers import RegisterSerializer
-from django.contrib.auth.models import User
-from rest_framework import serializers
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -64,15 +58,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         return representation
 
 
-from dj_rest_auth.serializers import UserDetailsSerializer
-from rest_framework import serializers
-
-
 class CustomUserSerializer(UserDetailsSerializer):
     profile = ProfileSerializer()  # Replace with your actual profile serializer
-
-
-from dj_rest_auth.serializers import LoginSerializer
 
 
 class loginSerializer(LoginSerializer):
@@ -83,7 +70,7 @@ class loginSerializer(LoginSerializer):
     def validate_email(self, value):
         user = self.context["request"].user
         if not user.emailaddress_set.filter(email=value, verified=True).exists():
-            raise serializers.ValidationError(_("E-mail is not verified."))
+            raise serializers.ValidationError(("E-mail is not verified."))
         return value
 
 

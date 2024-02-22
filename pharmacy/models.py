@@ -1,8 +1,5 @@
 from django.db import models
 
-import pharmacy
-from products.models import Product
-
 
 class Pharmacy(models.Model):
     name = models.CharField(max_length=255)

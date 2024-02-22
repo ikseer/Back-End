@@ -1,20 +1,10 @@
-import email
-import profile
-import re
-
-from allauth.account.models import (
-    EmailAddress,
-    EmailConfirmation,
-    EmailConfirmationHMAC,
-)
-from dj_rest_auth.serializers import UserDetailsSerializer
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from accounts.models import EmailVerificationOTP, Profile
+from accounts.models import Profile
 
 # user serializer
 
@@ -37,10 +27,7 @@ class UserTest(APITestCase):
         url = reverse("rest_register")
 
         response = self.client.post(url, self.data)
-        # get user
-        user = User.objects.get(email=self.data["email"])
-        # ser=UserDetailsSerializer(user)
-        # print(ser.data )
+        User.objects.get(email=self.data["email"])
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_not_created_profile(self):
@@ -95,7 +82,7 @@ class UserTest(APITestCase):
     def test_user_data(self):
         self.test_otp_by_email()
         # user and token
-        user = User.objects.get(email=self.data["email"])
+        User.objects.get(email=self.data["email"])
         # access token
         url = reverse("rest_login")
         response = self.client.post(

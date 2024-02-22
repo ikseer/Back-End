@@ -1,8 +1,9 @@
 from decouple import config
 
+from .base import *
+
 LOCAL = config("LOCAL", cast=bool, default=False)
 
-from .base import *
 
 if LOCAL:
     print("LOCAL MODE")

@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-User = get_user_model()
-
 from accounts.models import Profile
+
+User = get_user_model()
 
 
 @receiver(post_save, sender=User)
@@ -24,7 +24,8 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Profile)
 def update_profile(sender, instance, **kwargs):
     """
-    A signal receiver which sets the profile as completed when the UserProfile model is updated.
+    A signal receiver which sets the profile as completed
+    when the UserProfile model is updated.
     """
 
     if not instance.is_completed:

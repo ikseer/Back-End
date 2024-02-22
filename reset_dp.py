@@ -2,12 +2,11 @@ import os
 from pathlib import Path
 from shutil import rmtree
 
+import django
 from django.conf import settings
-from django.core.management import call_command
 
 # Configure Django settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
-import django
 
 django.setup()
 

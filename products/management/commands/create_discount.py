@@ -4,7 +4,6 @@ from itertools import cycle
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
-from pharmacy.factories import PharmacyFactory
 from products.factories import *
 
 User = get_user_model()

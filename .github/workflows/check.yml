@@ -9,7 +9,6 @@ on:
       - main
 
 jobs:
-
   test:
     name: Run tests and check code quality
     runs-on: ubuntu-latest
@@ -53,7 +52,6 @@ jobs:
 
       - name: Run tests
         run: python manage.py test --no-input
-
 # name: Django CI
 
 # on:
@@ -65,7 +63,6 @@ jobs:
 #       - main
 # concurrency:
 #   group: ${{ github.head_ref ||  github.ref }}
-
 
 # jobs:
 
@@ -101,12 +98,11 @@ jobs:
 # concurrency:
 #   group: ${{ github.workflow }}-${{ github.ref }}
 #   cancel-in-progress: true
-  # - concurrency:
-      # group: example-group
-      # cancel-in-progress: true
+# - concurrency:
+# group: example-group
+# cancel-in-progress: true
 
-
-    # - name: Check code quality
-    #   run: |
-    #     flake8 .
-    #     for app_dir in $(find . -maxdepth 1 -type d -name "*"); do pylint "$app_dir"; done
+# - name: Check code quality
+#   run: |
+#     flake8 .
+#     for app_dir in $(find . -maxdepth 1 -type d -name "*"); do pylint "$app_dir"; done

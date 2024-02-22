@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   project:
@@ -19,14 +19,11 @@ services:
     depends_on:
       - project
 
-
-
-
 name: Build and Publish Images
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-push:
@@ -45,10 +42,10 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: Dockerfile.django  # Use separate Dockerfiles for each image
+          file: Dockerfile.django # Use separate Dockerfiles for each image
           push: true
-          tags: your-username/django-app:latest  # Customize image names
-          build-args: DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}  # Inject secret environment variable
+          tags: your-username/django-app:latest # Customize image names
+          build-args: DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }} # Inject secret environment variable
 
       - name: Build and push Nginx image
         uses: docker/build-push-action@v3
@@ -56,7 +53,7 @@ jobs:
           context: .
           file: Dockerfile.nginx
           push: true
-          tags: your-username/nginx:latest  # Customize image names
+          tags: your-username/nginx:latest # Customize image names
 
       - name: (Optional) Build tagged images for each commit (skip for production)
         if: always()

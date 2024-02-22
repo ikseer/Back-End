@@ -1,5 +1,4 @@
 # myapp/factories.py
-
 import factory
 from faker import Faker
 

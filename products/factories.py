@@ -1,18 +1,18 @@
 # myapp/factories.py
+import io
 import os
 import random
 
 import factory
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
+from faker.providers import BaseProvider
+from PIL import Image
 
 from orders.models import OrderItem
 from products.models import *
 
 fake = Faker()
-import io
-
-from PIL import Image
 
 
 def generate_image(file_path):
@@ -64,9 +64,6 @@ class DiscountFactory(factory.Factory):
     product = factory.SubFactory("products.factories.ProductFactory")
     start_date = factory.Faker("date_between", start_date="-30d", end_date="today")
     end_date = factory.Faker("date_between", start_date="today", end_date="+30d")
-
-
-from faker.providers import BaseProvider
 
 
 class ProductCodeProvider(BaseProvider):

@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from pharmacy.models import Pharmacy
-from products.models import Category, Discount, Product
+from products.models import Category, Product
 
 
 class PharmacyViewSetTests(TestCase):

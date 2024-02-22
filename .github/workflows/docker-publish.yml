@@ -2,10 +2,10 @@ name: Build and Publish Images
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-push:
@@ -24,9 +24,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: Dockerfile  # Use separate Dockerfiles for each image
+          file: Dockerfile # Use separate Dockerfiles for each image
           push: true
-          tags:  ${{ secrets.DOCKERHUB_USERNAME }}/graduation:v2  # Customize image names
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/graduation:v2 # Customize image names
         #   build-args: DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}  # Inject secret environment variable
 
       - name: Build and push Nginx image
@@ -35,4 +35,4 @@ jobs:
           context: nginx
           file: nginx/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nginx_graduation:v1  # Customize image names
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nginx_graduation:v1 # Customize image names

@@ -1,17 +1,13 @@
+import pyotp
 from allauth.account.models import EmailAddress
-from allauth.account.utils import send_email_confirmation
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail  # Import send_mail
-from rest_framework import status
-from rest_framework.response import Response
+from PIL import Image
 
 from .models import EmailVerificationOTP
 
 User = get_user_model()
-from django.core.exceptions import ObjectDoesNotExist
-
-# create new image
-from PIL import Image
 
 
 def create_image():
@@ -44,9 +40,6 @@ class SendEmail:
         send_mail(subject, body, "your_email@gmail.com", [user.email])
 
 
-import pyotp
-
-
 class Otp:
     @staticmethod
     def returnValue_email():
@@ -59,7 +52,7 @@ class Otp:
     def verify_otp(otp):
         try:
             email_verification = EmailVerificationOTP.objects.get(otp=otp)
-        except:
+        except ObjectDoesNotExist:
             return None
 
         # user = email_verification.user

@@ -1,7 +1,10 @@
-from dj_rest_auth.views import PasswordResetConfirmView, PasswordResetView
-from django.contrib import admin
+from dj_rest_auth.jwt_auth import get_refresh_view
+from dj_rest_auth.views import LogoutView, PasswordChangeView, UserDetailsView
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenVerifyView
 
 from accounts.views import *
 
@@ -33,10 +36,6 @@ urlpatterns = [
     # path('allauth/', include('allauth.urls')),
 ]
 
-from dj_rest_auth.jwt_auth import get_refresh_view
-from dj_rest_auth.views import LogoutView, PasswordChangeView, UserDetailsView
-from rest_framework_simplejwt.views import TokenVerifyView
-
 urlpatterns += [
     path("logout/", LogoutView.as_view(), name="rest_logout"),
     path("user/", UserDetailsView.as_view(), name="rest_user_details"),
@@ -44,10 +43,6 @@ urlpatterns += [
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("token/refresh/", get_refresh_view().as_view(), name="token_refresh"),
 ]
-
-
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

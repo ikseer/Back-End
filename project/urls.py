@@ -29,7 +29,7 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
 ]
 
-### swagger
+# swagger
 urlpatterns += [
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"

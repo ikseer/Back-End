@@ -2,8 +2,6 @@
 import django_filters as filters
 from django.db.models import Sum
 
-from orders.models import OrderItem
-
 from .models import *
 
 

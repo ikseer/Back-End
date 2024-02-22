@@ -2,13 +2,13 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.test import APIClient
 
 from orders.models import *
 from pharmacy.models import *
 from products.models import *
 
 User = get_user_model()
-from rest_framework.test import APIClient
 
 
 class PermissionTest(TestCase):
@@ -123,7 +123,7 @@ class PermissionTest(TestCase):
 
     def test_delete_order_of_another_user(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
-        own_order = self.client.post(
+        self.client.post(
             "/orders/orders/",
             {"customer": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",

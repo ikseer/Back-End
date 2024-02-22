@@ -1,22 +1,10 @@
-import email
-from os import access
-from urllib import response
-
-from allauth.account.models import (
-    EmailAddress,
-    EmailConfirmation,
-    EmailConfirmationHMAC,
-)
 from django.contrib.auth import get_user_model
-from django.core import mail
-from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from accounts.models import PhoneModel  # Update with the correct import
-from accounts.tests.test_user import UserTest
 
 User = get_user_model()
 
@@ -25,7 +13,7 @@ class GetPhoneNumberRegisteredTimeBasedTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.phone_number = "1234567890"  # Replace with a phone number you want to use
-        user = User.objects.create_user(
+        User.objects.create_user(
             username="testuser", email="test@example.com", password="testpassword"
         )
         # get access token
