@@ -27,7 +27,6 @@ repos:
       - id: ruff
         alias: autoformat
         args: [--fix]
-        exclude: signals.py
 
   # - repo: https://github.com/asottile/reorder_python_imports
   #   rev: v3.9.0

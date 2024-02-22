@@ -4,5 +4,7 @@ target-version = ["py311"]
 # Enable Pyflakes `E` and `F` codes by default.
 select = ["E", "F"]
 ignore = ["E501", "E741","F403","F405"]
+extend-exclude = ["apps.py", "migrations"]
+force-exclude = true
 [tool.bandit]
 exclude_dirs = ["tests"]
