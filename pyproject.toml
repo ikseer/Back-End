@@ -1,0 +1,4 @@
+# pyproject.toml
+target-version = "py311"
+[tool.black]
+target-version = ["py311"]
