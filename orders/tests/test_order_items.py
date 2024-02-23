@@ -72,7 +72,7 @@ class OrderItemTest(TestCase):
         order_item = {
             "product": self.product1.id,
             "quantity": 2,
-            "order": int(self.order["id"]),
+            "order": self.order["id"],
         }
         response = self.client.post("/orders/orderItem/", order_item, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -83,13 +83,13 @@ class OrderItemTest(TestCase):
             "/orders/orderItem/", self.order_item_data, format="json"
         ).data
         order_item_data = {
-            "id": order_item["id"],
+            # "id": order_item["id"],
             "product": self.product1.id,
             "quantity": 5,
-            "order": int(self.order["id"]),
+            "order": self.order["id"],
         }
         response = self.client.put(
-            "/orders/orderItem/" + str(order_item["id"]) + "/",
+            "/orders/orderItem/" + order_item["id"] + "/",
             order_item_data,
             format="json",
         )

@@ -1,17 +1,22 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from shortuuid.django_fields import ShortUUIDField
 
-User = get_user_model()
+
+class CustomUser(AbstractUser):
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
 
 
 class EmailVerificationOTP(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     otp = models.IntegerField(null=True, blank=True)
     activation_key = models.CharField(max_length=150, blank=True, null=True)
 
 
 class PhoneModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     Mobile = models.CharField(max_length=20, blank=False)
     isVerified = models.BooleanField(blank=False, default=False)
     counter = models.IntegerField(default=0, blank=False)
@@ -21,7 +26,8 @@ class PhoneModel(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="profile_image", blank=True, null=True)
     bio = models.TextField(blank=True)
     first_name = models.CharField(max_length=30, blank=True)
@@ -36,9 +42,11 @@ class Profile(models.Model):
 
 
 class PatientProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
 
 class DoctorProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     specialization = models.CharField(max_length=100)

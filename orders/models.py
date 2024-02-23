@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from shortuuid.django_fields import ShortUUIDField
 
 # Create your models here.
 
@@ -14,6 +15,7 @@ STATUS_CHOICES = (
 
 
 class Order(models.Model):
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     pharmacy = models.ForeignKey(
         "pharmacy.Pharmacy", on_delete=models.SET_NULL, null=True, blank=True
@@ -27,6 +29,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     order = models.ForeignKey("orders.Order", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(help_text="Quantity of the product")

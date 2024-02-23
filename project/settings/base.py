@@ -309,3 +309,5 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=20),  # Short expiration for security
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),  # Adjust based on requirements
 }
+
+AUTH_USER_MODEL = "accounts.CustomUser"

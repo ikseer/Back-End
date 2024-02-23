@@ -1,7 +1,9 @@
 from django.db import models
+from shortuuid.django_fields import ShortUUIDField
 
 
 class Pharmacy(models.Model):
+    id=ShortUUIDField(unique=True, max_length=20, primary_key=True)
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     image = models.ImageField(upload_to="pharmacy_images/", null=True, blank=True)
