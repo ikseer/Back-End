@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -14,6 +16,8 @@ STATUS_CHOICES = (
 
 
 class Order(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     pharmacy = models.ForeignKey(
         "pharmacy.Pharmacy", on_delete=models.SET_NULL, null=True, blank=True
@@ -27,6 +31,8 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     order = models.ForeignKey("orders.Order", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(help_text="Quantity of the product")

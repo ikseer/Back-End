@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-from shutil import rmtree
 
 import django
 from django.conf import settings
@@ -19,7 +18,7 @@ def reset_migrations(app_name):
     for file in migrations_folder.glob("[0-9]*.py"):
         file.unlink()
     # remove __pycache__
-    rmtree(migrations_folder / "__pycache__")
+    # rmtree(migrations_folder / "__pycache__")
 
     # Reset the database
     # call_command('migrate', app_name, 'zero', '--fake')

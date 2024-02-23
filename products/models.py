@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -6,11 +8,15 @@ User = get_user_model()
 
 
 class Category(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to="category_images", null=True, blank=True)
 
 
 class Discount(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     percentage = models.IntegerField(help_text="Percentage of discount")
     # product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     product = models.OneToOneField("products.Product", on_delete=models.CASCADE)
@@ -23,6 +29,8 @@ class Discount(models.Model):
 
 
 class Product(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     name = models.CharField(max_length=255, help_text="Name of the medication")
     generic_name = models.CharField(
         max_length=255, help_text="Generic name of the medication"
@@ -48,6 +56,8 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="product_images", null=True, blank=True)
     priority = models.IntegerField(default=1, null=True, blank=True)
@@ -57,6 +67,8 @@ class ProductImage(models.Model):
 
 
 class ProductRating(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     rating = models.IntegerField(
@@ -69,6 +81,8 @@ class ProductRating(models.Model):
 
 
 class Wishlist(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
 

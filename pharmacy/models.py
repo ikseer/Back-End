@@ -1,7 +1,11 @@
+import uuid
+
 from django.db import models
 
 
 class Pharmacy(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     image = models.ImageField(upload_to="pharmacy_images/", null=True, blank=True)
