@@ -1,0 +1,82 @@
+# .pre-commit-config.yaml
+default_language_version:
+  python: python3.11
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-byte-order-marker
+      - id: check-added-large-files
+
+  # -   repo: https://github.com/psf/black
+  #     rev: 23.7.0
+  #     hooks:
+  #     -   id: black
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.285
+    hooks:
+      - id: ruff
+        alias: autoformat
+        args: [--fix]
+
+  # - repo: https://github.com/asottile/reorder_python_imports
+  #   rev: v3.9.0
+  #   hooks:
+  #   -   id: reorder-python-imports
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.991
+    hooks:
+      - id: mypy
+        name: Run type checks
+        args:
+          ["--ignore-missing-imports", "--install-types", "--non-interactive"]
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.33.0
+    hooks:
+      - id: eslint
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.2
+    hooks:
+      - id: codespell
+
+  # - repo: https://github.com/pycqa/bandit
+  #   rev: 1.7.5
+  #   hooks:
+  #     - id: bandit
+
+  # - repo: https://github.com/pycqa/pydocstyle
+  #   rev: 6.3.0
+  #   hooks:
+  #   - id: pydocstyle
+
+  - repo: https://github.com/PyCQA/pylint.git
+    rev: main
+    hooks:
+      - id: pylint
+        args: ["--exit-zero"]
+
+  # - repo: local
+  #   rev: https://github.com/sphinx-user-docs/sphinx-autoapi.git
+  #   hooks:
+  #     - id: sphinx-autoapi
+  #       name: sphinx-autoapi
+  #       entry: sphinx-autoapi
+  #       language: python
+  #       types: [python]
+  # args: [--config, docs/conf.py]

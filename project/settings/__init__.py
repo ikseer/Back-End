@@ -1,8 +1,13 @@
+from decouple import config
+
 from .base import *
-try:
+
+LOCAL = config("LOCAL", cast=bool, default=False)
+
+
+if LOCAL:
+    print("LOCAL MODE")
     from .local import *
-    live = False
-except ImportError:
-    live = True
-if live:
+else:
+    print("PRODUCTION MODE")
     from .production import *

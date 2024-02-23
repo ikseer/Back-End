@@ -1,8 +1,7 @@
+from rest_framework import permissions
+
 # permissions.py
 
-
-from rest_framework.permissions import SAFE_METHODS, BasePermission
-from rest_framework import permissions
 
 class OrderPermission(permissions.BasePermission):
     """
@@ -11,16 +10,14 @@ class OrderPermission(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-      
         return request.user.is_authenticated
- 
 
     def has_object_permission(self, request, view, obj):
-        
-        if request.user.is_staff :
+        if request.user.is_staff:
             return True
-  
-        return  request.user.is_authenticated and obj.customer == request.user 
+
+        return request.user.is_authenticated and obj.customer == request.user
+
 
 class OrderItemPermission(permissions.BasePermission):
     """
@@ -29,12 +26,10 @@ class OrderItemPermission(permissions.BasePermission):
     """
 
     # def has_permission(self, request, view):
-      
+
     #     return request.user.is_authenticated
- 
 
     def has_object_permission(self, request, view, obj):
-        
-        if request.user.is_staff :
+        if request.user.is_staff:
             return True
-        return  request.user.is_authenticated and obj.order.customer == request.user  
+        return request.user.is_authenticated and obj.order.customer == request.user
