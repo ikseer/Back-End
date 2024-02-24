@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from shortuuid.django_fields import ShortUUIDField
 
 User = get_user_model()
 
@@ -88,3 +89,19 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return self.product.name
+class  Coupon(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    product=models.ForeignKey("products.Product", on_delete=models.CASCADE, null=True, blank=True)
+    number=models.IntegerField(null=True, blank=True)
+    active=models.BooleanField(default=True)
+    code=ShortUUIDField(unique=True, length=8, max_length=8 )
+    percentage = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(100)] )
+    start_date = models.DateField()
+    end_date = models.DateField()
+    # def save(self, *args, **kwargs):
+    #     if not self.code:
+    #         self.code = self.generate_code()
+        # super().save(*args, **kwargs)
+    def __str__(self):
+        return self.code

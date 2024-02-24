@@ -88,3 +88,8 @@ class HomeSerializer(serializers.ModelSerializer):
         review = ProductRating.objects.filter(product=obj)
         total_sum = sum([review.rating for review in review])
         return round(total_sum / ((len(review))))
+class CouponSerializer(serializers.ModelSerializer):
+    code=serializers.CharField(read_only=True)
+    class Meta:
+        model = Coupon
+        fields = "__all__"

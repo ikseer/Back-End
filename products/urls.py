@@ -11,6 +11,7 @@ router.register("product_image", ProductImageViewSet)
 router.register("product_rating", ProductRatingViewSet)
 router.register("wishlist", WishlistViewSet)
 router.register("home", HomeView)
+router.register("coupon", CouponViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
