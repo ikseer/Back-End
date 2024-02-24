@@ -94,7 +94,7 @@ class  Coupon(models.Model):
     product=models.ForeignKey("products.Product", on_delete=models.CASCADE, null=True, blank=True)
     number=models.IntegerField(null=True, blank=True)
     active=models.BooleanField(default=True)
-    code=ShortUUIDField(unique=True, length=8 )
+    code=ShortUUIDField(unique=True, length=8 ,max_length=22)
     percentage = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(100)] )
     start_date = models.DateField()
