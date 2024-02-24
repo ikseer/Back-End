@@ -86,6 +86,15 @@ class Command(BaseCommand):
                 f"Successfully created and saved {len(discounts)} discounts"
             )
         )
+
+
+        coupons=CouponFactory.create_batch(
+            10,
+            product=factory.Iterator(cycle(products)),
+        )
+        for coupon in coupons:
+            coupon.save()
+
         # for product in products_with_images:
         #     product.category.save()
         #     product.pharmacy.save()

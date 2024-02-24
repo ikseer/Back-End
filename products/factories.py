@@ -128,3 +128,11 @@ class WishlistFactory(factory.Factory):
 
     user = None
     product = factory.SubFactory("products.factories.ProductFactory")
+class CouponFactory(factory.Factory):
+    class Meta:
+        model = Coupon
+    percentage = factory.Faker("random_int", min=1, max=50)
+    start_date = factory.Faker("date_between", start_date="-30d", end_date="today")
+    end_date = factory.Faker("date_between", start_date="today", end_date="+30d")
+    product = factory.SubFactory("products.factories.ProductFactory")
+    number = factory.Faker("random_int", min=1, max=1000)
