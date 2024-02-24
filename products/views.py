@@ -91,3 +91,8 @@ class HomeView(GenericViewSet, mixins.ListModelMixin):
         ).order_by("-total_sales")
         serializer = ProductSerializer(top_products, many=True)
         return Response(serializer.data)
+class CouponViewSet(viewsets.ModelViewSet):
+    queryset = Coupon.objects.all()
+    serializer_class = CouponSerializer
+    permission_classes = [SafePermission]
+    filterset_class = CouponFilter

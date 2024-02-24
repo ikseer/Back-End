@@ -59,3 +59,7 @@ class ProductImageFilter(filters.FilterSet):
     class Meta:
         model = ProductImage
         exclude = ["image"]
+class CouponFilter(filters.FilterSet):
+    class Meta:
+        model = Coupon
+        fields = "__all__"
