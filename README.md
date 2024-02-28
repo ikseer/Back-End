@@ -1,5 +1,3 @@
-# Back-End
-
 # E-commerce Smart Pharmacy
 
 ## Introduction
@@ -17,30 +15,6 @@ E-commerce Smart Pharmacy is a web application built using Django Rest Framework
 - Authentication and Authorization: Implemented authentication mechanisms to ensure secure access to the application's functionalities.
 
 ## Technologies Used
-
-- Django: A high-level Python web framework for rapid development and clean, pragmatic design.
-- Django Rest Framework (DRF): A powerful and flexible toolkit for building Web APIs in Django.
-- PostgreSQL: An open-source relational database management system.
-- Authentication: JWT (JSON Web Tokens) for secure authentication.
-
-## Installation
-
-1. Clone the repository: `git clone https://github.com/your/repository.git`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Setup the database: `python manage.py migrate`
-4. Run the server: `python manage.py runserver`
-
-## API Endpoints
-
-[link](https://ikseer.azurewebsites.net/swagger/)
-
-## Usage
-
-## Contributors
-
-## License
-
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Acknowledgements
 
@@ -63,5 +37,24 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 - Nginx: For serving static files.
 - Github Actions: For automatic deployment.
 - Azure: For hosting the application.
+
+## Installation
+
+1. Clone the repository: `git clone https://github.com/your/repository.git`
+2. Install dependencies: `pip install -r requirements.txt`
+3. Setup the database: `python manage.py migrate`
+4. Run the server: `python manage.py runserver`
+
+## API Endpoints
+
+[link](https://ikseer.azurewebsites.net/swagger/)
+
+## Usage
+
+## Contributors
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 ![pharmacy_v1](readme/database_v1.png)
