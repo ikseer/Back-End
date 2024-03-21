@@ -5,12 +5,158 @@ default_language_version:
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
+
     hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: mixed-line-ending
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: requirements-txt-fixer
+      - id: fix-encoding-pragma
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: check-executables-have-shebangs
+      - id: check-ast
       - id: check-yaml
       - id: end-of-file-fixer
-      - id: trailing-whitespace
+      - id: name-tests-test
+      - id: check-case-conflict
       - id: check-byte-order-marker
+      - id: check-toml
       - id: check-added-large-files
+      - id: requirements-txt-fixer
+      - id: debug-statements
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-executables-have-shebangs
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: check-ast
+      - id: name-tests-test
+      - id: check-docstring-first
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: check-executables-have-shebangs
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: end-of-file-fixer
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+      - id: check-executables-have-shebangs
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+      - id: check-executables-have-shebangs
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+      - id: check-executables-have-shebangs
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+      - id: check-executables-have-shebangs
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+      - id: check-executables-have-shebangs
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+      - id: check-executables-have-shebangs
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-byte-order-marker
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
 
   # -   repo: https://github.com/psf/black
   #     rev: 23.7.0
@@ -80,3 +226,12 @@ repos:
   #       language: python
   #       types: [python]
   # args: [--config, docs/conf.py]
+recommit:
+  name: Run tests after commit
+  description: This hook runs tests after each commit using 'python manage.py test'.
+  entry: python manage.py test
+  language: system
+  types: [python]
+  pass_filenames: false
+  files: .
+  always_run: true
