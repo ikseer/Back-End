@@ -17,6 +17,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from accounts.permissions import ProfilePermission
 from accounts.serializers import *
 
 from .filters import *
@@ -109,7 +110,7 @@ class CustomTokenObtainPairView(LoginView):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [ProfilePermission]
     filterset_class = ProfileFilter
 
 
@@ -176,7 +177,9 @@ class VerifyEmailOtpView(GenericAPIView):
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
                 "user": UserDetailsSerializer(user).data,
+                "profile": ProfileSerializer(user.profile).data,
             }
+
             return Response(data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

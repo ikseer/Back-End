@@ -52,7 +52,10 @@ class UserTest(APITestCase):
         otp = mail.outbox[-1].body[st:].strip()
         url = reverse("verify-email-otp")
         response = self.client.post(url, {"otp": otp})
+
+        self.assertIn("profile", response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         access = response.data["access"]
         url = reverse("token_verify")
         response = self.client.post(url, {"token": access})

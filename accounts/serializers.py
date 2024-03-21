@@ -1,9 +1,11 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer, UserDetailsSerializer
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from .models import Profile
 
+User=get_user_model()
 
 class CheckPasswordSerializer(serializers.Serializer):
     password = serializers.CharField()
