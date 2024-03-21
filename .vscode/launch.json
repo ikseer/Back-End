@@ -9,14 +9,10 @@
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/manage.py",
-      "args": [
-        // "runserver",
-        "test",
-        "accounts"
-      ],
+      "args": ["test", "orders.tests.test_payment"],
       "django": true,
-      "autoStartBrowser": false
-      // "justMyCode": false
+      "autoStartBrowser": false,
+      "justMyCode": false
     }
   ]
 }

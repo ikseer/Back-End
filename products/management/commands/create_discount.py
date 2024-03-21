@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # myapp/management/commands/create_sample_data.py
 from itertools import cycle
 

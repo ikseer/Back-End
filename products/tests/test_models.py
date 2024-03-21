@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # class ProductViewSetTests(TestCase):
 #     def setUp(self):
 #         self.client = APIClient()

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # filters.py
 import django_filters as filters
 from django.db.models import Sum

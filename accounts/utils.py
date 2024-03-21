@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pyotp
 from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from dj_rest_auth.jwt_auth import get_refresh_view
 from dj_rest_auth.views import LogoutView, PasswordChangeView, UserDetailsView
 from django.conf import settings

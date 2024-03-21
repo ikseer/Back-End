@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # myapp/factories.py
 import io
 import os
