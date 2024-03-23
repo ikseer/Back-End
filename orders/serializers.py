@@ -7,6 +7,11 @@ from products.serializers import *
 from .models import *
 
 
+class PaymobOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymobOrder
+        fields = "__all__"
+
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
