@@ -164,6 +164,13 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "rest_framework.filters.OrderingFilter",
     ),
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon': '100/day',
+    #     'user': '1000/day',
+    # },
+    'DEFAULT_CACHE_BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+    'DEFAULT_CACHE_TIMEOUT': 60 * 15,  # Cache timeout of 15 minutes
+
 }
 
 
@@ -312,3 +319,8 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+
+### CACHING ###
+
+# settings.py
