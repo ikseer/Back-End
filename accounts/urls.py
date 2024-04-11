@@ -17,7 +17,7 @@ urlpatterns = [
     path("", include(router.urls)),
     # path('api/token/', CustomTokenObtainPairView.as_view(), name='rest_login'),
     path("login/", CustomTokenObtainPairView.as_view(), name="rest_login"),
-    ### Usre ###
+    ### User ###
     path("check-email", CheckEmailView.as_view(), name="check-email"),
     path("check-username", CheckUsernameView.as_view(), name="check-username"),
     path("check-password", CheckPasswordView.as_view(), name="check-password"),

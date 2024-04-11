@@ -2,8 +2,6 @@
 from paymob.accept import AcceptAPIClient
 from paymob.accept.utils import AcceptUtils
 
-from products.models import Discount
-
 from .models import Order, OrderItem, PaymobOrder
 
 '''
@@ -66,13 +64,14 @@ def create_paymob(order_id):
     else:
         return None
 
-def calculate_product_price(item):
-    discount = Discount.objects.filter(product=item).first()
-    if discount is None:
-        return item.price
-    else:
-        percentage = discount.discount_percentage
-        return item.price -  item.price * (percentage/100)
+def calculate_product_price(product):
+    return product.price
+    # discount = Discount.objects.filter(product=item).first()
+    # if discount is None:
+    #     return item.price
+    # else:
+    #     percentage = discount.discount_percentage
+    #     return item.price -  item.price * (percentage/100)
 
 def calculate_amount_cents(order_id):
     order = Order.objects.get(id=order_id)
