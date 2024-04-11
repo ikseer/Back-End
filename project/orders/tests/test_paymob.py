@@ -5,11 +5,10 @@ from unittest.mock import MagicMock, Mock, patch
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.test import APIRequestFactory, force_authenticate
-
 from orders.models import PaymobOrder
 from orders.utils import check_paymob_order_status, create_paymob
 from orders.views import PaymobCallbackViewSet
+from rest_framework.test import APIRequestFactory, force_authenticate
 
 User = get_user_model()
 

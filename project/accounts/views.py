@@ -2,6 +2,8 @@
 import base64
 from datetime import datetime
 
+from accounts.permissions import ProfilePermission
+from accounts.serializers import *
 from allauth.socialaccount import signals
 from allauth.socialaccount.models import SocialAccount
 from allauth.socialaccount.providers.facebook.views import \
@@ -17,9 +19,6 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-
-from accounts.permissions import ProfilePermission
-from accounts.serializers import *
 
 from .filters import *
 from .models import *

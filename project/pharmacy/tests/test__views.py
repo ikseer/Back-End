@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 from django.urls import reverse
-
 from pharmacy.models import Pharmacy
 from products.models import Category, Product
 

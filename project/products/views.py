@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from django_filters.rest_framework import DjangoFilterBackend
+from orders.models import *
 from rest_framework import filters as rest_filters
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-
-from orders.models import *
 
 from .filters import *
 from .models import *

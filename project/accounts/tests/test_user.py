@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
+from accounts.models import Profile
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-
-from accounts.models import Profile
 
 # user serializer
 

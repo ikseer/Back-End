@@ -8,9 +8,8 @@ import factory
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 from faker.providers import BaseProvider
-from PIL import Image
-
 from orders.models import OrderItem
+from PIL import Image
 from products.models import *
 
 fake = Faker()

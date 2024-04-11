@@ -4,13 +4,12 @@ from unittest.mock import patch
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.test import (APIClient, APIRequestFactory,
-                                 force_authenticate)
-
 from orders.models import Order, PaymobOrder
 from orders.views import OrderViewSet
 from pharmacy.models import Pharmacy
 from products.models import Category, Product
+from rest_framework.test import (APIClient, APIRequestFactory,
+                                 force_authenticate)
 
 User = get_user_model()
 

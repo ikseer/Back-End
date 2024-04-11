@@ -2,7 +2,6 @@
 # myapp/factories.py
 import factory
 from faker import Faker
-
 from orders.models import Order
 
 fake = Faker()

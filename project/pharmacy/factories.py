@@ -7,9 +7,8 @@ import random
 import factory
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
-from PIL import Image
-
 from pharmacy.models import Pharmacy
+from PIL import Image
 
 fake = Faker()
 

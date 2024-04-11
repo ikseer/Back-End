@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from rest_framework import serializers
-
 from products.models import *
+from rest_framework import serializers
 
 
 class CategorySerializer(serializers.ModelSerializer):
