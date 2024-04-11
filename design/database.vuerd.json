@@ -430,7 +430,7 @@
           },
           {
             "id": "e0ebc9b6-9cb0-485f-950b-ca281a91719a",
-            "name": "verifed",
+            "name": "verified",
             "comment": "",
             "dataType": "BOOLEAN",
             "default": "",

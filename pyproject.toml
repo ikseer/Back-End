@@ -8,3 +8,4 @@ extend-exclude = ["apps.py", "migrations"]
 force-exclude = true
 [tool.bandit]
 exclude_dirs = ["tests"]
+[tool.isort]
