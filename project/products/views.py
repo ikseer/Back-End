@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from orders.models import *
 from rest_framework import filters as rest_filters
@@ -44,6 +46,13 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = ProductSerializer(top_products, many=True)
         return Response(serializer.data)
 
+    @method_decorator(cache_page(60*5))  # Cache for 60 seconds
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(60*5))  # Cache for 60 seconds
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 class DiscountViewSet(viewsets.ModelViewSet):
     queryset = Discount.objects.all()
@@ -91,6 +100,11 @@ class HomeView(GenericViewSet, mixins.ListModelMixin):
         ).order_by("-total_sales")
         serializer = ProductSerializer(top_products, many=True)
         return Response(serializer.data)
+
+    @method_decorator(cache_page(60*5))  # Cache for 60 seconds
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 class CouponViewSet(viewsets.ModelViewSet):
     queryset = Coupon.objects.all()
     serializer_class = CouponSerializer
