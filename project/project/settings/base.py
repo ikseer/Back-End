@@ -168,8 +168,8 @@ REST_FRAMEWORK = {
     #     'anon': '100/day',
     #     'user': '1000/day',
     # },
-    'DEFAULT_CACHE_BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-    'DEFAULT_CACHE_TIMEOUT': 60 * 15,  # Cache timeout of 15 minutes
+    # 'DEFAULT_CACHE_BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+    # 'DEFAULT_CACHE_TIMEOUT': 60 * 15,  # Cache timeout of 15 minutes
 
 }
 
@@ -321,6 +321,15 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 
+
+
 ### CACHING ###
+# settings.py
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'django_cache'),
+    }
+}
 
 # settings.py
