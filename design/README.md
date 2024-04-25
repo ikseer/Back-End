@@ -2,8 +2,9 @@
 
 ### chat
 
-![alt text](readme/image.png)
+![alt text](chat/usecase.png)
+![alt text](chat/sequence.png)
 
 ### db
 
-![alt text](readme/db.png)
+![alt text](database/db.png)
