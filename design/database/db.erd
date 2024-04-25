@@ -1,0 +1,372 @@
+
+Table "account_emailaddress" {
+  "id" VARCHAR [pk]
+  "email" VARCHAR(254) [unique, not null]
+  "verified" BOOLEAN [not null]
+  "primary" BOOLEAN [not null]
+}
+
+Table "account_emailconfirmation" {
+  "id" VARCHAR [pk]
+  "created" TIMESTAMP [not null]
+  "sent" TIMESTAMP
+  "email_address_id" INTEGER
+}
+
+Table "accounts_customuser" {
+  "id" VARCHAR(128) [pk]
+  "password" VARCHAR(128) [not null]
+  "last_login" TIMESTAMP
+  "is_superuser" BOOLEAN [not null]
+  "username" VARCHAR(150) [unique, not null]
+  "first_name" VARCHAR(150) [not null]
+  "last_name" VARCHAR(150) [not null]
+  "email" VARCHAR(254) [not null]
+  "is_staff" BOOLEAN [not null]
+  "is_active" BOOLEAN [not null]
+  "date_joined" TIMESTAMP [not null]
+}
+
+Table "accounts_customuser_groups" {
+  "Id" VARCHAR(128) [pk]
+  "customuser_id" VARCHAR
+  "group_id" INTEGER
+
+Indexes {
+  (customuser_id, group_id) [unique]
+}
+}
+
+Table "accounts_customuser_user_permissions" {
+  "id" VARCHAR [pk]
+  "customuser_id" VARCHAR
+  "permission_id" INTEGER
+
+Indexes {
+  (customuser_id, permission_id) [unique]
+}
+}
+
+Table "accounts_doctorprofile" {
+  "id" VARCHAR [pk]
+  "specialization" VARCHAR(100) [not null]
+  "user_id" VARCHAR [unique]
+}
+
+Table "accounts_emailverificationotp" {
+  "id" VARCHAR [pk]
+  "otp" INTEGER
+  "activation_key" VARCHAR(150)
+  "user_id" VARCHAR [unique]
+}
+
+Table "accounts_patientprofile" {
+  "id" VARCHAR [pk]
+  "user_id" VARCHAR [unique]
+}
+
+Table "accounts_phonemodel" {
+  "id" VARCHAR [pk]
+  "mobile" VARCHAR(20)
+  "isverified" BOOLEAN
+  "counter" INTEGER
+  "user_id" VARCHAR
+}
+
+Table "accounts_profile" {
+  "id" VARCHAR [pk]
+  "image" VARCHAR(100)
+  "bio" TEXT
+  "first_name" VARCHAR(30)
+  "last_name" VARCHAR(30)
+  "date_of_birth" DATE
+  "gender" VARCHAR(255)
+  "is_completed" BOOLEAN
+  "timezone" VARCHAR(50)
+  "user_id" VARCHAR [unique]
+}
+
+Table "auth_group" {
+  "id" VARCHAR [pk]
+  "name" VARCHAR(150) [unique, not null]
+}
+
+Table "auth_group_permissions" {
+  "id" VARCHAR [pk]
+  "group_id" INTEGER
+  "permission_id" INTEGER
+
+Indexes {
+  (group_id, permission_id) [unique]
+}
+}
+
+Table "auth_permission" {
+  "id" VARCHAR [pk]
+  "name" VARCHAR(255) [not null]
+  "content_type_id" INTEGER
+  "codename" VARCHAR(100) [not null]
+
+Indexes {
+  (content_type_id, codename) [unique]
+}
+}
+
+Table "authtoken_token" {
+  "key_" VARCHAR(40) [pk]
+  "created" TIMESTAMP [not null]
+  "user_id" VARCHAR [unique]
+}
+
+Table "django_admin_log" {
+  "id" VARCHAR [pk]
+  "action_time" TIMESTAMP [not null]
+  "object_id" TEXT
+  "object_repr" VARCHAR(200) [not null]
+  "action_flag" SMALLINT [not null]
+  "change_message" TEXT [not null]
+  "content_type_id" INTEGER
+  "user_id" VARCHAR
+}
+
+Table "django_content_type" {
+  "id" VARCHAR [pk]
+  "app_label" VARCHAR(100) [not null]
+  "model" VARCHAR(100) [not null]
+
+Indexes {
+  (app_label, model) [unique]
+}
+}
+
+Table "django_migrations" {
+  "id" VARCHAR [pk]
+  "app" VARCHAR(255) [not null]
+  "name" VARCHAR(255) [not null]
+  "applied" TIMESTAMP [not null]
+}
+
+Table "django_session" {
+  "session_key" VARCHAR(40) [pk]
+  "session_data" TEXT [not null]
+  "expire_date" TIMESTAMP [not null]
+}
+
+Table "django_site" {
+  "id" VARCHAR [pk]
+  "domain" VARCHAR(100) [unique, not null]
+  "name" VARCHAR(50) [not null]
+}
+
+Table "orders_order" {
+  "id" VARCHAR [pk]
+  "status" VARCHAR(20) [not null]
+  "customer_id" VARCHAR
+  "pharmacy_id" VARCHAR
+}
+
+Table "orders_orderitem" {
+  "id" VARCHAR [pk]
+  "quantity" INTEGER [not null]
+  "order_id" VARCHAR
+  "product_id" VARCHAR
+}
+
+Table "orders_paymoborder" {
+  "id" VARCHAR [pk]
+  "paymob_order_id" VARCHAR(255) [not null]
+  "paid" BOOLEAN [not null]
+  "amount_cents" FLOAT [not null]
+  "currency" VARCHAR(255) [not null]
+  "order_id" VARCHAR [unique]
+}
+
+Table "pharmacy_pharmacy" {
+  "id" VARCHAR [pk]
+  "name" VARCHAR(255) [not null]
+  "location" VARCHAR(255) [not null]
+  "image" VARCHAR(100)
+  "open_time" TIME [not null]
+  "close_time" TIME [not null]
+  "phone" VARCHAR(20) [not null]
+}
+
+Table "products_category" {
+  "id" VARCHAR [pk]
+  "name" VARCHAR(255) [not null]
+  "image" VARCHAR(100)
+}
+
+Table "products_coupon" {
+  "id" VARCHAR [pk]
+  "active" BOOLEAN [not null]
+  "code" VARCHAR(22) [unique, not null]
+  "percentage" INTEGER [not null]
+  "start_date" DATE [not null]
+  "end_date" DATE [not null]
+  "number" INTEGER
+  "product_id" VARCHAR
+}
+
+Table "products_discount" {
+  "id" VARCHAR [pk]
+  "percentage" INTEGER [not null]
+  "start_date" DATE
+  "end_date" DATE
+  "product_id" VARCHAR [unique]
+}
+
+Table "products_product" {
+  "id" VARCHAR [pk]
+  "name" VARCHAR(255) [not null]
+  "generic_name" VARCHAR(255) [not null]
+  "form" VARCHAR(255) [not null]
+  "strength" VARCHAR(255) [not null]
+  "factory_company" VARCHAR(255) [not null]
+  "short_description" TEXT
+  "description" TEXT
+  "price" INTEGER
+  "quantity" INTEGER
+  "code" VARCHAR(255)
+  "category_id" VARCHAR
+  "pharmacy_id" VARCHAR
+}
+
+Table "products_productimage" {
+  "id" VARCHAR [pk]
+  "image" VARCHAR(100)
+  "priority" INTEGER
+  "product_id" VARCHAR
+}
+
+Table "products_productrating" {
+  "id" VARCHAR [pk]
+  "rating" INTEGER
+  "comment" TEXT
+  "product_id" VARCHAR
+  "user_id" VARCHAR
+}
+
+Table "products_wishlist" {
+  "id" VARCHAR [pk]
+  "product_id" VARCHAR
+  "user_id" VARCHAR
+}
+
+Table "socialaccount_socialaccount" {
+  "id" VARCHAR [pk]
+  "provider" VARCHAR(200) [not null]
+  "uid" VARCHAR(191) [not null]
+  "last_login" TIMESTAMP [not null]
+  "date_joined" TIMESTAMP [not null]
+  "extra_data" TEXT
+  "user_id" VARCHAR
+
+Indexes {
+  (provider, uid) [unique]
+}
+}
+
+Table "socialaccount_socialapp" {
+  "id" VARCHAR [pk]
+  "provider" VARCHAR(30) [not null]
+  "name" VARCHAR(40) [not null]
+  "client_id" VARCHAR(191) [not null]
+  "secret" VARCHAR(191) [not null]
+  "key_" VARCHAR(191) [not null]
+  "provider_id" VARCHAR(200) [not null]
+  "settings" JSON [not null]
+}
+
+Table "socialaccount_socialapp_sites" {
+  "id" VARCHAR [pk]
+  "socialapp_id" INTEGER
+  "site_id" INTEGER
+
+Indexes {
+  (socialapp_id, site_id) [unique]
+}
+}
+
+Table "socialaccount_socialtoken" {
+  "id" VARCHAR [pk]
+  "token" TEXT [not null]
+  "token_secret" TEXT [not null]
+  "expires_at" TIMESTAMP
+  "account_id" INTEGER
+  "app_id" INTEGER
+
+Indexes {
+  (app_id, account_id) [unique]
+}
+}
+
+Ref:"account_emailaddress"."id" < "account_emailconfirmation"."email_address_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "accounts_customuser_groups"."customuser_id" [delete: cascade]
+
+Ref:"auth_group"."id" < "accounts_customuser_groups"."group_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "accounts_customuser_user_permissions"."customuser_id" [delete: cascade]
+
+Ref:"auth_permission"."id" < "accounts_customuser_user_permissions"."permission_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "accounts_doctorprofile"."user_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "accounts_emailverificationotp"."user_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "accounts_patientprofile"."user_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "accounts_phonemodel"."user_id" [delete: set null]
+
+Ref:"accounts_customuser"."id" < "accounts_profile"."user_id" [delete: cascade]
+
+Ref:"auth_group"."id" < "auth_group_permissions"."group_id" [delete: cascade]
+
+Ref:"auth_permission"."id" < "auth_group_permissions"."permission_id" [delete: cascade]
+
+Ref:"django_content_type"."id" < "auth_permission"."content_type_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "authtoken_token"."user_id" [delete: cascade]
+
+Ref:"django_content_type"."id" < "django_admin_log"."content_type_id"
+
+Ref:"accounts_customuser"."id" < "django_admin_log"."user_id" [delete: set null]
+
+Ref:"accounts_customuser"."id" < "orders_order"."customer_id"
+
+Ref:"pharmacy_pharmacy"."id" < "orders_order"."pharmacy_id"
+
+Ref:"orders_order"."id" < "orders_orderitem"."order_id" [delete: cascade]
+
+Ref:"products_product"."id" < "orders_orderitem"."product_id" [delete: cascade]
+
+Ref:"orders_order"."id" < "orders_paymoborder"."order_id" [delete: cascade]
+
+Ref:"products_product"."id" < "products_coupon"."product_id" [delete: set null]
+
+Ref:"products_product"."id" < "products_discount"."product_id" [delete: cascade]
+
+Ref:"products_category"."id" < "products_product"."category_id" [delete: cascade]
+
+Ref:"pharmacy_pharmacy"."id" < "products_product"."pharmacy_id" [delete: cascade]
+
+Ref:"products_product"."id" < "products_productimage"."product_id" [delete: cascade]
+
+Ref:"products_product"."id" < "products_productrating"."product_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "products_productrating"."user_id" [delete: cascade]
+
+Ref:"products_product"."id" < "products_wishlist"."product_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "products_wishlist"."user_id" [delete: cascade]
+
+Ref:"accounts_customuser"."id" < "socialaccount_socialaccount"."user_id" [delete: cascade]
+
+Ref:"socialaccount_socialapp"."id" < "socialaccount_socialapp_sites"."socialapp_id" [delete: cascade]
+
+Ref:"django_site"."id" < "socialaccount_socialapp_sites"."site_id" [delete: cascade]
+
+Ref:"socialaccount_socialaccount"."id" < "socialaccount_socialtoken"."account_id" [delete: cascade]
+
+Ref:"socialaccount_socialapp"."id" < "socialaccount_socialtoken"."app_id" [delete: set null]
