@@ -165,3 +165,4 @@ old
 .ruff_cache
 .vscode
 test_data
+old*

@@ -1,0 +1,29 @@
+@startuml usecase
+
+left to right direction
+actor User as u
+actor NotificationService as ns
+actor WebSocketServer as ws
+
+rectangle "Chat App" {
+  usecase "Send Message" as send
+  usecase "Receive Message" as receive
+  usecase "View Chat History" as view
+  usecase "Auth" as auth
+
+}
+
+rectangle "Notification System" {
+  usecase "Send Notification" as notify
+}
+
+u --> send
+u --> receive
+u --> view
+u --> auth
+
+send --> ws : send message
+ws --> notify : send notification
+
+
+@enduml

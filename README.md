@@ -57,4 +57,18 @@ E-commerce Smart Pharmacy is a web application built using Django Rest Framework
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-![pharmacy_v1](readme/database_v1.png)
+## Design
+
+### db
+
+![alt text](design/database/db.png)
+
+## Accounts
+
+![alt text](design/accounts/usecase.png)
+![alt text](design/accounts/sequence.png)
+
+### chat
+
+![alt text](design/chat/usecase.png)
+![alt text](design/chat/sequence.png)

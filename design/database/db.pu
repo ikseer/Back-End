@@ -1,0 +1,278 @@
+@startuml db
+
+entity "account_emailaddress" {
+  + id INT PK
+  email VARCHAR(254) UNIQUE NOT NULL
+  verified BOOLEAN NOT NULL
+  primary BOOLEAN NOT NULL
+  user_id UUID FK(accounts_customuser.id)
+}
+
+entity "account_emailconfirmation" {
+  + id INT PK
+  created TIMESTAMP NOT NULL
+  sent TIMESTAMP
+  key VARCHAR(64) UNIQUE NOT NULL
+  email_address_id INT FK(account_emailaddress.id)
+}
+
+entity "accounts_customuser" {
+  + id UUID PK
+  password VARCHAR(128) NOT NULL
+  last_login TIMESTAMP
+  is_superuser BOOLEAN NOT NULL
+  username VARCHAR(150) UNIQUE NOT NULL
+  first_name VARCHAR(150) NOT NULL
+  last_name VARCHAR(150) NOT NULL
+  email VARCHAR(254) NOT NULL
+  is_staff BOOLEAN NOT NULL
+  is_active BOOLEAN NOT NULL
+  date_joined TIMESTAMP NOT NULL
+}
+
+entity "accounts_customuser_groups" {
+  + id BIGINT PK
+  customuser_id UUID FK(accounts_customuser.id)
+  group_id INT FK(auth_group.id)
+}
+
+entity "accounts_customuser_user_permissions" {
+  + id BIGINT PK
+  customuser_id UUID FK(accounts_customuser.id)
+  permission_id INT FK(auth_permission.id)
+}
+
+entity "accounts_doctorprofile" {
+  + id UUID PK
+  specialization VARCHAR(100) NOT NULL
+  user_id UUID UNIQUE FK(accounts_customuser.id)
+}
+
+entity "accounts_emailverificationotp" {
+  + id UUID PK
+  otp INT
+  activation_key VARCHAR(150)
+  user_id UUID UNIQUE FK(accounts_customuser.id)
+}
+
+entity "accounts_patientprofile" {
+  + id UUID PK
+  user_id UUID UNIQUE FK(accounts_customuser.id)
+}
+
+entity "accounts_phonemodel" {
+  + id UUID PK
+  mobile VARCHAR(20)
+  isverified BOOLEAN
+  counter INT
+  user_id UUID FK(accounts_customuser.id)
+}
+
+entity "accounts_profile" {
+  + id UUID PK
+  image VARCHAR(100)
+  bio TEXT
+  first_name VARCHAR(30)
+  last_name VARCHAR(30)
+  date_of_birth DATE
+  gender VARCHAR(255)
+  is_completed BOOLEAN
+  timezone VARCHAR(50)
+  user_id UUID UNIQUE FK(accounts_customuser.id)
+}
+
+entity "auth_group" {
+  + id INT PK
+  name VARCHAR(150) UNIQUE NOT NULL
+}
+
+entity "auth_group_permissions" {
+  + id BIGINT PK
+  group_id INT FK(auth_group.id)
+  permission_id INT FK(auth_permission.id)
+}
+
+entity "auth_permission" {
+  + id INT PK
+  name VARCHAR(255) NOT NULL
+  content_type_id INT FK(django_content_type.id)
+  codename VARCHAR(100) NOT NULL
+}
+
+entity "authtoken_token" {
+  + key VARCHAR(40) PK
+  created TIMESTAMP NOT NULL
+  user_id UUID UNIQUE FK(accounts_customuser.id)
+}
+
+entity "django_admin_log" {
+  + id INT PK
+  action_time TIMESTAMP NOT NULL
+  object_id TEXT
+  object_repr VARCHAR(200) NOT NULL
+  action_flag SMALLINT NOT NULL
+  change_message TEXT NOT NULL
+  content_type_id INT FK(django_content_type.id)
+  user_id UUID FK(accounts_customuser.id)
+}
+
+entity "django_content_type" {
+  + id INT PK
+  app_label VARCHAR(100) NOT NULL
+  model VARCHAR(100) NOT NULL
+}
+
+entity "django_migrations" {
+  + id BIGINT PK
+  app VARCHAR(255) NOT NULL
+  name VARCHAR(255) NOT NULL
+  applied TIMESTAMP NOT NULL
+}
+
+entity "django_session" {
+  + session_key VARCHAR(40) PK
+  session_data TEXT NOT NULL
+  expire_date TIMESTAMP NOT NULL
+}
+
+entity "django_site" {
+  + id INT PK
+  domain VARCHAR(100) UNIQUE NOT NULL
+  name VARCHAR(50) NOT NULL
+}
+
+entity "orders_order" {
+  + id UUID PK
+  status VARCHAR(20) NOT NULL
+  customer_id UUID FK(accounts_customuser.id)
+  pharmacy_id UUID FK(pharmacy_pharmacy.id)
+}
+
+entity "orders_orderitem" {
+  + id UUID PK
+  quantity INT NOT NULL
+  order_id UUID FK(orders_order.id)
+  product_id UUID FK(products_product.id)
+}
+
+entity "orders_paymoborder" {
+  + id UUID PK
+  paymob_order_id VARCHAR(255) NOT NULL
+  paid BOOLEAN NOT NULL
+  amount_cents FLOAT NOT NULL
+  currency VARCHAR(255) NOT NULL
+  order_id UUID UNIQUE FK(orders_order.id)
+}
+
+entity "pharmacy_pharmacy" {
+  + id UUID PK
+  name VARCHAR(255) NOT NULL
+  location VARCHAR(255) NOT NULL
+  image VARCHAR(100)
+  open_time TIME NOT NULL
+  close_time TIME NOT NULL
+  phone VARCHAR(20) NOT NULL
+}
+
+entity "products_category" {
+  + id UUID PK
+  name VARCHAR(255) NOT NULL
+  image VARCHAR(100)
+}
+
+entity "products_coupon" {
+  + id UUID PK
+  active BOOLEAN NOT NULL
+  code VARCHAR(22) UNIQUE NOT NULL
+  percentage INT NOT NULL
+  start_date DATE NOT NULL
+  end_date DATE NOT NULL
+  number INT
+  product_id UUID FK(products_product.id)
+}
+
+entity "products_discount" {
+  + id UUID PK
+  percentage INT NOT NULL
+  start_date DATE
+  end_date DATE
+  product_id UUID UNIQUE FK(products_product.id)
+}
+
+entity "products_product" {
+  + id UUID PK
+  name VARCHAR(255) NOT NULL
+  generic_name VARCHAR(255) NOT NULL
+  form VARCHAR(255) NOT NULL
+  strength VARCHAR(255) NOT NULL
+  factory_company VARCHAR(255) NOT NULL
+  short_description TEXT
+  description TEXT
+  price INT
+  quantity INT
+  code VARCHAR(255)
+  category_id UUID FK(products_category.id)
+  pharmacy_id UUID FK(pharmacy_pharmacy.id)
+}
+
+entity "products_productimage" {
+  + id UUID PK
+  image VARCHAR(100)
+  priority INT
+  product_id UUID FK(products_product.id)
+}
+
+entity "products_productrating" {
+  + id UUID PK
+  rating INT
+  comment TEXT
+  product_id UUID FK(products_product.id)
+  user_id UUID FK(accounts_customuser.id)
+}
+
+entity "products_wishlist" {
+  + id UUID PK
+  product_id UUID FK(products_product.id)
+  user_id UUID FK(accounts_customuser.id)
+}
+
+entity "socialaccount_socialaccount" {
+  + id INT PK
+  provider VARCHAR(200) NOT NULL
+  uid VARCHAR(191) NOT NULL
+  last_login TIMESTAMP NOT NULL
+  date_joined TIMESTAMP NOT NULL
+  extra_data TEXT
+  user_id UUID FK(accounts_customuser.id)
+  UNIQUE (provider, uid)
+}
+
+entity "socialaccount_socialapp" {
+  + id INT PK
+  provider VARCHAR(30) NOT NULL
+  name VARCHAR(40) NOT NULL
+  client_id VARCHAR(191) NOT NULL
+  secret VARCHAR(191) NOT NULL
+  key VARCHAR(191) NOT NULL
+  provider_id VARCHAR(200) NOT NULL
+  settings JSON NOT NULL
+}
+
+entity "socialaccount_socialapp_sites" {
+  + id BIGINT PK
+  socialapp_id INT FK(socialaccount_socialapp.id)
+  site_id INT FK(django_site.id)
+  UNIQUE (socialapp_id, site_id)
+}
+
+entity "socialaccount_socialtoken" {
+  + id INT PK
+  token TEXT NOT NULL
+  token_secret TEXT NOT NULL
+  expires_at TIMESTAMP
+  account_id INT FK(socialaccount_socialaccount.id)
+  app_id INT FK(socialaccount_socialapp.id)
+  UNIQUE (app_id, account_id)
+}
+
+@enduml
