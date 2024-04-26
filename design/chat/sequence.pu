@@ -1,0 +1,65 @@
+@startuml chat
+
+actor User as u
+participant "Chat App Server" as cas
+participant "Notification Service" as ns
+participant "Database" as db
+participant "websocket" as ws
+
+u -> ws: connect
+activate ws
+
+u -> cas: Send Message
+activate cas
+
+cas -> db: Save Message
+activate db
+db --> cas: Message Saved
+deactivate db
+
+
+cas -> ns: save Notification
+activate ns
+
+
+ns--> ws: send Notification
+ws--> ns: send Notification
+
+ns --> cas: Notification save
+
+
+
+deactivate ns
+cas --> u: Notification save
+
+deactivate cas
+deactivate db
+
+ws --> u: disconnect
+deactivate ws
+
+
+
+
+
+
+u -> ws: connect
+activate ws
+u -> ns : get Notifications
+activate ns
+
+ns --> u: send Notifications
+deactivate ns
+
+u -> cas: get Messages
+activate cas
+cas -> db: Retrieve Message
+activate db
+db --> cas: Message Retrieved
+deactivate db
+cas --> u: Message Retrieved
+deactivate cas
+
+ws --> u: disconnect
+deactivate ws
+@enduml
