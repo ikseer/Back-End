@@ -63,6 +63,11 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ![alt text](design/database/db.png)
 
+## Accounts
+
+![alt text](design/accounts/usecase.png)
+![alt text](design/accounts/sequence.png)
+
 ### chat
 
 ![alt text](design/chat/usecase.png)

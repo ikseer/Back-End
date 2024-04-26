@@ -1,0 +1,30 @@
+@startuml usecase
+
+left to right direction
+skinparam packageStyle rectangle
+actor User as User
+
+
+package "Accounts" {
+    usecase "Update Profile" as UpdateProfile
+    usecase "View Profile" as ViewProfile
+    usecase "Delete Account" as DeleteAccount
+
+    usecase "Password Reset" as PasswordReset
+    usecase "Password Change" as PasswordChange
+    usecase "Logout" as Logout
+    usecase "Login" as Login
+    usecase "Register" as Register
+
+}
+User --> UpdateProfile
+User --> ViewProfile
+User --> DeleteAccount
+User --> PasswordReset
+User --> PasswordChange
+User --> Logout
+User --> Login
+User --> Register
+
+
+@enduml

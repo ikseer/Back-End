@@ -1,0 +1,47 @@
+@startuml seq
+
+actor User as User
+
+participant "AccountsController" as AC
+participant "ProfileService" as PS
+participant "AuthService" as AS
+
+User -> AC: Request to update profile
+AC -> PS: UpdateProfile()
+PS --> AC: Profile updated successfully
+AC --> User: Profile updated successfully
+
+User -> AC: Request to view profile
+AC -> PS: ViewProfile()
+PS --> AC: Profile data retrieved
+AC --> User: Profile data displayed
+
+User -> AC: Request to delete account
+AC -> PS: DeleteAccount()
+PS --> AC: Account deleted successfully
+AC --> User: Account deleted successfully
+
+User -> AS: Request to reset password
+AS -> AS: GenerateOTP()
+AS --> User: Password reset OTP sent
+
+User -> AS: Request to change password
+AS -> AS: VerifyOTP()
+AS -> AS: ChangePassword()
+AS --> User: Password changed successfully
+
+User -> AS: Request to logout
+AS -> AS: CheckToken()
+AS -> AS: Logout()
+AS --> User: Logged out successfully
+
+User -> AS: Request to login
+AS -> AS: GenerateToken()
+AS --> User: SendToken
+
+User -> AS: Request to register
+AS -> AS: Register()
+AS -> AS: SendOTP()
+AS --> User: Verify OTP
+
+@enduml
