@@ -35,7 +35,7 @@ class OrderItem(models.Model):
     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
 
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
-    order = models.ForeignKey("orders.Order", on_delete=models.CASCADE)
+    order = models.ForeignKey("orders.Order", related_name="items", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(help_text="Quantity of the product")
 
     def __str__(self):
