@@ -76,6 +76,9 @@ class OrderItemTest(TestCase):
         }
         response = self.client.post("/orders/orderItem/", order_item, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        order = self.client.get("/orders/orders/" + str(self.order["id"]) + "/")
+        # print(order.data)
+        self.assertEqual(order.status_code, status.HTTP_200_OK)
 
     def test_update_order_item(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")

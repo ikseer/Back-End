@@ -333,3 +333,15 @@ CACHES = {
 }
 
 # settings.py
+ATOMIC_REQUESTS = True
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
