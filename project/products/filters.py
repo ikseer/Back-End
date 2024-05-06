@@ -19,6 +19,7 @@ class ProductFilter(filters.FilterSet):
 
     class Meta:
         model = Product
+        # fields = "__all__"
         fields = {
             "name": ["exact", "icontains", "istartswith"],
             "generic_name": ["exact", "icontains", "istartswith"],
@@ -26,6 +27,7 @@ class ProductFilter(filters.FilterSet):
             "strength": ["exact", "icontains", "istartswith"],
             "factory_company": ["exact", "icontains", "istartswith"],
             "category__name": ["exact", "icontains", "istartswith"],
+            "category__id": ["exact"],
             "description": ["exact", "icontains", "istartswith"],
             "price": ["gte", "lte", "gt", "lt"],
         }
