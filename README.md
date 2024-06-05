@@ -1,4 +1,7 @@
 # E-commerce Smart Pharmacy
+### db
+
+![alt text](design/database/db.png)
 
 ## Introduction
 
@@ -59,9 +62,6 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ## Design
 
-### db
-
-![alt text](design/database/db.png)
 
 ## Accounts
 
