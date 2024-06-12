@@ -14,6 +14,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -333,15 +335,37 @@ CACHES = {
 }
 
 # settings.py
-ATOMIC_REQUESTS = True
+# ATOMIC_REQUESTS = True
 
 
-SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
-        }
-    }
+# SWAGGER_SETTINGS = {
+#     'SECURITY_DEFINITIONS': {
+#         'Bearer': {
+#             'type': 'apiKey',
+#             'name': 'Authorization',
+#             'in': 'header'
+#         }
+#     }
+# }
+
+DROPBOX_APP_KEY=config('DROPBOX_APP_KEY')
+DROPBOX_APP_SECRET=config('DROPBOX_APP_SECRET')
+
+INSTALLED_APPS += (
+    'storages',
+
+)
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.dropbox.DropboxStorage",
+        "OPTIONS": {
+
+        },
+
+    },
+   "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
+
+DROPBOX_OAUTH2_REFRESH_TOKEN= config('DROPBOX_OAUTH2_REFRESH_TOKEN')

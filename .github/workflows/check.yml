@@ -40,11 +40,19 @@ jobs:
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
 
+          DROPBOX_OAUTH2_REFRESH_TOKEN: ${{ secrets.DROPBOX_OAUTH2_REFRESH_TOKEN }}
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+
         run: |
           echo "DATABASE_NAME=$DATABASE_NAME" >> $GITHUB_ENV
           echo "DATABASE_USER=$DATABASE_USER" >> $GITHUB_ENV
           echo "DATABASE_PASSWORD=$DATABASE_PASSWORD" >> $GITHUB_ENV
           echo "DATABASE_HOST=$DATABASE_HOST" >> $GITHUB_ENV
+
+          echo "DROPBOX_OAUTH2_REFRESH_TOKEN=$DROPBOX_OAUTH2_REFRESH_TOKEN" >> $GITHUB_ENV
+          echo "DROPBOX_APP_KEY=$DROPBOX_APP_KEY" >> $GITHUB_ENV
+          echo "DROPBOX_APP_SECRET=$DROPBOX_APP_SECRET" >> $GITHUB_ENV
 
       # - name: Prepare database
       #   run: |
@@ -52,7 +60,12 @@ jobs:
       #     python manage.py collectstatic --no-input
 
       - name: Run tests
-        run: python project/manage.py test --no-input
+        run: |
+          cd project
+          python manage.py makemigrations
+          python manage.py migrate
+          python manage.py test --no-input
+
 # name: Django CI
 
 # on:
