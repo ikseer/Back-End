@@ -40,6 +40,10 @@ jobs:
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
 
+          DROPBOX_OAUTH2_REFRESH_TOKEN: ${{ secrets.DROPBOX_OAUTH2_REFRESH_TOKEN }}
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+
         run: |
           echo "DATABASE_NAME=$DATABASE_NAME" >> $GITHUB_ENV
           echo "DATABASE_USER=$DATABASE_USER" >> $GITHUB_ENV
