@@ -60,7 +60,12 @@ jobs:
       #     python manage.py collectstatic --no-input
 
       - name: Run tests
-        run: python project/manage.py test --no-input
+        run: |
+          cd project
+          python manage.py makemigrations
+          python manage.py migrate
+          python manage.py test --no-input
+
 # name: Django CI
 
 # on:
