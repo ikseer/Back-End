@@ -54,22 +54,25 @@ fake = Faker()
 
 
 
-# def generate_category_image(item_name):
-#      folder_path=os.path.join(data_dir,'catagory')
-#      result=[]
-#      if os.path.exists(folder_path):
-#         image_files = [
-#             f
-#             for f in os.listdir(folder_path)
-#             if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
-#         ]
-#         result= [img for img in image_files if img.startswith(item_name)]
-#         if not result:return
-#         with open(os.path.join(folder_path,result[0]), "rb") as file:
-#             image_content = file.read()
+def generate_category_image(item_name):
+     folder_path=os.path.join(data_dir,'catagory')
+     result=[]
+     if os.path.exists(folder_path):
+        image_files = [
+            f
+            for f in os.listdir(folder_path)
+            if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
+        ]
+        result= [img for img in image_files if img.startswith(item_name)]
+        if not result:
+            return
+        with open(os.path.join(folder_path,result[0]), "rb") as file:
+            image_content = file.read()
 
-#         return SimpleUploadedFile(result[0], image_content)
+        return SimpleUploadedFile(result[0], image_content)
 def generate_product_image(item_name,priority):
+    item_name=item_name.replace(' ', '_')
+    item_name=item_name.replace("'", '_')
     folder_path=os.path.join(data_dir,'product')
     result=[]
     if os.path.exists(folder_path):
@@ -82,10 +85,10 @@ def generate_product_image(item_name,priority):
 
         if not result:
             return
-        with open(os.path.join(folder_path,result[0]), "rb") as file:
+        with open(os.path.join(folder_path,result[priority]), "rb") as file:
             image_content = file.read()
 
-        return SimpleUploadedFile(result[0], image_content)
+        return SimpleUploadedFile(result[priority], image_content)
 #     pass
 
 
@@ -102,13 +105,10 @@ def get_images(file_name,folder_path=os.path.join(data_dir,'product')):
             for f in os.listdir(folder_path)
             if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
         ]
-        # print(file_name,sorted(image_files))
 
         result= [img for img in image_files if img.startswith(file_name)]
-        # a='Truuth_Ashwagandha_500mg_Capsule_60_s_1.jpg'
-        # b="Truuth_Ashwagandha_500mg_Capsule_60's"
-        # print(a.startswith(b))
-        # print(result)
+
+
      return result
 class CategoryFactory(factory.Factory):
     class Meta:
@@ -118,8 +118,8 @@ class CategoryFactory(factory.Factory):
 
     @factory.lazy_attribute
     def image(self):
-        get_images(self.name,os.path.join(data_dir,'catagory'))
-
+        # image=get_images(self.name,os.path.join(data_dir,'catagory'))
+         return generate_category_image(self.name)
 
 
 class DiscountFactory(factory.Factory):
@@ -156,7 +156,7 @@ class ProductImageFactory(factory.Factory):
 
         # print(product['name'],self.priority,'*****')
         # print('nnn  ',product.name ,self.priority)
-        generate_product_image(product.name,priority)
+        return generate_product_image(product.name,priority)
 
 
 class ProductFactory(factory.Factory):

@@ -20,12 +20,13 @@ class Command(BaseCommand):
         # user = User.objects.all()
 
         category_names=pd.read_csv(os.path.join(data_dir,'catagory_data.csv'))['Category_name'].tolist()
-        categories = CategoryFactory.create_batch(len(category_names),
+        categories = CategoryFactory.create_batch(min(1,len(category_names)),
                                                   name=factory.Iterator(cycle(category_names))
                                                   )
 
         for category in categories:
             category.save()
+
         self.stdout.write(
             self.style.SUCCESS(
                 f"Successfully created and saved {len(categories)} categories"
@@ -46,7 +47,7 @@ class Command(BaseCommand):
         product_names=pd.read_csv(os.path.join(data_dir,'product_data.csv'))['Product Name'].tolist()
         # print(product_names)
         products = ProductFactory.create_batch(
-                10,
+                1,
                 name=factory.Iterator(cycle(product_names)),
                 category=factory.Iterator(cycle(categories)),
                 pharmacy=factory.Iterator(cycle(pharmacies)),
@@ -94,9 +95,9 @@ class Command(BaseCommand):
             self.style.SUCCESS(f"Successfully created and saved {len(reviews)} reviews")
         )
 
-        # Create sample data for Discount
+        # # # Create sample data for Discount
         discounts = DiscountFactory.create_batch(
-            5,
+            1,
             product=factory.Iterator(cycle(products)),
         )
         for discount in discounts:
@@ -110,83 +111,83 @@ class Command(BaseCommand):
 
 
         coupons=CouponFactory.create_batch(
-            10,
+            1,
             product=factory.Iterator(cycle(products)),
         )
         for coupon in coupons:
             coupon.save()
 
-        # # for product in products_with_images:
-        # #     product.category.save()
-        # #     product.pharmacy.save()
-        # #     product.save()
+        # # # # for product in products_with_images:
+        # # # #     product.category.save()
+        # # # #     product.pharmacy.save()
+        # # # #     product.save()
 
-        # # self.stdout.write(
-        # # self.style.SUCCESS(
-        # # f"Successfully created and saved {product} products"
-        # # )
-        # # )
-        # #
-        # # products = products_with_images
+        # # # # self.stdout.write(
+        # # # # self.style.SUCCESS(
+        # # # # f"Successfully created and saved {product} products"
+        # # # # )
+        # # # # )
+        # # # #
+        # # # # products = products_with_images
 
-        # # for product in products:
-        # #     product.category.save()
-        # #     product.pharmacy.save()
-        # #     product.save()
+        # # # # for product in products:
+        # # # #     product.category.save()
+        # # # #     product.pharmacy.save()
+        # # # #     product.save()
 
-        # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(products)} products'))
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(products)} products'))
 
-        # # Create sample data for Discount
-        # # discounts = DiscountFactory.create_batch(5)
-        # # for discount in discounts:
-        # #     discount.product.pharmacy.save()
-        # #     discount.product.category.save()
-        # #     discount.product.save()
-        # #     discount.save()
-        # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(discounts)} discounts'))
+        # # # # Create sample data for Discount
+        # # # # discounts = DiscountFactory.create_batch(5)
+        # # # # for discount in discounts:
+        # # # #     discount.product.pharmacy.save()
+        # # # #     discount.product.category.save()
+        # # # #     discount.product.save()
+        # # # #     discount.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(discounts)} discounts'))
 
-        # # Create and save sample data for Order
-        # # orders = OrderFactory.create_batch(3)
-        # # for order in orders:
-        # #     # order.patient.save()
-        # #     order.pharmacy.save()
-        # #     order.save()
-        # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(orders)} orders'))
+        # # # # Create and save sample data for Order
+        # # # # orders = OrderFactory.create_batch(3)
+        # # # # for order in orders:
+        # # # #     # order.patient.save()
+        # # # #     order.pharmacy.save()
+        # # # #     order.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(orders)} orders'))
 
-        # # Create sample data for OrderItem
-        # # order_items = OrderItemFactory.create_batch(3)
-        # # for order_item in order_items:
-        # #     order_item.product.pharmacy.save()
-        # #     order_item.product.category.save()
-        # #     order_item.product.save()
+        # # # # Create sample data for OrderItem
+        # # # # order_items = OrderItemFactory.create_batch(3)
+        # # # # for order_item in order_items:
+        # # # #     order_item.product.pharmacy.save()
+        # # # #     order_item.product.category.save()
+        # # # #     order_item.product.save()
 
-        # #     order_item.order.pharmacy.save()
-        # #     order_item.order.save()
+        # # # #     order_item.order.pharmacy.save()
+        # # # #     order_item.order.save()
 
-        # #     order_item.save()
-        # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(order_items)} order items'))
+        # # # #     order_item.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(order_items)} order items'))
 
-        # # product_images = ProductImageFactory.create_batch(3)
-        # # for product_image in product_images:
-        # #     product_image.product.pharmacy.save()
-        # #     product_image.product.category.save()
-        # #     product_image.product.save()
-        # #     product_image.save()
-        # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(product_images)} product images'))
+        # # # # product_images = ProductImageFactory.create_batch(3)
+        # # # # for product_image in product_images:
+        # # # #     product_image.product.pharmacy.save()
+        # # # #     product_image.product.category.save()
+        # # # #     product_image.product.save()
+        # # # #     product_image.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(product_images)} product images'))
 
-        # # product_ratings = ProductRatingFactory.create_batch(3)
-        # # for product_rating in product_ratings:
-        # #     product_rating.product.pharmacy.save()
-        # #     product_rating.product.category.save()
-        # #     product_rating.product.save()
-        # #     product_rating.save()
-        # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(product_ratings)} product ratings'))
-        # # wishlists = WishlistFactory.create_batch(3)
-        # # for wishlist in wishlists:
-        # #     wishlist.product.pharmacy.save()
-        # #     wishlist.product.category.save()
-        # #     wishlist.product.save()
-        # #     wishlist.save()
-        # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(wishlists)} wishlists'))
+        # # # # product_ratings = ProductRatingFactory.create_batch(3)
+        # # # # for product_rating in product_ratings:
+        # # # #     product_rating.product.pharmacy.save()
+        # # # #     product_rating.product.category.save()
+        # # # #     product_rating.product.save()
+        # # # #     product_rating.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(product_ratings)} product ratings'))
+        # # # # wishlists = WishlistFactory.create_batch(3)
+        # # # # for wishlist in wishlists:
+        # # # #     wishlist.product.pharmacy.save()
+        # # # #     wishlist.product.category.save()
+        # # # #     wishlist.product.save()
+        # # # #     wishlist.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(wishlists)} wishlists'))
 
-        # self.stdout.write(self.style.SUCCESS("Successfully created sample data"))
+        # # # self.stdout.write(self.style.SUCCESS("Successfully created sample data"))
