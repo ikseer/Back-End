@@ -50,6 +50,10 @@ jobs:
           echo "DATABASE_PASSWORD=$DATABASE_PASSWORD" >> $GITHUB_ENV
           echo "DATABASE_HOST=$DATABASE_HOST" >> $GITHUB_ENV
 
+          echo "DROPBOX_OAUTH2_REFRESH_TOKEN=$DROPBOX_OAUTH2_REFRESH_TOKEN" >> $GITHUB_ENV
+          echo "DROPBOX_APP_KEY=$DROPBOX_APP_KEY" >> $GITHUB_ENV
+          echo "DROPBOX_APP_SECRET=$DROPBOX_APP_SECRET" >> $GITHUB_ENV
+
       # - name: Prepare database
       #   run: |
       #     python manage.py migrate --no-input
