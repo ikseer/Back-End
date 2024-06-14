@@ -57,6 +57,7 @@ class PaymobOrder(models.Model):
 
 
 
+
 class Cart(models.Model):
     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
     customer = models.OneToOneField(User, on_delete=models.CASCADE)
