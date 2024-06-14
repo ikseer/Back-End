@@ -53,3 +53,21 @@ class PaymobOrder(models.Model):
 
     def __str__(self):
         return self.order.customer.username
+
+
+
+
+class Cart(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    customer = models.OneToOneField(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField('products.Product', through='CartItem',related_name='items')
+    def get_items(self):
+        return self.cartitem_set.select_related('product')
+class CartItem(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(help_text="Quantity of the product")
+    cart= models.ForeignKey(Cart, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.product.name

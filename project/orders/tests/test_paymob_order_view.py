@@ -4,7 +4,7 @@ from unittest.mock import patch
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from orders.models import Order, PaymobOrder
+from orders.models import *
 from orders.views import OrderViewSet
 from pharmacy.models import Pharmacy
 from products.models import Category, Product
@@ -57,6 +57,9 @@ class PaymobOrderView(TestCase):
             "pharmacy": self.pharmacy.id,
         }
         self.view = OrderViewSet.as_view({'get': 'retrieve'})
+        cart=Cart.objects.get(customer=self.user)
+        CartItem.objects.create(cart=cart,product=self.product1,quantity=3)
+
         self.order=self.create_order()
         # self.url = reverse('order-detail', kwargs={'pk': self.order['id']})
         self.url="/orders/paymob-order/"
@@ -69,8 +72,8 @@ class PaymobOrderView(TestCase):
 
 
 
-    @patch('orders.views.check_paymob_order_status')
-    @patch('orders.views.PaymobOrder.objects.get')
+    @patch('orders.views.paymob.check_paymob_order_status')
+    @patch('orders.views.paymob.PaymobOrder.objects.get')
     def test_retrieve_check_paid(self, mock_paymob_order_get, mock_check_paymob_order_status):
         # Create a mock PaymobOrder
         mock_paymob_order = PaymobOrder.objects.create(order_id=self.order['id'], paid=False)

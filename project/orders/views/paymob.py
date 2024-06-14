@@ -1,57 +1,20 @@
 # -*- coding: utf-8 -*-
 from decouple import config
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from orders.filters import PaymobOrderFilter
+from orders.models import *
+from orders.pagination import *
+from orders.permissions import *
+from orders.serializers import *
 from orders.utils import check_paymob_order_status, create_paymob
 from paymob.accept.callbacks import AcceptCallback
-from rest_framework import viewsets
+from rest_framework import filters as rest_filters
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from .models import *
-from .permissions import *
-from .serializers import *
-
-
-# Create your views here.
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = [OrderPermission]
-
-    def get_queryset(self):
-        if self.request.user.is_staff:
-            return Order.objects.all()
-        user = self.request.user
-        return Order.objects.filter(customer=user)
-    # def retrieve(self, request, *args, **kwargs):
-        # response = super().retrieve(request, *args, **kwargs)
-        # check_paid = request.query_params.get('check_paid', None)
-        # if check_paid   :
-        #    paymob_order=PaymobOrder.objects.get(order__id=response.data["id"])
-
-        #    if paymob_order.paid is False:
-        #         if check_paymob_order_status(paymob_order.paymob_order_id):
-        #             paymob_order.paid=True
-        #             paymob_order.save()
-        #             response = super().retrieve(request, *args, **kwargs)
-
-        # return response
-class OrderItemViewSet(viewsets.ModelViewSet):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
-    permission_classes = [OrderItemPermission]
-
-    def get_queryset(self):
-        if self.request.user.is_staff:
-            return OrderItem.objects.all()
-
-        return OrderItem.objects.filter(order__customer=self.request.user)
-
-
 
 
 class PaymobCallbackViewSet(APIView):
@@ -81,9 +44,15 @@ class PaymobOrderView(GenericAPIView):
 
     queryset = PaymobOrder.objects.all()
     serializer_class = PaymobOrderSerializer
+    pagination_class=CustomPagination
     filter_backends = [
-        PaymobOrderFilter
+        DjangoFilterBackend,
+        rest_filters.SearchFilter,
+        rest_filters.OrderingFilter,
     ]
+    # filter_backends = [
+    #     PaymobOrderFilter
+    # ]
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -110,5 +79,5 @@ class PaymobOrderView(GenericAPIView):
         else:
             paymob=create_paymob(orderId)
             if paymob is None:
-                return Response({"message": "Cannot create paymob order"}, status=404)
-        return Response(PaymobOrderSerializer(paymob).data)
+                return Response({"message": "Cannot create paymob order"}, status=status.HTTP_404_NOT_FOUND)
+        return  Response(PaymobOrderSerializer(paymob).data)
