@@ -33,6 +33,16 @@ class PermissionTest(TestCase):
             close_time="18:00:00",
             phone="1234567890",
         )
+        self.category = Category.objects.create(name="Test category")
+        self.product1 = Product.objects.create(
+            category=self.category,
+            name="Product 1",
+            description="Test description",
+            price=50.00,
+            pharmacy=self.pharmacy,
+        )
+        self.cart=Cart.objects.get(customer=self.user)
+        CartItem.objects.create(cart=self.cart,product=self.product1,quantity=3)
 
     def get_token(self, user):
         url = reverse("rest_login")
@@ -53,6 +63,7 @@ class PermissionTest(TestCase):
             {"customer": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         )
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_admin_user_create_order_permission(self):
@@ -63,6 +74,7 @@ class PermissionTest(TestCase):
             {"customer": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         )
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_auth_user_update_order_permission(self):
@@ -131,6 +143,8 @@ class PermissionTest(TestCase):
         user2 = User.objects.create_user(
             username="user2", email="user2@example.com", password="test_password"
         )
+        cart=Cart.objects.get(customer=user2)
+        CartItem.objects.create(cart=cart,product=self.product1,quantity=2)
         order_another_user = self.client.post(
             "/orders/orders/",
             {"customer": user2.id, "pharmacy": self.pharmacy.id},

@@ -56,24 +56,19 @@ class PaymobOrder(models.Model):
 
 
 
-# class Order(models.Model):
-#     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
-
-#     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-#     pharmacy = models.ForeignKey(
-#         "pharmacy.Pharmacy", on_delete=models.SET_NULL, null=True, blank=True
-#     )
-#     products = models.ManyToManyField(
-#         "products.Product", through="orders.OrderItem", related_name="products"
-#     )
-#     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Pending")
-#     # def __str__(self):
-#     #     return self.customer.first_name
 
 
-# class OrderItem(models.Model):
-#     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class Cart(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    customer = models.OneToOneField(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField('products.Product', through='CartItem',related_name='items')
+    def get_items(self):
+        return self.cartitem_set.select_related('product')
+class CartItem(models.Model):
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(help_text="Quantity of the product")
+    cart= models.ForeignKey(Cart, on_delete=models.CASCADE)
 
-#     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
-#     order = models.ForeignKey("orders.Order", related_name="items", on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField(help_text="Quantity of the product")
+    def __str__(self):
+        return self.product.name

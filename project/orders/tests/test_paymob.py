@@ -21,8 +21,8 @@ class PaymobCallbackViewSetTest(TestCase):
         # Mocking config value
         self.mock_incoming_hmac = 'your_mocked_incoming_hmac'
 
-    @patch('orders.views.AcceptCallback')
-    @patch('orders.views.PaymobOrder.objects.get')
+    @patch('orders.views.paymob.AcceptCallback')
+    @patch('orders.views.paymob.PaymobOrder.objects.get')
     def test_post_success(self, mock_paymob_order_get, mock_accept_callback):
         request_data = {'key': 'value'}  # Add your request data here
         request = self.factory.post(self.url, request_data)
@@ -53,7 +53,7 @@ class PaymobCallbackViewSetTest(TestCase):
         self.assertEqual(response.data, {"success": True})
 
 
-    @patch('orders.views.AcceptCallback')
+    @patch('orders.views.paymob.AcceptCallback')
     def test_post_failure(self, mock_accept_callback):
         request_data = {'key': 'value'}  # Add your request data here
         request = self.factory.post(self.url, request_data)
@@ -73,8 +73,8 @@ class PaymobCallbackViewSetTest(TestCase):
         self.assertEqual(response.data, {"success": False})
 
 
-    @patch('orders.views.AcceptCallback')
-    @patch('orders.views.PaymobOrder.objects.get')
+    @patch('orders.views.paymob.AcceptCallback')
+    @patch('orders.views.paymob.PaymobOrder.objects.get')
     def test_post_fail(self, mock_paymob_order_get, mock_accept_callback):
         request_data = {'key': 'value'}  # Add your request data here
         request = self.factory.post(self.url, request_data)
@@ -149,7 +149,7 @@ class TestCreatePaymob(TestCase):
         mock_order_item_filter.return_value = lst
         mock_calculate_product_price.return_value = 100
 
-        mock_accept_api_client_instance.return_value = (200, Mock(id=1), "Feedback")
+        mock_accept_api_client_instance.return_value = (10, Mock(id=1), "Feedback")
 
 
         # Mocking API client response

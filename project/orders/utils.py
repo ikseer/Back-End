@@ -24,7 +24,7 @@ def check_paymob_order_status(paymob_order_id : str) -> bool:
         PaymobOrder.objects.get(paymob_order_id=paymob_order_id)
     except PaymobOrder.DoesNotExist:
         return False
-
+    # print(config('ACCEPT_API_KEY'))
     accept_api_client = AcceptAPIClient()
     code, response_order, feedback = accept_api_client.get_order(
         order_id=paymob_order_id
@@ -41,7 +41,7 @@ def create_paymob(order_id):
         PaymobOrder: Paymob Order
     """
     accept_api_client = AcceptAPIClient()
-    mid_key = "<Type>" # MidKey is useful if you support multiple types of items.
+    mid_key = "Type" # MidKey is useful if you support multiple types of items.
     identifier = order_id
     merchant_order_id = AcceptUtils.generate_merchant_order_id(mid_key=mid_key, identifier=identifier)
     amount_cents = calculate_amount_cents(order_id)
@@ -54,7 +54,7 @@ def create_paymob(order_id):
     )
     code , pay_order, feedback = response
 
-    if code == 200:
+    if code==10:
         paymob = PaymobOrder.objects.create(
             order_id=order_id,
             paymob_order_id=pay_order.id,
