@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "products",
     "pharmacy",
     "orders",
+    "chat",
     # rest framework
     "rest_framework",
     "rest_framework.authtoken",
