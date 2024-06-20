@@ -52,12 +52,12 @@ class CouponViewSetTests(TestCase):
             price=100,
             category=self.category,
             pharmacy=self.pharmacy,
-            quantity=10,
+            stock=10,
             code="test_code",
         )
         self.coupon1=Coupon.objects.create(
             code="test_coupon1",
-            percentage=30,
+            discount_amount=30,
             start_date="2022-01-01",
             end_date="2022-12-31",
         )
