@@ -25,14 +25,14 @@ class OrderViewSet(viewsets.ModelViewSet):
         if self.request.user.is_staff:
             return Order.objects.all()
         user = self.request.user
-        return Order.objects.filter(customer=user)
+        return Order.objects.filter(user=user)
 
     def create(self, request, *args, **kwargs):
         serializer=OrderSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        cart_items=CartItem.objects.filter(cart__customer=serializer.data['customer'])
+        cart_items=CartItem.objects.filter(cart__user=serializer.data['user'])
 
         if len( cart_items)==0:
             return Response({"error": "Cannot create order. Add at least one product to the cart."},
@@ -40,10 +40,14 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         response= super().create(request, *args, **kwargs)
         order = Order.objects.get(id=response.data['id'])
-
+        total_price = 0
         for cart_item in cart_items:
             OrderItem.objects.create(order=order,product=cart_item.product,quantity=cart_item.quantity)
+            total_price+=cart_item.get_total_price()
             cart_item.delete()
+
+        order.total_price=total_price
+        order.save()
 
         return Response(OrderSerializer(order).data,status=status.HTTP_201_CREATED)
 
@@ -62,4 +66,4 @@ class OrderItemViewSet(viewsets.ModelViewSet):
         if self.request.user.is_staff:
             return OrderItem.objects.all()
 
-        return OrderItem.objects.filter(order__customer=self.request.user)
+        return OrderItem.objects.filter(order__user=self.request.user)

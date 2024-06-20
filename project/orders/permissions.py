@@ -17,7 +17,7 @@ class OrderPermission(permissions.BasePermission):
         if request.user.is_staff:
             return True
 
-        return request.user.is_authenticated and obj.customer == request.user
+        return request.user.is_authenticated and obj.user == request.user
 
 
 class OrderItemPermission(permissions.BasePermission):
@@ -33,7 +33,7 @@ class OrderItemPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_staff:
             return True
-        return request.user.is_authenticated and obj.order.customer == request.user
+        return request.user.is_authenticated and obj.order.user == request.user
 
 
 class CartPermission(permissions.BasePermission):
@@ -49,7 +49,7 @@ class CartPermission(permissions.BasePermission):
         if request.user.is_staff:
             return True
 
-        return request.user.is_authenticated and obj.customer == request.user
+        return request.user.is_authenticated and obj.user == request.user
 
 
 class CartItemPermission(permissions.BasePermission):
@@ -65,5 +65,5 @@ class CartItemPermission(permissions.BasePermission):
         if request.user.is_staff:
             return True
 
-        # return request.user.is_authenticated and obj.customer == request.user
-        return request.user.is_authenticated and obj.cart.customer == request.user
+        # return request.user.is_authenticated and obj.user == request.user
+        return request.user.is_authenticated and obj.cart.user == request.user

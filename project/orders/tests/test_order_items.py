@@ -46,12 +46,12 @@ class OrderItemTest(TestCase):
             pharmacy=self.pharmacy,
         )
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
-        cart=Cart.objects.get(customer=user)
+        cart=Cart.objects.get(user=user)
         CartItem.objects.create(cart=cart,product=self.product1,quantity=3)
 
         self.order = self.client.post(
             "/orders/orders/",
-            {"customer": user.id, "pharmacy": self.pharmacy.id},
+            {"user": user.id, "pharmacy": self.pharmacy.id},
             format="json",
         ).data
 

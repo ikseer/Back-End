@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -53,16 +53,16 @@ class PaymobOrderView(TestCase):
         )
         self.access_token = response.data["access"]
         self.order_data = {
-            "customer": self.user.id,
+            "user": self.user.id,
             "pharmacy": self.pharmacy.id,
         }
         self.view = OrderViewSet.as_view({'get': 'retrieve'})
-        cart=Cart.objects.get(customer=self.user)
+        cart=Cart.objects.get(user=self.user)
         CartItem.objects.create(cart=cart,product=self.product1,quantity=3)
 
         self.order=self.create_order()
         # self.url = reverse('order-detail', kwargs={'pk': self.order['id']})
-        self.url="/orders/paymob-order/"
+        self.url="/orders/paymob/"
 
 
     def create_order(self):
@@ -70,6 +70,22 @@ class PaymobOrderView(TestCase):
         response = self.client.post("/orders/orders/", self.order_data, format="json")
         return response.data
 
+    # @patch('orders.serializers.PaymobOrderSerializer.is_valid')
+    # @patch('orders.utils.create_paymob',)
+    @patch('paymob.accept.AcceptAPIClient.create_order')
+
+    def test_create_paymob(self,mock_accept_api_client_instance):
+        mock_accept_api_client_instance.return_value = (10, Mock(id=2), "Feedback")
+
+        order=Order.objects.create(user= self.user ,total_price=300)
+        # mock_order_get.return_value = Mock(id='66626f61-13f7-41e4-8e2c-cff57205ad3a',total_price=300)
+        # mock_serializer_valid.return_value=True
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
+        response = self.client.post(self.url,{'order':order.id}, format="json")
+        # print(response.data)
+        self.assertEqual(response.status_code, 201)
+
+        # mock_paymob_create.assert_called_once_with(order_id=self.order_id, paymob_order_id=1, amount_cents=300)
 
 
     @patch('orders.views.paymob.check_paymob_order_status')
@@ -89,7 +105,7 @@ class PaymobOrderView(TestCase):
 
         # Set query parameter to trigger check_paid condition
 
-        response = self.client.get(f"/orders/paymob-order/?order_id={self.order['id']}&&check_paid={True}", format="json")
+        response = self.client.get(f"/orders/paymob/{mock_paymob_order.id}/?check_paid={True}", format="json")
 
 
         # Ensure that PaymobOrder is updated to paid
@@ -101,7 +117,7 @@ class PaymobOrderView(TestCase):
 
     def test_retrieve_no_check_paid(self):
         # Create a mock Order
-        mock_order = Order.objects.create(customer=self.user)
+        mock_order = Order.objects.create(user=self.user)
 
         request = self.factory.get(self.url)
         request.user = self.user
@@ -120,9 +136,9 @@ class PaymobOrderView(TestCase):
             PaymobOrder.objects.get()
 
     def test_retrieve_without_order_id(self):
-       response = self.client.get("/orders/paymob-order/")
-       self.assertEqual(response.status_code, 404)
-
+        response = self.client.get("/orders/paymob/")
+    #    self.assertEqual(response.status_code, 404)
+        self.assertEqual(len(response.data['results']),0)
 
 
 # class PaymobOrderTest(TestCase):

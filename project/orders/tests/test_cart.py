@@ -55,7 +55,7 @@ class CartTest(TestCase):
         response = self.client.get("/orders/cart/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertIn('customer',response.data,)
+        self.assertIn('user',response.data,)
         self.assertEqual(Cart.objects.count(),2)
 
 
@@ -163,14 +163,14 @@ class PermissionsCartTest(TestCase):
         response = self.client.post("/orders/cart-item/",data=self.data,format='json',HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response = self.client.get(f"/orders/cart-item/{response.data['id']}/",HTTP_AUTHORIZATION=f"Bearer {self.access_token2}")
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
 
 
 
 
 
 
-    #     self.assertIn('customer',response.data,)
+    #     self.assertIn('user',response.data,)
     #     self.assertEqual(Cart.objects.count(),2)
 
 

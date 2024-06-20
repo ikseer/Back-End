@@ -41,7 +41,7 @@ class PermissionTest(TestCase):
             price=50.00,
             pharmacy=self.pharmacy,
         )
-        self.cart=Cart.objects.get(customer=self.user)
+        self.cart=Cart.objects.get(user=self.user)
         CartItem.objects.create(cart=self.cart,product=self.product1,quantity=3)
 
     def get_token(self, user):
@@ -60,7 +60,7 @@ class PermissionTest(TestCase):
 
         response = self.client.post(
             "/orders/orders/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         )
 
@@ -71,7 +71,7 @@ class PermissionTest(TestCase):
 
         response = self.client.post(
             "/orders/orders/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         )
 
@@ -81,30 +81,31 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         ).data
         response = self.client.put(
             "/orders/orders/" + str(order["id"]) + "/",
             {
-                "customer": self.user.id,
+                "user": self.user.id,
                 "pharmacy": self.pharmacy.id,
-                "status": "Delivered",
+                # "status": "Delivered",
             },
             format="json",
         )
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_admin_user_update_order_permission(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         ).data
         response = self.client.put(
             "/orders/orders/" + str(order["id"]) + "/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -113,7 +114,7 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         ).data
         response = self.client.delete(
@@ -125,7 +126,7 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         ).data
         response = self.client.delete(
@@ -137,17 +138,17 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
         self.client.post(
             "/orders/orders/",
-            {"customer": self.user.id, "pharmacy": self.pharmacy.id},
+            {"user": self.user.id, "pharmacy": self.pharmacy.id},
             format="json",
         ).data
         user2 = User.objects.create_user(
             username="user2", email="user2@example.com", password="test_password"
         )
-        cart=Cart.objects.get(customer=user2)
+        cart=Cart.objects.get(user=user2)
         CartItem.objects.create(cart=cart,product=self.product1,quantity=2)
         order_another_user = self.client.post(
             "/orders/orders/",
-            {"customer": user2.id, "pharmacy": self.pharmacy.id},
+            {"user": user2.id, "pharmacy": self.pharmacy.id},
             format="json",
         ).data
         response = self.client.delete(

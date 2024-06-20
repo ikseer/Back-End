@@ -12,4 +12,4 @@ User = get_user_model()
 def create_user_cart(sender, instance, created, **kwargs):
 
     if created:
-        Cart.objects.create(customer=instance)
+        Cart.objects.create(user=instance)
