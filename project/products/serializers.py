@@ -25,10 +25,12 @@ class ProductSerializer(serializers.ModelSerializer):
     review = serializers.SerializerMethodField()
     wishlist = serializers.SerializerMethodField()
     discount = serializers.SerializerMethodField()
-
+    # final_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    final_price=serializers.SerializerMethodField()
     class Meta:
         model = Product
         fields = "__all__"
+        extra_fields=['final_price','images','review','wishlist','discount']
 
     def get_images(self, obj):
         images = ProductImage.objects.filter(product=obj)
@@ -39,13 +41,18 @@ class ProductSerializer(serializers.ModelSerializer):
         return ProductRatingSerializer(review, many=True).data
 
     def get_wishlist(self, obj):
-        wishlist = Wishlist.objects.filter(product=obj)
-        return WishlistSerializer(wishlist, many=True).data
+        # wishlist = Wishlist.objects.filter(product=obj)
+        return WishlistSerializer(obj.wishlists, many=True).data
 
     def get_discount(self, obj):
         discount = Discount.objects.filter(product=obj)
         return DiscountSerializer(discount, many=True).data
 
+    def get_final_price(self,obj):
+        return obj.get_final_price()
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     representation['final_price'] = instance.get_final_price()
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:

@@ -7,11 +7,18 @@ from orders.pagination import *
 from orders.permissions import *
 from orders.serializers import *
 from rest_framework import filters as rest_filters
-from rest_framework import status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 
 
-class CartViewSet(viewsets.ModelViewSet):
+class CartViewSet(
+                # mixins.CreateModelMixin,
+                mixins.RetrieveModelMixin,
+                mixins.UpdateModelMixin,
+                # mixins.DestroyModelMixin,
+                mixins.ListModelMixin,
+                viewsets.GenericViewSet
+                ):
     queryset=Cart.objects.all()
     serializer_class=CartSerializer
     permission_classes = [CartPermission]
@@ -25,7 +32,7 @@ class CartViewSet(viewsets.ModelViewSet):
     def list(self,request,*args,**kwargs):
 
         if not self.request.user.is_staff:
-            cart= Cart.objects.filter(customer=self.request.user).first()
+            cart= Cart.objects.filter(user=self.request.user).first()
 
             return Response(CartSerializer(cart).data,status=status.HTTP_200_OK)
         return super().list(request, *args, **kwargs)
@@ -40,3 +47,5 @@ class CartItemViewSet(viewsets.ModelViewSet):
         rest_filters.SearchFilter,
         rest_filters.OrderingFilter,
     ]
+    def get_queryset(self):
+        return CartItem.objects.filter(cart__user=self.request.user)

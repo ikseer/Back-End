@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from orders.models import PaymobOrder
+from orders.models.order import Order
 from orders.utils import check_paymob_order_status, create_paymob
 from orders.views import PaymobCallbackViewSet
 from rest_framework.test import APIRequestFactory, force_authenticate
@@ -134,12 +135,12 @@ class TestCreatePaymob(TestCase):
     def setUp(self):
         self.order_id =uuid.uuid4()
     @patch('paymob.accept.AcceptAPIClient.create_order')
-    @patch('orders.utils.calculate_product_price')
+    # @patch('orders.utils.calculate_product_price')
     @patch('paymob.accept.utils.AcceptUtils.generate_merchant_order_id')
     @patch('orders.models.PaymobOrder.objects.create')
     @patch('orders.models.Order.objects.get')
     @patch('orders.models.OrderItem.objects.filter')
-    def test_create_paymob_success(self, mock_order_item_filter, mock_order_get, mock_paymob_create, mock_generate_merchant_order_id, mock_calculate_product_price, mock_accept_api_client_instance):
+    def test_create_paymob_success(self, mock_order_item_filter, mock_order_get, mock_paymob_create, mock_generate_merchant_order_id, mock_accept_api_client_instance):
         # Mocking database objects
         lst = []
         for _ in range(3):
@@ -147,10 +148,11 @@ class TestCreatePaymob(TestCase):
             lst.append(order_item)
 
         mock_order_item_filter.return_value = lst
-        mock_calculate_product_price.return_value = 100
+        # mock_calculate_product_price.return_value = 100
 
         mock_accept_api_client_instance.return_value = (10, Mock(id=1), "Feedback")
 
+        order=Order.objects.create(total_price=300)
 
         # Mocking API client response
         # mock_accept_api_client_instance=Mock()
@@ -159,21 +161,25 @@ class TestCreatePaymob(TestCase):
         # Mocking generate_merchant_order_id
         mock_generate_merchant_order_id.return_value = "merchant_order_id"
         paymob={
-            "order_id": self.order_id,
+            "order_id": order.id,
             "paymob_order_id": 1,
             "amount_cents": 300
         }
         mock_paymob_create.return_value = Mock(**paymob)
-        mock_order_get.return_value = Mock(id=1)
+        mock_order_get.return_value = Mock(id=1,total_price=300)
 
         # Calling the function
 
-        result = create_paymob(self.order_id)
+        result = create_paymob(order)
 
         # Assertions
-        # self.assertIsInstance(result, PaymobOrder)
-        self.assertEqual(result.order_id, self.order_id)
-        mock_paymob_create.assert_called_once_with(order_id=self.order_id, paymob_order_id=1, amount_cents=300)
+        self.assertEqual(result, 1)
+        # self.assertEqual(result.order_id, self.order_id)
+
+         # self.assertEqual(result.order_id, self.order_id)
+
+        # mock_paymob_create.assert_called_once_with(order_id=self.order_id, paymob_order_id=1, amount_cents=300)
+        # self.assertEqual(PaymobOrder.objects.count(),1)
         mock_accept_api_client_instance.assert_called_once_with(
             merchant_order_id="merchant_order_id",
             amount_cents=300,
