@@ -52,7 +52,7 @@ class CouponViewSetTests(TestCase):
             price=100,
             category=self.category,
             pharmacy=self.pharmacy,
-            quantity=10,
+            stock=10,
             code="test_code",
         )
         self.coupon1=Coupon.objects.create(

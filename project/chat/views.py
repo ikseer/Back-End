@@ -1,10 +1,12 @@
 # Create your views here.
 # myapp/views.py
+from chat.utils import unseen_message
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from .models import Conservation, Message
-from .serializers import ConservationSerializer, MessageSerializer
+from .serializers import *
 
 
 class ConservationViewSet(viewsets.ModelViewSet):
@@ -14,10 +16,12 @@ class ConservationViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         conservation = serializer.save()
-        # conservation.users.add(self.request.user)
         conservation.users.set([self.request.user])
-
         conservation.save()
+
+
+
+
 
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
@@ -25,4 +29,30 @@ class MessageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(sender=self.request.user)
+        message = serializer.save(sender=self.request.user)
+        unseen_message(message)
+
+
+    @action(detail=False, methods=['get'], url_path='unseen')
+    def get_unseen_messages(self, request):
+        unseen_messages = Message.objects.filter(
+            conservation__users=request.user,
+            seen_statuses__user=request.user,
+            seen_statuses__seen=False
+        )
+        serializer = self.get_serializer(unseen_messages, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'], url_path='mark-seen')
+    def mark_as_seen(self, request, pk=None):
+        message = self.get_object()
+        seen_status, created = MessageSeenStatus.objects.get_or_create(message=message, user=request.user)
+        seen_status.seen = True
+        seen_status.save()
+        return Response({'status': 'message marked as seen'})
+
+
+class FCMTokenViewSet(viewsets.ModelViewSet):
+    queryset=FCMToken.objects.all()
+    serializer_class=FCMTokenSerializer
+    permission_classes=[IsAuthenticated]

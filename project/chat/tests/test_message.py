@@ -1,6 +1,5 @@
 # myapp/tests.py
 from chat.models import *
-from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -71,3 +70,17 @@ class MessageTests(APITestCase):
         response = self.client.post(url, invalid_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Message.objects.count(), 0)
+    def test_mark_message_as_seen(self):
+        message = Message.objects.create(text='Test Message', sender=self.user, conservation=self.conservation)
+        url = reverse('message-mark-as-seen', args=[message.id])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(MessageSeenStatus.objects.filter(message=message, user=self.user, seen=True).exists())
+
+    def test_get_unseen_messages(self):
+        message = Message.objects.create(text='Test Message', sender=self.user, conservation=self.conservation)
+        MessageSeenStatus.objects.create(message=message, user=self.user, seen=False)
+        url = reverse('message-get-unseen-messages')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)

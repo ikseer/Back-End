@@ -1,7 +1,7 @@
 from .models import *
 
 
-class Order(models.Model):
+class Order(BaseModel):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('processing', 'Processing'),
@@ -9,7 +9,6 @@ class Order(models.Model):
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     )
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders',null=True,blank=True)
     items = models.ManyToManyField("products.Product", through='OrderItem')
@@ -25,8 +24,7 @@ class Order(models.Model):
         return f"Order #{self.id} - {self.user.username} - {self.status}"
 
 
-class OrderItem(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class OrderItem(BaseModel):
 
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     order = models.ForeignKey("orders.Order", related_name="order_items", on_delete=models.CASCADE)

@@ -8,16 +8,26 @@ from django.db import models
 
 User = get_user_model()
 
-STATUS_CHOICES = (
-    ("Pending", "Pending"),
-    ("Shipped", "Shipped"),
-    ("Delivered", "Delivered"),
-    ("Cancelled", "Cancelled"),
-)
 
+class BaseModel(models.Model):
 
-class Order(models.Model):
     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Order(BaseModel):
+    STATUS_CHOICES = (
+        ("Pending", "Pending"),
+        ("Shipped", "Shipped"),
+        ("Delivered", "Delivered"),
+        ("Cancelled", "Cancelled"),
+    )
+
+
 
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     pharmacy = models.ForeignKey(
@@ -31,8 +41,7 @@ class Order(models.Model):
     #     return self.customer.first_name
 
 
-class OrderItem(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class OrderItem(BaseModel):
 
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     order = models.ForeignKey("orders.Order", related_name="items", on_delete=models.CASCADE)
@@ -40,8 +49,7 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product.name
-class PaymobOrder(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class PaymobOrder(BaseModel):
     # order=models.ForeignKey("orders.Order",on_delete=models.CASCADE)
     order=models.OneToOneField("orders.Order",on_delete=models.CASCADE)
     paymob_order_id=models.CharField(max_length=255)
@@ -58,14 +66,12 @@ class PaymobOrder(models.Model):
 
 
 
-class Cart(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class Cart(BaseModel):
     customer = models.OneToOneField(User, on_delete=models.CASCADE)
     products = models.ManyToManyField('products.Product', through='CartItem',related_name='items')
     def get_items(self):
         return self.cartitem_set.select_related('product')
-class CartItem(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class CartItem(BaseModel):
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(help_text="Quantity of the product")
     cart= models.ForeignKey(Cart, on_delete=models.CASCADE)

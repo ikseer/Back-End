@@ -82,7 +82,7 @@ class ProductViewSetTests(TestCase):
         data = response.data
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data["name"], "Test Product1")
-        print(response.data)
+        # print(response.data)
     def test_create_product_not_staff(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
 

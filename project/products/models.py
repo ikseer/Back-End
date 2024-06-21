@@ -11,8 +11,17 @@ from django.utils import timezone
 User = get_user_model()
 
 
-class Category(models.Model):
+
+class BaseModel(models.Model):
+
     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Category(BaseModel):
 
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to="category_images", null=True, blank=True)
@@ -22,8 +31,7 @@ class Category(models.Model):
 
 
 
-class Product(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class Product(BaseModel):
 
     name = models.CharField(max_length=255, help_text="Name of the medication")
     generic_name = models.CharField(
@@ -71,12 +79,11 @@ class Product(models.Model):
 
 
 
-class Discount(models.Model):
+class Discount(BaseModel):
     DISCOUNT_TYPE_CHOICES = (
         ('amount', 'Amount'),
         ('percentage', 'Percentage'),
     )
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='discounts')
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
@@ -101,8 +108,7 @@ class Discount(models.Model):
 
 
 
-class ProductRating(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class ProductRating(BaseModel):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
@@ -123,12 +129,11 @@ class ProductRating(models.Model):
 
 
 
-class Coupon(models.Model):
+class Coupon(BaseModel):
     DISCOUNT_TYPE_CHOICES = (
         ('amount', 'Amount'),
         ('percentage', 'Percentage'),
     )
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
 
     code = models.CharField(max_length=50, unique=True)
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
@@ -176,8 +181,7 @@ class Coupon(models.Model):
 
 
 
-class ProductImage(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class ProductImage(BaseModel):
 
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="product_images", null=True, blank=True)
@@ -188,8 +192,7 @@ class ProductImage(models.Model):
 
 
 
-class Wishlist(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class Wishlist(BaseModel):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=True, null=True)
