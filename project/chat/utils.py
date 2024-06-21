@@ -1,20 +1,21 @@
 
 from chat.models import MessageSeenStatus
 
-from .firebase_config import messaging
+# from .firebase_config import messaging
 
 
 def send_notification(tokens,text):
         if tokens:
-            message = messaging.MulticastMessage(
-                tokens=tokens,
-                notification=messaging.Notification(
-                    title="New Message",
-                    body=text,
-                ),
-            )
-            response = messaging.send_multicast(message)
-            return response
+             pass
+            # message = messaging.MulticastMessage(
+            #     tokens=tokens,
+            #     notification=messaging.Notification(
+            #         title="New Message",
+            #         body=text,
+            #     ),
+            # )
+            # response = messaging.send_multicast(message)
+            # return response
 
 
 def unseen_message(message):
