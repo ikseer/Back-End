@@ -36,10 +36,10 @@ class CheckPasswordView(GenericAPIView):
         password = serializer.validated_data["password"]
         user = request.user
         if user.check_password(password):
-            return Response({"detail": "Password correct"}, status=status.HTTP_200_OK)
+            return Response({"password_correct":True}, status=status.HTTP_200_OK)
         else:
             return Response(
-                {"detail": "Password incorrect"}, status=status.HTTP_400_BAD_REQUEST
+                {"password_correct":False}, status=status.HTTP_400_BAD_REQUEST
             )
 
 
@@ -83,7 +83,7 @@ class CheckEmailView(GenericAPIView):
         if email_address:
             return Response({"email_exists": True}, status=status.HTTP_200_OK)
         else:
-            return Response({"email_exists": False}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"email_exists": False}, status=status.HTTP_200_OK)
 
 
 class CheckUsernameView(GenericAPIView):
@@ -99,7 +99,7 @@ class CheckUsernameView(GenericAPIView):
             return Response({"username_exists": True}, status=status.HTTP_200_OK)
         else:
             return Response(
-                {"username_exists": False}, status=status.HTTP_404_NOT_FOUND
+                {"username_exists": False}, status=status.HTTP_200_OK
             )
 
 
