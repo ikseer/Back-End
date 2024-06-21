@@ -104,9 +104,15 @@ class UserTest(APITestCase):
         response = self.client.post(url, {"email": "test@example.com"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['email_exists'],True)
+        # self.assertEqual(response.data['email_exists'],False)
+
         response = self.client.post(url, {"email": "test2@example.com"})
 
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['email_exists'],False)
+
+
 
     def test_username(self):
         self.test_user_data()
@@ -116,7 +122,9 @@ class UserTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response = self.client.post(url, {"username": "test2user"})
 
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['username_exists'],False)
+
 
 
 # rest password otp
