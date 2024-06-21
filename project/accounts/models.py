@@ -5,22 +5,29 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+class BaseModel(models.Model):
+
+    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
 class CustomUser(AbstractUser):
     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
 
 
 
 
-class EmailVerificationOTP(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class EmailVerificationOTP(BaseModel):
 
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     otp = models.IntegerField(null=True, blank=True)
     activation_key = models.CharField(max_length=150, blank=True, null=True)
 
 
-class PhoneModel(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class PhoneModel(BaseModel):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     Mobile = models.CharField(max_length=20, blank=False)
@@ -31,8 +38,7 @@ class PhoneModel(models.Model):
         return str(self.Mobile)
 
 
-class Profile(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class Profile(BaseModel):
 
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="profile_image", blank=True, null=True)
@@ -48,14 +54,12 @@ class Profile(models.Model):
         return str(self.first_name + " " + self.last_name)
 
 
-class PatientProfile(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class PatientProfile(BaseModel):
 
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
 
-class DoctorProfile(models.Model):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class DoctorProfile(BaseModel):
 
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     specialization = models.CharField(max_length=100)
