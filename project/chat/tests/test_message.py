@@ -12,12 +12,12 @@ class MessageTests(APITestCase):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.token = AccessToken.for_user(self.user)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.token}')
-        self.conservation = Conservation.objects.create(name='Test Conservation', description='A test conservation')
-        self.conservation.users.add(self.user)
+        self.conversation = Conversation.objects.create(name='Test Conversation', description='A test conversation')
+        self.conversation.users.add(self.user)
 
     def test_create_message(self):
         url = reverse('message-list')
-        data = {'conservation': self.conservation.id, 'text': 'A test message'}
+        data = {'conversation': self.conversation.id, 'text': 'A test message'}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Message.objects.count(), 1)
@@ -25,15 +25,15 @@ class MessageTests(APITestCase):
         self.assertEqual(Message.objects.get().sender, self.user)
 
     def test_list_messages(self):
-        Message.objects.create(conservation=self.conservation, sender=self.user, text='Test message 1')
-        Message.objects.create(conservation=self.conservation, sender=self.user, text='Test message 2')
+        Message.objects.create(conversation=self.conversation, sender=self.user, text='Test message 1')
+        Message.objects.create(conversation=self.conversation, sender=self.user, text='Test message 2')
         url = reverse('message-list')
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
 
     def test_get_message_detail(self):
-        message = Message.objects.create(conservation=self.conservation, sender=self.user, text='Test message')
+        message = Message.objects.create(conversation=self.conversation, sender=self.user, text='Test message')
         url = reverse('message-detail', kwargs={'pk': message.id})
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -41,7 +41,7 @@ class MessageTests(APITestCase):
         self.assertEqual(response.data['sender']['username'], 'testuser')
 
     def test_update_message(self):
-        message = Message.objects.create(conservation=self.conservation, sender=self.user, text='Test message')
+        message = Message.objects.create(conversation=self.conversation, sender=self.user, text='Test message')
         url = reverse('message-detail', kwargs={'pk': message.id})
         updated_data = {'text': 'Updated message'}
         response = self.client.patch(url, updated_data, format='json')
@@ -51,34 +51,34 @@ class MessageTests(APITestCase):
         self.assertEqual(message.text, 'Updated message')
 
     def test_delete_message(self):
-        message = Message.objects.create(conservation=self.conservation, sender=self.user, text='Test message')
+        message = Message.objects.create(conversation=self.conversation, sender=self.user, text='Test message')
         url = reverse('message-detail', kwargs={'pk': message.id})
         response = self.client.delete(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Message.objects.count(), 0)
 
-    def test_message_conservation_relationship(self):
-        message = Message.objects.create(conservation=self.conservation, sender=self.user, text='Test message')
+    def test_message_conversation_relationship(self):
+        message = Message.objects.create(conversation=self.conversation, sender=self.user, text='Test message')
         url = reverse('message-detail', kwargs={'pk': message.id})
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['conservation'], self.conservation.id)
+        self.assertEqual(response.data['conversation'], self.conversation.id)
 
     def test_message_invalid_data(self):
         url = reverse('message-list')
-        invalid_data = {'text': 'Missing conservation field'}
+        invalid_data = {'text': 'Missing conversation field'}
         response = self.client.post(url, invalid_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Message.objects.count(), 0)
     def test_mark_message_as_seen(self):
-        message = Message.objects.create(text='Test Message', sender=self.user, conservation=self.conservation)
+        message = Message.objects.create(text='Test Message', sender=self.user, conversation=self.conversation)
         url = reverse('message-mark-as-seen', args=[message.id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(MessageSeenStatus.objects.filter(message=message, user=self.user, seen=True).exists())
 
     def test_get_unseen_messages(self):
-        message = Message.objects.create(text='Test Message', sender=self.user, conservation=self.conservation)
+        message = Message.objects.create(text='Test Message', sender=self.user, conversation=self.conversation)
         MessageSeenStatus.objects.create(message=message, user=self.user, seen=False)
         url = reverse('message-get-unseen-messages')
         response = self.client.get(url)

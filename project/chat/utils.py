@@ -1,30 +1,34 @@
 
 from chat.models import MessageSeenStatus
+from firebase_admin import messaging
 
-# from .firebase_config import messaging
+from .firebase_config import *
 
 
 def send_notification(tokens,text):
         if tokens:
-             pass
-            # message = messaging.MulticastMessage(
-            #     tokens=tokens,
-            #     notification=messaging.Notification(
-            #         title="New Message",
-            #         body=text,
-            #     ),
-            # )
-            # response = messaging.send_multicast(message)
-            # return response
+
+            message = messaging.MulticastMessage(
+                tokens=tokens,
+                notification=messaging.Notification(
+                    title="New Message",
+                    body=text,
+                ),
+            )
+            response = messaging.send_multicast(message)
+            return response
 
 
 def unseen_message(message):
     tokens=[]
-    for user in message.conservation.users.all():
+    for user in message.conversation.users.all():
         if user==message.sender:
             continue
 
         MessageSeenStatus.objects.create(message=message, user=user)
-        if user.fcm_token.token:
+        try:
              tokens.append(user.fcm_token.token)
+
+        except Exception:
+             pass
     send_notification(tokens,message.text)

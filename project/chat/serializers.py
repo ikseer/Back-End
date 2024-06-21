@@ -14,14 +14,14 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields='__all__'
-        # fields = ['id', 'conservation', 'sender', 'text', 'created_at']
+        # fields = ['id', 'conversation', 'sender', 'text', 'created_at']
 
-class ConservationSerializer(serializers.ModelSerializer):
+class ConversationSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True)
     users = UserSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Conservation
+        model = Conversation
         fields = ['id', 'name', 'description', 'users', 'messages']
 
 
