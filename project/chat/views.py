@@ -9,15 +9,15 @@ from rest_framework.response import Response
 from .serializers import *
 
 
-class ConservationViewSet(viewsets.ModelViewSet):
-    queryset = Conservation.objects.all()
-    serializer_class = ConservationSerializer
+class ConversationViewSet(viewsets.ModelViewSet):
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        conservation = serializer.save()
-        conservation.users.set([self.request.user])
-        conservation.save()
+        conversation = serializer.save()
+        conversation.users.set([self.request.user])
+        conversation.save()
 
 
 
@@ -36,7 +36,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='unseen')
     def get_unseen_messages(self, request):
         unseen_messages = Message.objects.filter(
-            conservation__users=request.user,
+            conversation__users=request.user,
             seen_statuses__user=request.user,
             seen_statuses__seen=False
         )

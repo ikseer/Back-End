@@ -17,9 +17,9 @@ urlpatterns = [
     # path('api/token/', CustomTokenObtainPairView.as_view(), name='rest_login'),
     path("login/", CustomTokenObtainPairView.as_view(), name="rest_login"),
     ### User ###
-    path("check-email", CheckEmailView.as_view(), name="check-email"),
-    path("check-username", CheckUsernameView.as_view(), name="check-username"),
-    path("check-password", CheckPasswordView.as_view(), name="check-password"),
+    path("check-email/", CheckEmailView.as_view(), name="check-email"),
+    path("check-username/", CheckUsernameView.as_view(), name="check-username"),
+    path("check-password/", CheckPasswordView.as_view(), name="check-password"),
     path("otp-by-email/", OtpByEmailView.as_view(), name="otp-by-email"),
     path("verify-email-otp/", VerifyEmailOtpView.as_view(), name="verify-email-otp"),
     ### phone ###
