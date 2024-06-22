@@ -5,6 +5,7 @@ import random
 
 import factory
 from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 from faker.providers import BaseProvider
 from pharmacy.models import Pharmacy
@@ -42,7 +43,7 @@ def generate_pharmacy_image(item_name):
             return
         with open(os.path.join(folder_path,result[0]), "rb") as file:
             image_content = file.read()
-        return image_content
+        return SimpleUploadedFile(result[0], image_content)
 
 class PharmacyFactory(factory.Factory):
     class Meta:
