@@ -127,6 +127,7 @@ class DiscountFactory(factory.Factory):
         model = Discount
 
     discount_amount = factory.Faker("random_int", min=1, max=50)
+
     product = factory.SubFactory("products.factories.ProductFactory")
     start_date = factory.Faker("date_between", start_date="-30d", end_date="today")
     end_date = factory.Faker("date_between", start_date="today", end_date="+30d")

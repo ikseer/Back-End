@@ -12,9 +12,13 @@ class CategorySerializer(serializers.ModelSerializer):
 class DiscountSerializer(serializers.ModelSerializer):
     before_price = serializers.SerializerMethodField()
     after_price=serializers.SerializerMethodField()
+    image=serializers.SerializerMethodField()
     class Meta:
         model = Discount
         fields = "__all__"
+    def get_image(self,obj):
+        image= ProductImage.objects.filter(product=obj.product).order_by('priority').first()
+        return ProductImageSerializer(image).data['image']
     def get_before_price(self,obj):
         return obj.product.price
     def get_after_price(self, obj):

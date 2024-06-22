@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # myapp/management/commands/create_sample_data.py
 
+
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from products.factories import *
@@ -75,6 +76,7 @@ class Command(BaseCommand):
         # discounts = DiscountFactory.create_batch(
         #     10,
         #     product=factory.Iterator(cycle(Product.objects.all())),
+        #     discount_type='percentage'
         # )
         # for discount in discounts:
         #     discount.save()
@@ -85,7 +87,7 @@ class Command(BaseCommand):
         #     )
         # )
 
-
+        pass
 
 
 
@@ -147,13 +149,13 @@ class Command(BaseCommand):
         # # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(products)} products'))
 
         # # # # # Create sample data for Discount
-        # # # # # discounts = DiscountFactory.create_batch(5)
-        # # # # # for discount in discounts:
-        # # # # #     discount.product.pharmacy.save()
-        # # # # #     discount.product.category.save()
-        # # # # #     discount.product.save()
-        # # # # #     discount.save()
-        # # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(discounts)} discounts'))
+        # # # # discounts = DiscountFactory.create_batch(5)
+        # # # # for discount in discounts:
+        # # # #     discount.product.pharmacy.save()
+        # # # #     discount.product.category.save()
+        # # # #     discount.product.save()
+        # # # #     discount.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(discounts)} discounts'))
 
         # # # # # Create and save sample data for Order
         # # # # # orders = OrderFactory.create_batch(3)
@@ -205,4 +207,4 @@ class Command(BaseCommand):
         # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(wishlists)} wishlists'))
 
         # # # # self.stdout.write(self.style.SUCCESS("Successfully created sample data"))
-        pass
+        # pass
