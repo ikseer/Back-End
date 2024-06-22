@@ -1,4 +1,19 @@
+# -*- coding: utf-8 -*-
+
+from accounts.filters import *
+from accounts.models import *
+from accounts.serializers import *
+from accounts.utils import *
+from rest_framework import status
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+
 from .views import *
+
+# -*- coding: utf-8 -*-
+
+
 
 
 # check if password of user is correct

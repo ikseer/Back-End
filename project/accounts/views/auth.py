@@ -1,6 +1,30 @@
 
 
+# -*- coding: utf-8 -*-
+
+from accounts.filters import *
+from accounts.models import *
+from accounts.serializers import *
+from accounts.utils import *
+from allauth.socialaccount import signals
+from allauth.socialaccount.models import SocialAccount
+from allauth.socialaccount.providers.facebook.views import \
+    FacebookOAuth2Adapter
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import RegisterView, SocialLoginView
+from dj_rest_auth.views import LoginView
+from rest_framework import status
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 from .views import *
+
+# -*- coding: utf-8 -*-
+
+
+
 
 
 class CustomRegisterView(RegisterView):
