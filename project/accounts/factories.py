@@ -4,17 +4,82 @@ import os
 import random
 
 import factory
+from accounts.models import *
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 from faker.providers import BaseProvider
 
-from project.accounts.models import *
-
+User=get_user_model()
 fake = Faker()
 
 data_dir = os.path.dirname(os.path.dirname(settings.BASE_DIR))
 data_dir=os.path.join(data_dir,'old/data')
 
+class ArabicNameProvider(BaseProvider):
+    def  arabic_name(self):
+        [
+            "محمد", "علي", "أحمد", "عمر", "يوسف",
+            "خالد", "حسن", "مصطفى", "حسام", "محمود",
+            "سعيد", "طارق", "عبد الله", "عليّ", "ماجد",
+            "جمال", "وليد", "مروان", "ناصر", "رشيد",
+            "حسين", "سليمان", "عبدالرحمن", "فارس", "ياسر",
+            "عليان", "رامي", "خضر", "طلال",
+            "حازم", "أسامة", "منصور", "مالك", "نواف",  "شريف", "أيمن"
+        ]
+        arabic_names_same=[
+            "أسامة","أسامه","اسامه","اسَامه","احمد","أحمد","أمين","امين","إياد","إياد","أكرم","اكرم"
+        ]
+
+        arabic_names = [ "نور", "إحسان","جهاد",",وسام","اسلام","أسلام","اسلام","احسان"]
+
+
+
+        " ".join(random.choice(arabic_names_same) for _ in range(3))
+        first=random.choice(arabic_names)
+        return first
+
+
+class AddressProvider(BaseProvider):
+    def  address(self):
+        egyptian_village_names = [
+            "الدلجا",
+            "كفر الشيخ",
+            "بركة السبع",
+            "قلوص",
+            "الشهداء",
+            "سمسطا",
+            "دمنهور",
+            "كفر الشيخ الجديدة",
+            "بدر",
+            "برمبال",
+            "كفر المنجوم",
+            "النوبارية",
+            "الرياض",
+            "البيضاء",
+            "الرزايقة",
+            "قرية النيل",
+            "دسوق",
+            "كفر البطيخ",
+            "أبو النمرس",
+            "أبو حمص"
+        ]
+
+        return  "".join([random.choice(egyptian_village_names) for i in range(3)])
+
+class Specialization(BaseProvider):
+    def specialization(self):
+        elements = ["Family Medicine", "Internal Medicine",
+                                                 "Pediatrics", "Surgery",
+                                                 "Obstetrics and Gynecology", "Psychiatry",
+                                                 "Radiology", "Emergency Medicine",
+                                                    "Neurology", "Cardiology"]
+        return random.choice(elements)
+factory.Faker.add_provider(Specialization)
+
+factory.Faker.add_provider(ArabicNameProvider)
+factory.Faker.add_provider(AddressProvider)
 
 
 class PhoneProvider(BaseProvider):
@@ -29,8 +94,8 @@ factory.Faker.add_provider(PhoneProvider)
 
 
 
-def generate_pharmacy_image(item_name):
-     folder_path=os.path.join(data_dir,'pharmacy')
+def generate_doctor_image():
+     folder_path=os.path.join(data_dir,'doctor')
      result=[]
      if os.path.exists(folder_path):
         image_files = [
@@ -38,41 +103,31 @@ def generate_pharmacy_image(item_name):
             for f in os.listdir(folder_path)
             if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
         ]
-        result= [img for img in image_files if img.startswith(item_name)]
+        result= [img for img in image_files]
         if not result:
             return
         with open(os.path.join(folder_path,result[0]), "rb") as file:
             image_content = file.read()
-        return image_content
+        random.shuffle(result)
+        return SimpleUploadedFile(result[0], image_content)
 
 class DoctoerFactory(factory.Factory):
     class Meta:
         model = Doctor
 
-    specialization = factory.Faker("company")
     location = factory.Faker("address")
-    open_time = factory.Faker("time_object")
-    close_time = factory.Faker("time_object")
-    phone = factory.Faker('phone_number')
+    approved = factory.Faker("boolean")
+    price_for_reservation=factory.Faker("random_int", min=100, max=1000)
+    specialization = factory.Faker("specialization")
+    first_name =  factory.Faker( "arabic_name")
+    last_name = factory.Faker("arabic_name" )
     @factory.lazy_attribute
     def image(self):
             # image=get_images(self.name,os.path.join(data_dir,'catagory'))
-        return generate_pharmacy_image(self.name)
-'''
+        return generate_doctor_image()
 
-
-class Doctor(Profile):
-
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    specialization = models.CharField(max_length=100)
-    location = models.CharField(max_length=255,null=True,blank=True)
-    price_for_reservation=models.IntegerField(null=True,blank=True)
-    approved = models.BooleanField(default=False)
-
-
-    def __str__(self):
-        return str(self.first_name + " " + self.last_name)
-
-    def is_doctor():
-        return True
-'''
+class UserFactory(factory.Factory):
+    class Meta:
+        model=User
+    username = factory.Sequence(lambda n: f'user{n+User.objects.count()}')  # Unique usernames like 'user1', 'user2', ...
+    email = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')  # Unique emails based on username
