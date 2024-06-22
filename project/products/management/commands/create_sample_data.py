@@ -2,7 +2,6 @@
 # myapp/management/commands/create_sample_data.py
 
 
-from itertools import cycle
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
@@ -73,6 +72,7 @@ class Command(BaseCommand):
         for review in reviews:
             review.save()
 
+
         self.stdout.write(
             self.style.SUCCESS(f"Successfully created and saved {len(reviews)} reviews")
         )
@@ -83,13 +83,14 @@ class Command(BaseCommand):
         for discount in discounts:
             discount.save()
 
+
         self.stdout.write(
             self.style.SUCCESS(
                 f"Successfully created and saved {len(discounts)} discounts"
             )
         )
 
-
+        pass
 
 
 
@@ -163,13 +164,13 @@ class Command(BaseCommand):
         # # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(products)} products'))
 
         # # # # # Create sample data for Discount
-        # # # # # discounts = DiscountFactory.create_batch(5)
-        # # # # # for discount in discounts:
-        # # # # #     discount.product.pharmacy.save()
-        # # # # #     discount.product.category.save()
-        # # # # #     discount.product.save()
-        # # # # #     discount.save()
-        # # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(discounts)} discounts'))
+        # # # # discounts = DiscountFactory.create_batch(5)
+        # # # # for discount in discounts:
+        # # # #     discount.product.pharmacy.save()
+        # # # #     discount.product.category.save()
+        # # # #     discount.product.save()
+        # # # #     discount.save()
+        # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(discounts)} discounts'))
 
         # # # # # Create and save sample data for Order
         # # # # # orders = OrderFactory.create_batch(3)
@@ -221,20 +222,4 @@ class Command(BaseCommand):
         # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(wishlists)} wishlists'))
 
         # # # # self.stdout.write(self.style.SUCCESS("Successfully created sample data"))
-        # # pass
-        # users=UserFactory.create_batch(5,
-        #                                user_type="doctor"
 
-        #                                )
-        # for user in users:
-        #     user.save()
-        # self.stdout.write(self.style.SUCCESS(f"Successfully created {len(users)}users"))
-        # doctors=DoctoerFactory.create_batch(
-        #      5,
-        #      user=factory.Iterator(cycle(users))
-        #     )
-
-
-        # for doctor in doctors:
-        #     doctor.save()
-        # self.stdout.write(self.style.SUCCESS(f"Successfully created {len(users)}doctors"))
