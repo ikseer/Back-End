@@ -222,8 +222,23 @@ class WishlistFactory(factory.Factory):
 class CouponFactory(factory.Factory):
     class Meta:
         model = Coupon
-    percentage = factory.Faker("random_int", min=1, max=50)
     start_date = factory.Faker("date_between", start_date="-30d", end_date="today")
     end_date = factory.Faker("date_between", start_date="today", end_date="+30d")
-    product = factory.SubFactory("products.factories.ProductFactory")
-    number = factory.Faker("random_int", min=1, max=1000)
+    usage_limit = factory.Faker("random_int", min=100, max=1000)
+    usage_count = factory.Faker("random_int", min=1, max=100)
+    minimum_purchase_amount =factory.Faker("random_int", min=100, max=1000)
+    discount_amount=factory.Faker("random_int", min=1, max=100)
+    discount_type = factory.Faker("random_element", elements=["percentage", "amount"])
+    active = factory.Faker("boolean")
+
+'''
+code = models.CharField(max_length=50, unique=True)
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    discount_type = models.CharField(max_length=10, choices=DISCOUNT_TYPE_CHOICES,blank=True, null=True)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    active = models.BooleanField(default=True)
+    usage_limit = models.PositiveIntegerField(null=True, blank=True)
+    usage_count = models.PositiveIntegerField(default=0)
+    minimum_purchase_amount = models.DecimalFie
+'''

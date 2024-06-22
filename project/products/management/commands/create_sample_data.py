@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # myapp/management/commands/create_sample_data.py
 
+
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from products.factories import *
@@ -90,6 +91,18 @@ class Command(BaseCommand):
 
 
 
+        # coupons = CouponFactory.create_batch(
+        #     10,
+        #     # product=factory.Iterator(cycle(Product.objects.all())),
+
+        # )
+
+        # for coupon in coupons:
+        #     coupon.save()
+
+        # self.stdout.write(
+        #     self.style.SUCCESS(f"Successfully created and saved {len(coupons)} coupons")
+        # )
 
 
 
