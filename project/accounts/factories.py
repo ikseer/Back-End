@@ -49,7 +49,7 @@ class DoctoerFactory(factory.Factory):
     class Meta:
         model = Doctor
 
-    name = factory.Faker("company")
+    specialization = factory.Faker("company")
     location = factory.Faker("address")
     open_time = factory.Faker("time_object")
     close_time = factory.Faker("time_object")
@@ -58,3 +58,21 @@ class DoctoerFactory(factory.Factory):
     def image(self):
             # image=get_images(self.name,os.path.join(data_dir,'catagory'))
         return generate_pharmacy_image(self.name)
+'''
+
+
+class Doctor(Profile):
+
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    specialization = models.CharField(max_length=100)
+    location = models.CharField(max_length=255,null=True,blank=True)
+    price_for_reservation=models.IntegerField(null=True,blank=True)
+    approved = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return str(self.first_name + " " + self.last_name)
+
+    def is_doctor():
+        return True
+'''
