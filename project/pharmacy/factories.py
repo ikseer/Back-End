@@ -1,43 +1,48 @@
 # -*- coding: utf-8 -*-
 # myapp/factories.py
-import io
 import os
 import random
 
 import factory
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.conf import settings
 from faker import Faker
+from faker.providers import BaseProvider
 from pharmacy.models import Pharmacy
-from PIL import Image
 
 fake = Faker()
 
+data_dir = os.path.dirname(os.path.dirname(settings.BASE_DIR))
+data_dir=os.path.join(data_dir,'old/data')
 
-def generate_image():
-    file_path = "test_data/images/pharmacy"
-    if os.path.exists(file_path):
+
+
+class PhoneProvider(BaseProvider):
+    def phone_number(self):
+
+        prefixes = ['010', '015', '011']
+        prefix = random.choice(prefixes)
+        number = ''.join([str(random.randint(0, 9)) for _ in range(8)])
+        return prefix + number
+
+factory.Faker.add_provider(PhoneProvider)
+
+
+
+def generate_pharmacy_image(item_name):
+     folder_path=os.path.join(data_dir,'pharmacy')
+     result=[]
+     if os.path.exists(folder_path):
         image_files = [
             f
-            for f in os.listdir(file_path)
+            for f in os.listdir(folder_path)
             if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
         ]
-
-        # Choose a random image file
-        selected_image = random.choice(image_files)
-
-        # Open the selected image file and read its content
-        with open(os.path.join(file_path, selected_image), "rb") as file:
+        result= [img for img in image_files if img.startswith(item_name)]
+        if not result:
+            return
+        with open(os.path.join(folder_path,result[0]), "rb") as file:
             image_content = file.read()
-
-        # Return a SimpleUploadedFile with the selected image content
-        return SimpleUploadedFile(selected_image, image_content)
-
-    # Create a simple random image using Pillow
-    image = Image.new("RGB", (100, 100), "rgb(0, 255, 0)")
-    buffer = io.BytesIO()
-    image.save(buffer, format="JPEG")
-    return SimpleUploadedFile("image.jpg", buffer.getvalue())
-
+        return image_content
 
 class PharmacyFactory(factory.Factory):
     class Meta:
@@ -45,7 +50,10 @@ class PharmacyFactory(factory.Factory):
 
     name = factory.Faker("company")
     location = factory.Faker("address")
-    # image = factory.LazyFunction(generate_image)
     open_time = factory.Faker("time_object")
     close_time = factory.Faker("time_object")
-    # phone = factory.Faker('phone_number')
+    phone = factory.Faker('phone_number')
+    @factory.lazy_attribute
+    def image(self):
+            # image=get_images(self.name,os.path.join(data_dir,'catagory'))
+        return generate_pharmacy_image(self.name)

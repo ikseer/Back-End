@@ -126,7 +126,7 @@ class DiscountFactory(factory.Factory):
     class Meta:
         model = Discount
 
-    percentage = factory.Faker("random_int", min=1, max=50)
+    discount_amount = factory.Faker("random_int", min=1, max=50)
     product = factory.SubFactory("products.factories.ProductFactory")
     start_date = factory.Faker("date_between", start_date="-30d", end_date="today")
     end_date = factory.Faker("date_between", start_date="today", end_date="+30d")
@@ -173,7 +173,7 @@ class ProductFactory(factory.Factory):
     category = factory.SubFactory(CategoryFactory)
     pharmacy = factory.SubFactory("pharmacy.factories.PharmacyFactory")
     # image = factory.LazyFunction(generate_product_image)
-    quantity = factory.Faker("random_int", min=1, max=100)
+    stock = factory.Faker("random_int", min=1, max=100)
     short_description = factory.Faker("text")
     code = factory.Faker("product_code")
     # @factory.post_generation
@@ -210,7 +210,7 @@ class ProductRatingFactory(factory.Factory):
     # user = None
     product = factory.SubFactory("products.factories.ProductFactory")
     rating = factory.Faker("random_int", min=1, max=5)
-    comment = factory.Faker("text")
+    review = factory.Faker("text")
 
 
 class WishlistFactory(factory.Factory):
@@ -218,7 +218,7 @@ class WishlistFactory(factory.Factory):
         model = Wishlist
 
     user = None
-    product = factory.SubFactory("products.factories.ProductFactory")
+    items = factory.SubFactory("products.factories.ProductFactory")
 class CouponFactory(factory.Factory):
     class Meta:
         model = Coupon

@@ -10,14 +10,16 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class DiscountSerializer(serializers.ModelSerializer):
-    curent_price = serializers.SerializerMethodField()
-
+    before_price = serializers.SerializerMethodField()
+    after_price=serializers.SerializerMethodField()
     class Meta:
         model = Discount
         fields = "__all__"
-
-    def get_curent_price(self, obj):
-        return round(obj.product.price - (obj.percentage * obj.product.price / 100), 0)
+    def get_before_price(self,obj):
+        return obj.product.price
+    def get_after_price(self, obj):
+        return obj.apply_discount(obj.product.price)
+    #     return round(obj.product.price - (obj.percentage * obj.product.price / 100), 0)
 
 
 class ProductSerializer(serializers.ModelSerializer):

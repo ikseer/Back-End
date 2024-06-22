@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 # myapp/management/commands/create_sample_data.py
-from itertools import cycle
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-from pharmacy.factories import PharmacyFactory
-from pharmacy.models import Pharmacy
 from products.factories import *
 from products.models import *
 
@@ -19,72 +16,53 @@ class Command(BaseCommand):
         # Create and save sample data for Category
         # user = User.objects.all()
 
-        category_names=pd.read_csv(os.path.join(data_dir,'catagory_data.csv'))['Category_name'].tolist()
-        categories = CategoryFactory.create_batch(len(category_names),
-                                                  name=factory.Iterator(cycle(category_names))
-                                                  )
+        # category_names=pd.read_csv(os.path.join(data_dir,'catagory_data.csv'))['Category_name'].tolist()
+        # categories = CategoryFactory.create_batch(len(category_names),
+        #                                           name=factory.Iterator(cycle(category_names))
+        #                                           )
 
-        for category in categories:
-            category.save()
+        # for category in categories:
+        #     category.save()
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully created and saved {len(categories)} categories"
-            )
-        )
+        # self.stdout.write(
+        #     self.style.SUCCESS(
+        #         f"Successfully created and saved {len(categories)} categories"
+        #     )
+        # )
 
         # # Create and save sample data for Pharmacy
-        pharmacies = PharmacyFactory.create_batch(1)
-        for pharmacy in pharmacies:
-            pharmacy.save()
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully created and saved {len(pharmacies)} pharmacies"
-            )
-        )
-        pharmacies=Pharmacy.objects.all()
-        categories=Category.objects.all()
-        product_names=pd.read_csv(os.path.join(data_dir,'product_data.csv'))['Product Name'].tolist()
-        # print(product_names)
-        products = ProductFactory.create_batch(
-                30,
-                name=factory.Iterator(cycle(product_names)),
-                category=factory.Iterator(cycle(categories)),
-                pharmacy=factory.Iterator(cycle(pharmacies)),
-        )
-        for product in products:
-            product.save()
+        # pharmacies = PharmacyFactory.create_batch(5)
+        # for pharmacy in pharmacies:
+        #     pharmacy.save()
+        # self.stdout.write(
+        #     self.style.SUCCESS(
+        #         f"Successfully created and saved {len(pharmacies)} pharmacies"
+        #     )
+        # )
+        # pharmacies=Pharmacy.objects.all()
+        # categories=Category.objects.all()
+        # product_names=pd.read_csv(os.path.join(data_dir,'product_data.csv'))['Product Name'].tolist()
+        # # print(product_names)
+        # products = ProductFactory.create_batch(
+        #         30,
+        #         name=factory.Iterator(cycle(product_names)),
+        #         category=factory.Iterator(cycle(categories)),
+        #         pharmacy=factory.Iterator(cycle(pharmacies)),
+        # )
+        # for product in products:
+        #     product.save()
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully created and saved {len(products)} products"
-            )
-        )
-
-
-
-        for product in products:
-
-            images = get_images(product.name)  # Assuming you have a function to generate image data
-
-            for idx,image in enumerate(sorted(images)):
-                img_factory = ProductImageFactory.create_batch(
-                    size=1,
-                    product=product,
-                    priority=idx
-
-                )
-                for img in img_factory:
-                    img.save()
+        # self.stdout.write(
+        #     self.style.SUCCESS(
+        #         f"Successfully created and saved {len(products)} products"
+        #     )
+        # )
 
 
-        self.stdout.write(
-            self.style.SUCCESS("Successfully created and saved  images")
-        )
 
         # reviews = ProductRatingFactory.create_batch(
-        #     len(products),
-        #     product=factory.Iterator(cycle(products)),
+        #     len(Product.objects.all()),
+        #     product=factory.Iterator(cycle(Product.objects.all())),
         #     user=factory.Iterator(cycle(User.objects.all())),
         # )
 
@@ -94,11 +72,9 @@ class Command(BaseCommand):
         # self.stdout.write(
         #     self.style.SUCCESS(f"Successfully created and saved {len(reviews)} reviews")
         # )
-
-        # # # # Create sample data for Discount
         # discounts = DiscountFactory.create_batch(
-        #     1,
-        #     product=factory.Iterator(cycle(products)),
+        #     10,
+        #     product=factory.Iterator(cycle(Product.objects.all())),
         # )
         # for discount in discounts:
         #     discount.save()
@@ -110,8 +86,41 @@ class Command(BaseCommand):
         # )
 
 
+
+
+
+
+
+
+
+
+
+        # for product in products:
+
+        #     images = get_images(product.name)  # Assuming you have a function to generate image data
+
+        #     for idx,image in enumerate(sorted(images)):
+        #         img_factory = ProductImageFactory.create_batch(
+        #             size=1,
+        #             product=product,
+        #             priority=idx
+
+        #         )
+        #         for img in img_factory:
+        #             img.save()
+
+
+        # self.stdout.write(
+        #     self.style.SUCCESS("Successfully created and saved  images")
+        # )
+
+
+        # # # # Create sample data for Discount
+
+
+
         # coupons=CouponFactory.create_batch(
-        #     1,
+        #     5,
         #     product=factory.Iterator(cycle(products)),
         # )
         # for coupon in coupons:
@@ -182,12 +191,18 @@ class Command(BaseCommand):
         # # # # #     product_rating.product.save()
         # # # # #     product_rating.save()
         # # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(product_ratings)} product ratings'))
-        # # # # # wishlists = WishlistFactory.create_batch(3)
-        # # # # # for wishlist in wishlists:
-        # # # # #     wishlist.product.pharmacy.save()
-        # # # # #     wishlist.product.category.save()
-        # # # # #     wishlist.product.save()
-        # # # # #     wishlist.save()
-        # # # # # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(wishlists)} wishlists'))
+        # wishlists = WishlistFactory.create_batch(
+        #     3)
+        # #     product=factory.Iterator(cycle(Product.objects.all())),
+
+
+        # #                                          )
+        # for wishlist in wishlists:
+        #     wishlist.product.pharmacy.save()
+        #     wishlist.product.category.save()
+        #     wishlist.product.save()
+        #     wishlist.save()
+        # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(wishlists)} wishlists'))
 
         # # # # self.stdout.write(self.style.SUCCESS("Successfully created sample data"))
+        pass
