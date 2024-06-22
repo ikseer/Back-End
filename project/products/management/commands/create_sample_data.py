@@ -2,8 +2,10 @@
 # myapp/management/commands/create_sample_data.py
 
 
+
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+from pharmacy.factories import PharmacyFactory
 from products.factories import *
 from products.models import *
 
@@ -32,66 +34,79 @@ class Command(BaseCommand):
         # )
 
         # # Create and save sample data for Pharmacy
-        # pharmacies = PharmacyFactory.create_batch(5)
-        # for pharmacy in pharmacies:
-        #     pharmacy.save()
-        # self.stdout.write(
-        #     self.style.SUCCESS(
-        #         f"Successfully created and saved {len(pharmacies)} pharmacies"
-        #     )
-        # )
+        pharmacies = PharmacyFactory.create_batch(5)
+        for pharmacy in pharmacies:
+            pharmacy.save()
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Successfully created and saved {len(pharmacies)} pharmacies"
+            )
+        )
         # pharmacies=Pharmacy.objects.all()
-        # categories=Category.objects.all()
-        # product_names=pd.read_csv(os.path.join(data_dir,'product_data.csv'))['Product Name'].tolist()
-        # # print(product_names)
-        # products = ProductFactory.create_batch(
-        #         30,
-        #         name=factory.Iterator(cycle(product_names)),
-        #         category=factory.Iterator(cycle(categories)),
-        #         pharmacy=factory.Iterator(cycle(pharmacies)),
-        # )
-        # for product in products:
-        #     product.save()
+        categories=Category.objects.all()
+        product_names=pd.read_csv(os.path.join(data_dir,'product_data.csv'))['Product Name'].tolist()
+        # print(product_names)
+        products = ProductFactory.create_batch(
+                30,
+                name=factory.Iterator(cycle(product_names)),
+                category=factory.Iterator(cycle(categories)),
+                pharmacy=factory.Iterator(cycle(pharmacies)),
+        )
+        for product in products:
+            product.save()
 
-        # self.stdout.write(
-        #     self.style.SUCCESS(
-        #         f"Successfully created and saved {len(products)} products"
-        #     )
-        # )
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Successfully created and saved {len(products)} products"
+            )
+        )
 
 
 
-        # reviews = ProductRatingFactory.create_batch(
-        #     len(Product.objects.all()),
-        #     product=factory.Iterator(cycle(Product.objects.all())),
-        #     user=factory.Iterator(cycle(User.objects.all())),
-        # )
+        reviews = ProductRatingFactory.create_batch(
+            len(Product.objects.all()),
+            product=factory.Iterator(cycle(Product.objects.all())),
+            user=factory.Iterator(cycle(User.objects.all())),
+        )
 
-        # for review in reviews:
-        #     review.save()
+        for review in reviews:
+            review.save()
 
-        # self.stdout.write(
-        #     self.style.SUCCESS(f"Successfully created and saved {len(reviews)} reviews")
-        # )
-        # discounts = DiscountFactory.create_batch(
-        #     10,
-        #     product=factory.Iterator(cycle(Product.objects.all())),
-        #     discount_type='percentage'
-        # )
-        # for discount in discounts:
-        #     discount.save()
 
-        # self.stdout.write(
-        #     self.style.SUCCESS(
-        #         f"Successfully created and saved {len(discounts)} discounts"
-        #     )
-        # )
+        self.stdout.write(
+            self.style.SUCCESS(f"Successfully created and saved {len(reviews)} reviews")
+        )
+        discounts = DiscountFactory.create_batch(
+            10,
+            product=factory.Iterator(cycle(Product.objects.all())),
+        )
+        for discount in discounts:
+            discount.save()
+
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Successfully created and saved {len(discounts)} discounts"
+            )
+        )
 
         pass
 
 
 
 
+        coupons = CouponFactory.create_batch(
+            10,
+            # product=factory.Iterator(cycle(Product.objects.all())),
+
+        )
+
+        for coupon in coupons:
+            coupon.save()
+
+        self.stdout.write(
+            self.style.SUCCESS(f"Successfully created and saved {len(coupons)} coupons")
+        )
 
 
 
@@ -207,4 +222,4 @@ class Command(BaseCommand):
         # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(wishlists)} wishlists'))
 
         # # # # self.stdout.write(self.style.SUCCESS("Successfully created sample data"))
-        # pass
+

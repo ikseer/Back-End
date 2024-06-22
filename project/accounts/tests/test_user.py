@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from accounts.models import Profile
+from accounts.models import *
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.urls import reverse
@@ -32,8 +32,7 @@ class UserTest(APITestCase):
 
     def test_not_created_profile(self):
         self.test_registration()
-
-        profile = Profile.objects.get(user__email=self.data["email"])
+        profile = Patient.objects.first()
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(profile.user.email, self.data["email"])
         # self.assertEqual(User.objects.count(), 1)
@@ -53,7 +52,7 @@ class UserTest(APITestCase):
         url = reverse("verify-email-otp")
         response = self.client.post(url, {"otp": otp})
 
-        self.assertIn("profile", response.data)
+        # self.assertIn("profile", response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         access = response.data["access"]
@@ -127,7 +126,7 @@ class UserTest(APITestCase):
 
 
 
-# rest password otp
+# # rest password otp
 
 
 class PasswordResetTests(APITestCase):
@@ -179,70 +178,7 @@ class PasswordResetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-# # reset password link
-# # class PasswordResetTests(APITestCase):
-# #     def test_password_reset_request(self):
-# #         user = User.objects.create_user(username='testuser',email='test@example.com', password='testpassword')
-# #         url = reverse('rest_password_reset')
-# #         data = {'email': 'test@example.com'}
-# #         response = self.client.post(url, data)
-# #         # print(response.status_code)
-# #         self.assertEqual(response.status_code, status.HTTP_200_OK)
-# #         self.assertEqual(len(mail.outbox), 1)
-# #         # print(mail.outbox[0].body)
-# #         # self.assertEqual(mail.outbox[0].subject, 'Password reset on example.com')
 
-# #     def test_password_reset_confirm(self):
-# #         # Create a user object
-# #         user = User.objects.create_user(username='testuser', email='test@example.com', password='testpassword')
-
-
-# #         response = self.client.post(reverse('rest_password_reset'),  {'email': 'test@example.com'})
-# #         # print(mail.outbox[0].body)
-# #         st=mail.outbox[0].body.find('http')
-# #         link = mail.outbox[0].body[st:]
-# #         link=link[:link.find('\n')]
-# #         pattern = r'http://testserver/accounts/rest-auth/password/reset/confirm/(?P<uid>[\w-]+)/(?P<token>[\w-]+)'
-
-# #         match = re.search(pattern, link)
-
-
-# #         uid = match.group('uid')
-# #         token = match.group('token')
-# #         # print(uid,token)
-
-# #         data = {
-# #             'uid': uid,
-# #             'token': token,
-# #             'new_password1': 'newpassword',
-# #             'new_password2': 'newpassword',
-# #         }
-
-# #         # Make the POST request to the password reset confirmation URL
-# #         url = reverse('rest_password_reset_confirm')
-# #         response = self.client.post(url, data)
-# #         # print(response.data)
-# #         self.assertEqual(response.status_code, status.HTTP_200_OK)
-# #         self.assertEqual(response.data['detail'], 'Password has been reset with the new password.')
-
-#     # def test_password_change(self):
-#     #     user = User.objects.create_user(username='testuser',email='test@example.com', password='testpassword')
-#     #     self.client.force_authenticate(user=user)
-#     #     url = reverse('rest_password_change')
-#     #     data = {
-#     #         'old_password': 'testpassword',
-#     #         'new_password1': 'newpassword',
-#     #         'new_password2': 'newpassword',
-#     #     }
-#     #     response = self.client.post(url, data)
-#     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-#     #     self.assertEqual(response.data['detail'], 'New password has been saved.')
-
-
-# from django.urls import reverse
-# from rest_framework import status
-# from rest_framework.test import APITestCase
-# from django.contrib.auth.models import User
 
 
 class CheckPasswordViewTest(APITestCase):

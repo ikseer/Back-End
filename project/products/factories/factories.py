@@ -223,8 +223,11 @@ class WishlistFactory(factory.Factory):
 class CouponFactory(factory.Factory):
     class Meta:
         model = Coupon
-    percentage = factory.Faker("random_int", min=1, max=50)
     start_date = factory.Faker("date_between", start_date="-30d", end_date="today")
     end_date = factory.Faker("date_between", start_date="today", end_date="+30d")
-    product = factory.SubFactory("products.factories.ProductFactory")
-    number = factory.Faker("random_int", min=1, max=1000)
+    usage_limit = factory.Faker("random_int", min=100, max=1000)
+    usage_count = factory.Faker("random_int", min=1, max=100)
+    minimum_purchase_amount =factory.Faker("random_int", min=100, max=1000)
+    discount_amount=factory.Faker("random_int", min=1, max=100)
+    discount_type = factory.Faker("random_element", elements=["percentage", "amount"])
+    active = factory.Faker("boolean")

@@ -370,3 +370,8 @@ STORAGES = {
 }
 
 DROPBOX_OAUTH2_REFRESH_TOKEN= config('DROPBOX_OAUTH2_REFRESH_TOKEN')
+
+
+
+
+# REGISTER_SERIALIZER="accounts.serializers.RegistrationSerializerSettings"

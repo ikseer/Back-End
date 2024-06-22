@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from accounts.views import *
 from dj_rest_auth.jwt_auth import get_refresh_view
 from dj_rest_auth.views import LogoutView, PasswordChangeView, UserDetailsView
 from django.conf import settings
@@ -8,8 +7,11 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenVerifyView
 
+from .views import *
+
 router = DefaultRouter()
-router.register(r"profile", ProfileViewSet, basename="profile")
+router.register(r"patient", PatientViewSet, basename="patient")
+router.register(r"doctor", DoctorViewSet, basename="doctor")
 
 urlpatterns = [
     ### profile ###
