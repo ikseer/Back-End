@@ -6,7 +6,7 @@ from django.contrib import admin
 admin.site.register(PhoneModel)
 admin.site.register(Patient)
 admin.site.register(Doctor)
-
+admin.site.register(CustomUser)
 
 # class ProfileAdmin(admin.ModelAdmin):
 #     list_display = (
