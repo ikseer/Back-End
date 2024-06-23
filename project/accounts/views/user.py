@@ -32,7 +32,7 @@ class OtpByEmailView(GenericAPIView):
             email = serializer.validated_data["email"]
 
             try:
-                user = User.objects.get(email=email)
+                user = User.objects.filter(email=email).order_by('-created_at').first()
             except User.DoesNotExist:
                 return Response(
                     {"detail": "Invalid Email"}, status=status.HTTP_400_BAD_REQUEST

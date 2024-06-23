@@ -14,10 +14,9 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractUser,BaseModel):
     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
     user_type = models.CharField(max_length=255, choices=(('patient', 'Patient'), ('doctor', 'Doctor')),default='patient')
-
 
 
 
