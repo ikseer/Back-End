@@ -4,11 +4,16 @@ from datetime import datetime
 
 from accounts.filters import *
 from accounts.models import *
+from accounts.models import CustomUser
+from accounts.permissions import *
 from accounts.serializers import *
+from accounts.serializers import CustomUserSerializer
 from accounts.utils import *
 from dj_rest_auth.serializers import UserDetailsSerializer
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import status
+from orders.pagination import CustomPagination
+# views.py
+from rest_framework import status, viewsets
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -20,6 +25,11 @@ from .views import *
 
 
 
+class CustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    pagination_class=CustomPagination
+    permission_classes=[IsAuthenticated,IsAdminOrIsSelf]
 
 
 class OtpByEmailView(GenericAPIView):
