@@ -7,6 +7,7 @@ admin.site.register(PhoneModel)
 admin.site.register(Patient)
 admin.site.register(Doctor)
 admin.site.register(CustomUser)
+admin.site.register(EmailVerificationOTP)
 
 # class ProfileAdmin(admin.ModelAdmin):
 #     list_display = (

@@ -37,6 +37,11 @@ class OtpByEmailView(GenericAPIView):
                 return Response(
                     {"detail": "Invalid Email"}, status=status.HTTP_400_BAD_REQUEST
                 )
+            if not user:
+                return Response(
+                    {"detail": "Invalid Email"}, status=status.HTTP_400_BAD_REQUEST
+                )
+
 
             SendEmail.send_otp(user)
             return Response(
