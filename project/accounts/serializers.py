@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from dj_rest_auth.serializers import LoginSerializer, UserDetailsSerializer
+from dj_rest_auth.serializers import LoginSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Doctor, Patient
+from .models import *
 
 User=get_user_model()
 
@@ -96,8 +96,8 @@ class DoctorSerializer(serializers.ModelSerializer):
 
         return representation
 
-class CustomUserSerializer(UserDetailsSerializer):
-    profile = PatientSerializer()  # Replace with your actual profile serializer
+# class CustomUserSerializer(UserDetailsSerializer):
+#     profile = PatientSerializer()  # Replace with your actual profile serializer
 
 
 class loginSerializer(LoginSerializer):
@@ -118,3 +118,10 @@ class OtpByEmailSerializer(serializers.Serializer):
 
 class VerifyEmailOtpSerializer(serializers.Serializer):
     otp = serializers.CharField(required=True)
+
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields ='__all__'
