@@ -80,6 +80,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # allauth
     "allauth.account.middleware.AccountMiddleware",
+
+    "django.middleware.locale.LocaleMiddleware"
+
 ]
 
 ROOT_URLCONF = "project.urls"
@@ -375,3 +378,11 @@ DROPBOX_OAUTH2_REFRESH_TOKEN= config('DROPBOX_OAUTH2_REFRESH_TOKEN')
 
 
 # REGISTER_SERIALIZER="accounts.serializers.RegistrationSerializerSettings"
+
+# LANGUAGES = [
+#     ('en', 'English'),
+#     ('ar', 'Arabic'),
+# ]
+# LOCALE_PATHS = [
+#     os.path.join(BASE_DIR, 'locale'),  # Directory where Django should look for translation files
+# ]
