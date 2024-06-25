@@ -9,7 +9,6 @@ from accounts.permissions import *
 from accounts.serializers import *
 from accounts.serializers import CustomUserSerializer
 from accounts.utils import *
-from dj_rest_auth.serializers import UserDetailsSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from orders.pagination import CustomPagination
 # views.py
@@ -81,9 +80,9 @@ class VerifyEmailOtpView(GenericAPIView):
             data = {
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
-                "user": UserDetailsSerializer(user).data,
-                "user_type":user.user_type,
-                "profile":POSITIONS[user.user_type].objects.get(user=user).id
+                "user": CustomUserSerializer(user).data,
+                # "user_type":user.user_type,
+                "profile_id":POSITIONS[user.user_type].objects.get(user=user).id
 
                 # "profile": PatientSerializer(user.profile).data,
             }

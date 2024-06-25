@@ -124,4 +124,5 @@ class VerifyEmailOtpSerializer(serializers.Serializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields ='__all__'
+        # fields ='__all__'
+        exclude=['password']
