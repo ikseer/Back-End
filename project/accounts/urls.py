@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from accounts.views import *
 from dj_rest_auth.jwt_auth import get_refresh_view
 from dj_rest_auth.views import LogoutView, PasswordChangeView, UserDetailsView
 from django.conf import settings
@@ -8,8 +7,12 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenVerifyView
 
+from .views import *
+
 router = DefaultRouter()
-router.register(r"profile", ProfileViewSet, basename="profile")
+router.register(r"patient", PatientViewSet, basename="patient")
+router.register(r"doctor", DoctorViewSet, basename="doctor")
+router.register(r'users', CustomUserViewSet)
 
 urlpatterns = [
     ### profile ###
@@ -17,9 +20,9 @@ urlpatterns = [
     # path('api/token/', CustomTokenObtainPairView.as_view(), name='rest_login'),
     path("login/", CustomTokenObtainPairView.as_view(), name="rest_login"),
     ### User ###
-    path("check-email", CheckEmailView.as_view(), name="check-email"),
-    path("check-username", CheckUsernameView.as_view(), name="check-username"),
-    path("check-password", CheckPasswordView.as_view(), name="check-password"),
+    path("check-email/", CheckEmailView.as_view(), name="check-email"),
+    path("check-username/", CheckUsernameView.as_view(), name="check-username"),
+    path("check-password/", CheckPasswordView.as_view(), name="check-password"),
     path("otp-by-email/", OtpByEmailView.as_view(), name="otp-by-email"),
     path("verify-email-otp/", VerifyEmailOtpView.as_view(), name="verify-email-otp"),
     ### phone ###

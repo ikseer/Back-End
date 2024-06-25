@@ -14,6 +14,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     "products",
     "pharmacy",
     "orders",
+    "chat",
     # rest framework
     "rest_framework",
     "rest_framework.authtoken",
@@ -77,6 +80,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # allauth
     "allauth.account.middleware.AccountMiddleware",
+
+    "django.middleware.locale.LocaleMiddleware"
+
 ]
 
 ROOT_URLCONF = "project.urls"
@@ -124,9 +130,9 @@ AUTH_PASSWORD_VALIDATORS = [
     # {
     # 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     # },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
 ]
 
 
@@ -333,3 +339,50 @@ CACHES = {
 }
 
 # settings.py
+# ATOMIC_REQUESTS = True
+
+
+# SWAGGER_SETTINGS = {
+#     'SECURITY_DEFINITIONS': {
+#         'Bearer': {
+#             'type': 'apiKey',
+#             'name': 'Authorization',
+#             'in': 'header'
+#         }
+#     }
+# }
+
+DROPBOX_APP_KEY=config('DROPBOX_APP_KEY')
+DROPBOX_APP_SECRET=config('DROPBOX_APP_SECRET')
+
+INSTALLED_APPS += (
+    'storages',
+
+)
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.dropbox.DropboxStorage",
+        "OPTIONS": {
+
+        },
+
+    },
+   "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+DROPBOX_OAUTH2_REFRESH_TOKEN= config('DROPBOX_OAUTH2_REFRESH_TOKEN')
+
+
+
+
+# REGISTER_SERIALIZER="accounts.serializers.RegistrationSerializerSettings"
+
+# LANGUAGES = [
+#     ('en', 'English'),
+#     ('ar', 'Arabic'),
+# ]
+# LOCALE_PATHS = [
+#     os.path.join(BASE_DIR, 'locale'),  # Directory where Django should look for translation files
+# ]

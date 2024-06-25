@@ -166,3 +166,4 @@ old
 .vscode
 test_data
 old*
+firebase-adminsdk.json

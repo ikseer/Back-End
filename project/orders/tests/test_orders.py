@@ -47,9 +47,18 @@ class OrderTest(TestCase):
         )
         self.access_token = response.data["access"]
         self.order_data = {
-            "customer": self.user.id,
+            "user": self.user.id,
             "pharmacy": self.pharmacy.id,
         }
+        cart = self.client.get("/orders/cart/",HTTP_AUTHORIZATION=f"Bearer {self.access_token}").data
+        self.data={
+            'product':self.product1.id,
+            'quantity':3,
+            'cart':cart['id']
+
+        }
+        self.client.post("/orders/cart-item/",data=self.data,format='json',HTTP_AUTHORIZATION=f"Bearer {self.access_token}").data
+
 
     def create_order(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
@@ -57,9 +66,10 @@ class OrderTest(TestCase):
         return response.data
 
     def test_create_order(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
-        response = self.client.post("/orders/orders/", self.order_data, format="json")
+        response = self.client.post("/orders/orders/", self.order_data, format="json",HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(OrderItem.objects.count(),1)
+        self.assertEqual(CartItem.objects.count(),0)
 
     def test_update_order(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
