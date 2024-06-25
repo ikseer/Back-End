@@ -67,7 +67,7 @@ class PaymobOrder(BaseModel):
 
 
 class Cart(BaseModel):
-    customer = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     products = models.ManyToManyField('products.Product', through='CartItem',related_name='items')
     def get_items(self):
         return self.cartitem_set.select_related('product')
