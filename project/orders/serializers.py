@@ -22,6 +22,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+        read_only_fields = ['customer', 'created_at', 'updated_at','products','status']  # Add other fields to this list as needed
 
 
 class CartItemSerializer(serializers.ModelSerializer):
