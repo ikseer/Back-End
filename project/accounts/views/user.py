@@ -82,6 +82,9 @@ class VerifyEmailOtpView(GenericAPIView):
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
                 "user": UserDetailsSerializer(user).data,
+                "user_type":user.user_type,
+                "profile":POSITIONS[user.user_type].objects.get(user=user).id
+
                 # "profile": PatientSerializer(user.profile).data,
             }
 

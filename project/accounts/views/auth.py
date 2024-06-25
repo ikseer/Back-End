@@ -83,8 +83,15 @@ class UnlinkProviderView(GenericAPIView):
 
 
 class CustomTokenObtainPairView(LoginView):
-    pass
-
+    def post(self, request, *args, **kwargs):
+        response= super().post(request, *args, **kwargs)
+        response.data['user_type']=self.user.user_type
+        try:
+            response.data['profile']=POSITIONS[self.user.user_type].objects.get(user=self.user).id
+        except ObjectDoesNotExist:
+            response.data['profile']=None
+            pass
+        return response
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
