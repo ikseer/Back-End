@@ -45,8 +45,8 @@ class CustomRegisterView(RegisterView):
         POSITIONS[user.user_type].objects.create(
             user=user,
             first_name=serializer.data['first_name'],
-            last_name = serializer["last_name"]   ,
-            gender = serializer["gender"] )
+            last_name = serializer.data["last_name"]   ,
+            gender = serializer.data["gender"] )
 
 
 
