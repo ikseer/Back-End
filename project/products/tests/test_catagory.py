@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from allauth.account.models import EmailAddress
 from django.test import TestCase
 from django.urls import reverse
 from orders.models import *
@@ -22,13 +23,17 @@ class CategoryViewSetTests(TestCase):
         self.user = User.objects.create_user(
             username="test_user", email="test1@example.com", password="test_password"
         )
+        EmailAddress.objects.create(user=self.user,verified=True)
+
         # get token
         self.user_token = self.get_token(self.user)
-
         self.admin = User.objects.create_superuser(
             username="test_admin", email="test2@example.com", password="test_password"
         )
+        # EmailAddress.objects.create(user=self.admin,verified=True)
+
         self.admin_token = self.get_token(self.admin)
+        # print(self.admin_token )
 
     def get_token(self, user):
         url = reverse("rest_login")

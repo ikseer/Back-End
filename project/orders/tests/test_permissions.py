@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -16,6 +17,8 @@ class PermissionTest(TestCase):
         self.user = User.objects.create_user(
             username="usual_user", email="usual@example.com", password="test_password"
         )
+        EmailAddress.objects.create(user=self.user,email=self.user.email,verified=True)
+
         self.admin_user = User.objects.create_user(
             username="admin_user",
             email="admin@example.com",
@@ -144,6 +147,8 @@ class PermissionTest(TestCase):
         user2 = User.objects.create_user(
             username="user2", email="user2@example.com", password="test_password"
         )
+        EmailAddress.objects.create(user=user2,email=user2.email,verified=True)
+
         cart=Cart.objects.get(user=user2)
         CartItem.objects.create(cart=cart,product=self.product1,quantity=2)
         order_another_user = self.client.post(
