@@ -4,6 +4,9 @@
 
 
 
+from itertools import cycle
+
+from accounts.factories import *
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from products.factories import *
@@ -228,16 +231,19 @@ class Command(BaseCommand):
 
 
 
-        # users=UserFactory.create_batch(4)
-        # for user in users:
-        #     user.save()
-        # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(users)} user'))
+        users=UserFactory.create_batch(4
+                                       ,
+                                    user_type="doctor"
 
-        # doctors=DoctoerFactory.create_batch(4,
-        #                                     user=factory.Iterator(cycle(users)),
-        #                                     user_type="doctor"
-        #                                     )
-        # for doctor in doctors :
-        #     doctor.save()
-        # self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(doctors)} doctor'))
+                                       )
+        for user in users:
+            user.save()
+        self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(users)} user'))
+
+        doctors=DoctoerFactory.create_batch(4,
+                                            user=factory.Iterator(cycle(users)),
+                                            )
+        for doctor in doctors :
+            doctor.save()
+        self.stdout.write(self.style.SUCCESS(f'Successfully created and saved {len(doctors)} doctor'))
         pass
