@@ -85,6 +85,11 @@ class UnlinkProviderView(GenericAPIView):
 class CustomTokenObtainPairView(LoginView):
     def post(self, request, *args, **kwargs):
         response= super().post(request, *args, **kwargs)
+
+        if not (self.user.is_superuser or self.user.is_staff or  EmailAddress.objects.filter(user=self.user,
+                                        verified=True).exists()):
+            return  Response({'error': 'Email address not verified.'}, status=400)
+
         response.data['user']=CustomUserSerializer(self.user).data
         try:
             response.data['profile_id']=POSITIONS[self.user.user_type].objects.get(user=self.user).id
