@@ -317,7 +317,7 @@ SWAGGER_SETTINGS = {
 # }
 
 
-CSRF_TRUSTED_ORIGINS = ["https://ikseer.azurewebsites.net"]
+CSRF_TRUSTED_ORIGINS = ["https://ikseer.azurewebsites.net","https://ikseer.onrender.com"]
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=20),  # Short expiration for security
