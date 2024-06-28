@@ -126,3 +126,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         # fields ='__all__'
         exclude=['password']
+
+
+
+
+
+class StatisticsSerializer(serializers.Serializer):
+    total_patients=serializers.IntegerField()
+    total_doctors=serializers.IntegerField()
+    total_pharmacies=serializers.IntegerField()
+    total_products=serializers.IntegerField()
+    total_orders=serializers.IntegerField()

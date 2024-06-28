@@ -17,7 +17,6 @@ router.register(r'users', CustomUserViewSet)
 urlpatterns = [
     ### profile ###
     path("", include(router.urls)),
-    # path('api/token/', CustomTokenObtainPairView.as_view(), name='rest_login'),
     path("login/", CustomTokenObtainPairView.as_view(), name="rest_login"),
     ### User ###
     path("check-email/", CheckEmailView.as_view(), name="check-email"),
@@ -31,12 +30,11 @@ urlpatterns = [
     ### social  ###
     path("dj-rest-auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
     path("dj-rest-auth/google/", GoogleLogin.as_view(), name="google_login"),
-    ### dj-rest-auth ###
-    # path('', include('dj_rest_auth.urls')),
+
     path("register/", CustomRegisterView.as_view(), name="rest_register"),
-    # path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
-    ### allauth ###
-    # path('allauth/', include('allauth.urls')),
+
+    path('statistics/', Statistics.as_view({'get': 'get'}), name='dashboard'),
+
 ]
 
 urlpatterns += [
