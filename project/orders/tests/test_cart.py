@@ -77,6 +77,9 @@ class CartTest(TestCase):
         response = self.client.post("/orders/cart-item/",data=data,format='json')
         self.assertEqual(response.status_code,status.HTTP_201_CREATED)
 
+        response = self.client.get("/orders/cart/")
+        # print(response.data)
+
 
 
 

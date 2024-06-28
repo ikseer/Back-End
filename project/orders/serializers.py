@@ -27,12 +27,13 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product_name=serializers.CharField(source='product.name',read_only=True)
+    product_final_price=serializers.CharField(source='product.get_final_price',read_only=True)
     # product = serializers.StringRelatedField()
 
     class Meta:
         model =CartItem
         fields='__all__'
-        extra_fields =['product_name']
+        extra_fields =['product_name','product_final_price']
         # fields=['id','product','product_name','quantity','cart']
 
 
