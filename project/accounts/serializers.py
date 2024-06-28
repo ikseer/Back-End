@@ -44,23 +44,10 @@ class CustomRegistration(RegisterSerializer):
         choices=['patient','doctor'],
         required=False
     )
-# class CustomRegistration(RegisterSerializer):
-#     first_name = serializers.CharField(required=True)
-#     last_name = serializers.CharField(required=True)
-#     gender = serializers.CharField(required=True)
-#     user_type = serializers.ChoiceField(
-#         choices=['patient','doctor'],
-#         required=False
-#     )
 
-# class RegistrationSerializerSettings(RegisterSerializer):
-
-#     user_type = serializers.ChoiceField(
-#         choices=['patient','doctor'],
-#         required=False
-#     )
 
 class PatientSerializer(serializers.ModelSerializer):
+    phone=serializers.SerializerMethodField()
     class Meta:
         model = Patient
         exclude = []
@@ -77,9 +64,12 @@ class PatientSerializer(serializers.ModelSerializer):
         # if not instance.image:
         #     representation["image"] = "media/default/user.jpg"
         return representation
-
+    def get_phone(self, obj):
+        phones = PhoneModel.objects.filter(user=obj.user)
+        return PhoneSerializer(phones,many=True).data
 
 class DoctorSerializer(serializers.ModelSerializer):
+    phone=serializers.SerializerMethodField()
     class Meta:
         model = Doctor
         exclude = []
@@ -95,9 +85,10 @@ class DoctorSerializer(serializers.ModelSerializer):
         representation["username"] = instance.user.username
 
         return representation
+    def get_phone(self, obj):
+        phones = PhoneModel.objects.filter(user=obj.user)
+        return PhoneSerializer(phones,many=True).data
 
-# class CustomUserSerializer(UserDetailsSerializer):
-#     profile = PatientSerializer()  # Replace with your actual profile serializer
 
 
 class loginSerializer(LoginSerializer):
@@ -137,3 +128,10 @@ class StatisticsSerializer(serializers.Serializer):
     total_pharmacies=serializers.IntegerField()
     total_products=serializers.IntegerField()
     total_orders=serializers.IntegerField()
+
+
+
+class PhoneSerializer(serializers.Serializer):
+    class Meta:
+        model=PhoneModel
+        fields=['id','Mobile','isVerified']
