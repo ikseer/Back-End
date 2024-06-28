@@ -3,6 +3,7 @@
 
 from accounts.filters import *
 from accounts.models import *
+from accounts.pagination import *
 from accounts.permissions import ProfilePermission
 from accounts.serializers import *
 from accounts.utils import *
@@ -20,3 +21,4 @@ class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientSerializer
     permission_classes = [ProfilePermission]
     filterset_class = PatientFilter
+    pagination_class=CustomPagination
