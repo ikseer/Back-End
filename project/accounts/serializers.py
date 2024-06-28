@@ -51,6 +51,8 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         exclude = []
+        extra_fields=['phone']
+
 
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
@@ -73,6 +75,7 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         exclude = []
+        extra_fields=['phone']
 
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
@@ -87,8 +90,8 @@ class DoctorSerializer(serializers.ModelSerializer):
         return representation
     def get_phone(self, obj):
         phones = PhoneModel.objects.filter(user=obj.user)
-        return PhoneSerializer(phones,many=True).data
-
+        phones= PhoneSerializer(phones, many=True).data
+        return phones
 
 
 class loginSerializer(LoginSerializer):
@@ -131,7 +134,8 @@ class StatisticsSerializer(serializers.Serializer):
 
 
 
-class PhoneSerializer(serializers.Serializer):
+class PhoneSerializer(serializers.ModelSerializer):
     class Meta:
         model=PhoneModel
-        fields=['id','Mobile','isVerified']
+        # fields=['id','Mobile','isVerified']
+        fields='__all__'
