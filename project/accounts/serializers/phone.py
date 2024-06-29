@@ -16,5 +16,5 @@ class PhoneRegisterSerializer(serializers.Serializer):
 class PhoneSerializer(serializers.ModelSerializer):
     class Meta:
         model=PhoneModel
-        # fields=['id','Mobile','isVerified']
-        fields='__all__'
+        fields=['id','Mobile','isVerified']
+        # fields='__all__'
