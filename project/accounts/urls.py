@@ -13,6 +13,7 @@ router = DefaultRouter()
 router.register(r"patient", PatientViewSet, basename="patient")
 router.register(r"doctor", DoctorViewSet, basename="doctor")
 router.register(r'users', CustomUserViewSet)
+router.register(r'phone', PhoneViewSet)
 
 urlpatterns = [
     ### profile ###

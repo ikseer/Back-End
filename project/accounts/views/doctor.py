@@ -7,8 +7,10 @@ from accounts.pagination import *
 from accounts.permissions import ProfilePermission, StaffPermission
 from accounts.serializers import *
 from accounts.utils import *
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import filters as rest_filters
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from safedelete import HARD_DELETE
@@ -20,13 +22,17 @@ from .views import *
 
 
 
-
 class DoctorViewSet(viewsets.ModelViewSet):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
     permission_classes = [ProfilePermission]
-    filterset_class = DoctorFilter
     pagination_class=CustomPagination
+    filter_backends = [
+            DjangoFilterBackend,
+            rest_filters.SearchFilter,
+            rest_filters.OrderingFilter,
+        ]
+    filterset_class = DoctorFilter
 
 
     @swagger_auto_schema(
