@@ -38,7 +38,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     def get_product_image(self,obj):
         first_image = ProductImage.objects.order_by('priority').first()
         if first_image:
-            return ProductImageSerializer(first_image).data
+            return ProductImageSerializer(first_image)['image']
         else:
             return None
 
