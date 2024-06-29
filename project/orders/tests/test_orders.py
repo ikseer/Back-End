@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -16,6 +17,8 @@ class OrderTest(TestCase):
         self.user = User.objects.create_user(
             username="test_user", email="test@example.com", password="test_password"
         )
+        EmailAddress.objects.create(user=self.user,verified=True)
+
         self.pharmacy = Pharmacy.objects.create(
             name="Test pharmacy",
             location="Test location",

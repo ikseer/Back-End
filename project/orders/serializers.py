@@ -27,17 +27,25 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product_name=serializers.CharField(source='product.name',read_only=True)
-    # product = serializers.StringRelatedField()
+    product_final_price=serializers.CharField(source='product.get_final_price',read_only=True)
+    product_image=serializers.SerializerMethodField()
 
     class Meta:
         model =CartItem
         fields='__all__'
-        extra_fields =['product_name']
+        extra_fields =['product_name','product_final_price']
         # fields=['id','product','product_name','quantity','cart']
+    def get_product_image(self,obj):
+        first_image = ProductImage.objects.filter(product=obj.product).order_by('priority').first()
+        if first_image:
+            return ProductImageSerializer(first_image).data['image']
+        else:
+            return None
 
 
 class CartSerializer(serializers.ModelSerializer):
     # items = CartItemSerializer(source='cart__items', many=True, read_only=True)
+    total_price=serializers.CharField(source='get_total_price',read_only=True)
     items = CartItemSerializer(many=True, read_only=True)
     class Meta:
         model =Cart

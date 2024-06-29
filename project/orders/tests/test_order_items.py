@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -18,9 +19,11 @@ class OrderItemTest(TestCase):
         )
         self.client = APIClient()
         url = reverse("rest_login")
+        EmailAddress.objects.create(user=user,email=user.email,verified=True)
         response = self.client.post(
             url, {"email": "test@example.com", "password": "test_password"}
         )
+
         self.access_token = response.data["access"]
         self.category = Category.objects.create(name="Test category")
         self.pharmacy = Pharmacy.objects.create(

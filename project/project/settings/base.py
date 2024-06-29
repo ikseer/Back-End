@@ -164,6 +164,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        # "accounts.custom_jwt.CustomJWTAuthentication",
     ),
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
@@ -317,7 +318,7 @@ SWAGGER_SETTINGS = {
 # }
 
 
-CSRF_TRUSTED_ORIGINS = ["https://ikseer.azurewebsites.net"]
+CSRF_TRUSTED_ORIGINS = ["https://ikseer.azurewebsites.net","https://ikseer.onrender.com"]
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=20),  # Short expiration for security
@@ -386,3 +387,18 @@ DROPBOX_OAUTH2_REFRESH_TOKEN= config('DROPBOX_OAUTH2_REFRESH_TOKEN')
 # LOCALE_PATHS = [
 #     os.path.join(BASE_DIR, 'locale'),  # Directory where Django should look for translation files
 # ]
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}

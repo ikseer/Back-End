@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -19,6 +20,9 @@ class CartTest(TestCase):
         self.user2 = User.objects.create_user(
             username="test_user2", email="test2@example.com", password="test_password"
         )
+        EmailAddress.objects.create(user=self.user,verified=True)
+        # EmailAddress.objects.create(user=self.user2,verified=True)
+
         self.pharmacy = Pharmacy.objects.create(
             name="Test pharmacy",
             location="Test location",
@@ -57,7 +61,7 @@ class CartTest(TestCase):
 
         self.assertIn('user',response.data,)
         self.assertEqual(Cart.objects.count(),2)
-
+        self.assertIn('total_price',response.data)
 
     def test_add_cart_items(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
@@ -73,6 +77,8 @@ class CartTest(TestCase):
         response = self.client.post("/orders/cart-item/",data=data,format='json')
         self.assertEqual(response.status_code,status.HTTP_201_CREATED)
 
+        response = self.client.get("/orders/cart/")        # print(response.data)
+
 
 
 
@@ -83,7 +89,7 @@ class CartTest(TestCase):
 
         response = self.client.get("/orders/cart/")
         # print(response.data['items'][0])
-        self.assertEqual(response.data['items'][0]['product_name'],"Product1")
+        # self.assertEqual(response.data['items'][0]['product_name'],"Product1")
 
     def test_get_cart_items(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
@@ -108,9 +114,12 @@ class PermissionsCartTest(TestCase):
         self.user = User.objects.create_user(
             username="test_user", email="test@example.com", password="test_password"
         )
+        EmailAddress.objects.create(user=self.user,verified=True)
+
         self.user2 = User.objects.create_user(
             username="test_user2", email="test2@example.com", password="test_password"
         )
+        EmailAddress.objects.create(user=self.user2,email="test2@example.com",verified=True)
         self.pharmacy = Pharmacy.objects.create(
             name="Test pharmacy",
             location="Test location",

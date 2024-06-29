@@ -58,5 +58,14 @@ class DoctorTest(APITestCase):
         self.assertEqual(len(doctor),1)
         self.assertEqual(len(patient),0)
     def test_get_doctor(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
+
+        response = self.client.post(
+            reverse("phone-register"), {"phone": "01015321456"}
+        )
+        # print('*'*50)
+        # print(PhoneModel.objects.first().user,self.user)
+        # print(response.data )
         response=self.client.get(f'/accounts/doctor/?user={self.user.id}')
         self.assertEqual(response.status_code,200)
+        # print(response.data)

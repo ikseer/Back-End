@@ -73,6 +73,7 @@ class UserTest(APITestCase):
             url, {"username": "testuser", "password": "testpassword"}
         )
         self.assertEqual(response.status_code, 200)
+        # print(response.data)
 
     def test_otp_by_email(self):
         self.test_login_confirmed_email()

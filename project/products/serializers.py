@@ -87,7 +87,7 @@ class HomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ["generic_name", "name", "price", "image", "discount", "review"]
+        fields = ["id","generic_name", "name", "price", "image", "discount", "review"]
 
     def get_image(self, obj):
         image = ProductImage.objects.filter(product=obj).order_by("-priority")[0:1]

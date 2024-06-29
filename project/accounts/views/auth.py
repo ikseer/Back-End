@@ -45,8 +45,8 @@ class CustomRegisterView(RegisterView):
         POSITIONS[user.user_type].objects.create(
             user=user,
             first_name=serializer.data['first_name'],
-            last_name = serializer["last_name"]   ,
-            gender = serializer["gender"] )
+            last_name = serializer.data["last_name"]   ,
+            gender = serializer.data["gender"] )
 
 
 
@@ -83,8 +83,20 @@ class UnlinkProviderView(GenericAPIView):
 
 
 class CustomTokenObtainPairView(LoginView):
-    pass
+    def post(self, request, *args, **kwargs):
+        response= super().post(request, *args, **kwargs)
 
+        if not (self.user.is_superuser or self.user.is_staff or  EmailAddress.objects.filter(user=self.user,
+                                        verified=True).exists()):
+            return  Response({'error': 'Email address not verified.'}, status=400)
+
+        response.data['user']=CustomUserSerializer(self.user).data
+        try:
+            response.data['profile_id']=POSITIONS[self.user.user_type].objects.get(user=self.user).id
+        except ObjectDoesNotExist:
+            response.data['profile_id']=None
+            pass
+        return response
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
