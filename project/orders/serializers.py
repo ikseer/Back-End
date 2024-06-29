@@ -36,7 +36,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         extra_fields =['product_name','product_final_price']
         # fields=['id','product','product_name','quantity','cart']
     def get_product_image(self,obj):
-        first_image = ProductImage.objects.order_by('priority').first()
+        first_image = ProductImage.objects.filter(product=obj.product).order_by('priority').first()
         if first_image:
             return ProductImageSerializer(first_image).data['image']
         else:
