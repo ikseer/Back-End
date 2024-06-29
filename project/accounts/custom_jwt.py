@@ -1,9 +1,13 @@
 # import logging
+# import logging
 
+# from rest_framework_simplejwt.authentication import JWTAuthentication
 # from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
+# class CustomJWTAuthentication(JWTAuthentication):
 # class CustomJWTAuthentication(JWTAuthentication):
 
 #     # def authenticate(self, request):

@@ -16,7 +16,6 @@ router.register(r'users', CustomUserViewSet)
 
 urlpatterns = [
     ### profile ###
-    path("", include(router.urls)),
     path("login/", CustomTokenObtainPairView.as_view(), name="rest_login"),
     ### User ###
     path("check-email/", CheckEmailView.as_view(), name="check-email"),
@@ -43,6 +42,22 @@ urlpatterns += [
     path("password/change/", PasswordChangeView.as_view(), name="rest_password_change"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("token/refresh/", get_refresh_view().as_view(), name="token_refresh"),
+]
+
+urlpatterns+=[
+
+    path('patient/deleted/', PatientViewSet.as_view({'get': 'get_deleted'}), name='patient-get-deleted'),
+    path('doctor/deleted/', DoctorViewSet.as_view({'get': 'get_deleted'}), name='doctor-get-deleted'),
+
+    path('deleted-patient/restore/<str:pk>/', DeletedPatientView.as_view({'post': 'restore'}), name='patient-restore'),
+    path('deleted-patient/delete/<str:pk>/', DeletedPatientView.as_view({'delete': 'destroy'}), name='deleted-patient-delete'),
+
+    path('deleted-doctor/restore/<str:pk>/', DeletedDoctorView.as_view({'post': 'restore'}), name='doctor-restore'),
+    path('deleted-doctor/delete/<str:pk>/', DeletedDoctorView.as_view({'delete': 'destroy'}), name='deleted-doctor-delete'),
+
+]
+urlpatterns+=[
+        path("", include(router.urls)),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
