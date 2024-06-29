@@ -5,5 +5,5 @@ from accounts.models import *
 
 class PhoneFilter(filters.FilterSet):
     class Meta:
-        model = Patient
+        model = Phone
         fields='__all__'
