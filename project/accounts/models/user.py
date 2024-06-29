@@ -1,14 +1,20 @@
 
-import uuid
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
+from safedelete.managers import SafeDeleteManager
 
 from .model import *
 
 
-class CustomUser(AbstractUser,BaseModel):
-    id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
+class CustomUserManager(SafeDeleteManager, UserManager):
+    pass
+
+
+class CustomUser(BaseModel,AbstractUser):
+
+    _safedelete_policy =SOFT_DELETE_CASCADE
+    objects = CustomUserManager()
     user_type = models.CharField(max_length=255, choices=(('patient', 'Patient'), ('doctor', 'Doctor')),default='patient')
 
 
