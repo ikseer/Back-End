@@ -12,5 +12,7 @@ DATABASES = {
         "TEST": {
             "NAME": "my_testdatabase",
         },
+       "ATOMIC_REQUESTS": True
+
     }
 }
