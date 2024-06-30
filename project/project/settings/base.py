@@ -402,3 +402,8 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+
+
+# Time after which OTP will expire
+EXPIRY_TIME = 120  # seconds
