@@ -12,6 +12,8 @@ from .views import *
 router = DefaultRouter()
 router.register(r"patient", PatientViewSet, basename="patient")
 router.register(r"doctor", DoctorViewSet, basename="doctor")
+router.register(r"employee", DoctorViewSet, basename="employee")
+
 router.register(r'users', CustomUserViewSet)
 router.register(r'phone', PhoneViewSet)
 router.register(r'group', GroupViewSet)

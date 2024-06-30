@@ -23,6 +23,14 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     serializer_class = CustomUserSerializer
     pagination_class=CustomPagination
     permission_classes=[IsAuthenticated,IsAdminOrIsSelf]
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+
+        user_type=response.data['user_type']
+        user = User.objects.get(id=response.data['id'])
+        POSITIONS[user_type].objects.create(user=user)
+
+        return response
 
 
 

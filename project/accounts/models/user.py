@@ -15,7 +15,7 @@ class CustomUser(BaseModel,AbstractUser):
 
     _safedelete_policy =SOFT_DELETE_CASCADE
     objects = CustomUserManager()
-    user_type = models.CharField(max_length=255, choices=(('patient', 'Patient'), ('doctor', 'Doctor')),default='patient')
+    user_type = models.CharField(max_length=255, choices=(('patient', 'Patient'), ('doctor', 'Doctor'),('employee','Employee')),default='patient')
 
 
 
