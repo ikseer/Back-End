@@ -1,6 +1,7 @@
 from .auth import *
 from .check import *
 from .doctor import *
+from .otp import *
 from .patient import *
 from .phone import *
 from .statistics import *
