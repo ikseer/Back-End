@@ -96,8 +96,10 @@ class HomeSerializer(serializers.ModelSerializer):
         return ProductImageSerializer(image).data['image']
 
     def get_discount(self, obj):
-        discount = Discount.objects.filter(product=obj).first()
-        return DiscountSerializer(discount).data
+        discount = Discount.objects.filter(product=obj,active=True).first()
+        if not discount:
+            return None
+        return DiscountHomeSerializer(discount).data
 
     def get_review(self, obj):
         review = ProductRating.objects.filter(product=obj)
@@ -108,3 +110,18 @@ class CouponSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coupon
         fields = "__all__"
+
+
+
+class DiscountHomeSerializer(serializers.ModelSerializer):
+    before_price = serializers.SerializerMethodField()
+    after_price=serializers.SerializerMethodField()
+    class Meta:
+        model = Discount
+        # fields = "__all__"
+        exclude=['product']
+
+    def get_before_price(self,obj):
+        return obj.product.price
+    def get_after_price(self, obj):
+        return obj.apply_discount(obj.product.price)
