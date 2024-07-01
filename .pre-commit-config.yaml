@@ -1,6 +1,6 @@
 # .pre-commit-config.yaml
-default_language_version:
-  python: python3.11
+# default_language_version:
+#   python: python
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

@@ -91,6 +91,8 @@ class HomeSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         image = ProductImage.objects.filter(product=obj).order_by("-priority")[0:1]
+        if not image:
+            return None
         return ProductImageSerializer(image, many=True).data
 
     def get_discount(self, obj):
