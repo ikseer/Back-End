@@ -28,7 +28,7 @@ class PatientViewSet(
                    viewsets.GenericViewSet):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
-    permission_classes = [A,ProfilePermission]
+    permission_classes = [ProfilePermission]
     pagination_class=CustomPagination
     filter_backends = [
             DjangoFilterBackend,
