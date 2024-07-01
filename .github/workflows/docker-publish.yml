@@ -26,10 +26,10 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/graduation:v2 # Customize image names
         #   build-args: DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}  # Inject secret environment variable
 
-      - name: Build and push Nginx image
-        uses: docker/build-push-action@v3
-        with:
-          context: nginx
-          file: nginx/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nginx_graduation:v1 # Customize image names
+      # - name: Build and push Nginx image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: nginx
+      #     file: nginx/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/nginx_graduation:v1 # Customize image names
