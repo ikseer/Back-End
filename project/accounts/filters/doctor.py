@@ -11,7 +11,7 @@ class DoctorFilter(filters.FilterSet):
         fields = {
             "first_name": ["exact", "icontains", "istartswith"],
             "last_name": ["exact", "icontains", "istartswith"],
-            "date_of_birth": ["exact"],
+            # "date_of_birth": ["exact"],
             "gender": ["exact"],
             "timezone": ["exact"],
             "user__email": ["exact"],
