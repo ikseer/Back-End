@@ -46,6 +46,8 @@ class CartTest(TestCase):
             description="Test description",
             price=100.00,
             pharmacy=self.pharmacy,
+            stock=5
+
         )
 
         self.client = APIClient()
