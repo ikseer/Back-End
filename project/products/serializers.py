@@ -87,13 +87,13 @@ class HomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ["id","generic_name", "name", "price", "image", "discount", "review"]
+        fields = ["id","generic_name", "name", "price", "image", "discount", "review","stock"]
 
     def get_image(self, obj):
-        image = ProductImage.objects.filter(product=obj).order_by("-priority")[0:1]
+        image = ProductImage.objects.filter(product=obj).order_by("-priority").first()
         if not image:
             return None
-        return ProductImageSerializer(image, many=True).data
+        return ProductImageSerializer(image).data['image']
 
     def get_discount(self, obj):
         discount = Discount.objects.filter(product=obj).first()
