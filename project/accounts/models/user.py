@@ -27,7 +27,7 @@ class Profile(BaseModel):
     bio = models.TextField(blank=True)
     first_name = models.CharField(max_length=255, blank=True)
     last_name = models.CharField(max_length=255, blank=True)
-    date_of_birth = models.DateField(blank=True, null=True)
+    date_of_birth = models.CharField(max_length=255,blank=True, null=True)
     gender = models.CharField(max_length=255, blank=True)
     timezone = models.CharField(max_length=255, blank=True, default="Africa/Cairo")
 
