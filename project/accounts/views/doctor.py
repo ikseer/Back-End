@@ -11,7 +11,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import filters as rest_filters
-from rest_framework import status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 from safedelete import HARD_DELETE
 
@@ -20,7 +20,14 @@ from safedelete import HARD_DELETE
 
 
 
-class DoctorViewSet(viewsets.ModelViewSet):
+class DoctorViewSet(
+
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   viewsets.GenericViewSet
+):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
     permission_classes = [ProfilePermission]

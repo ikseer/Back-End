@@ -11,7 +11,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import filters as rest_filters
-from rest_framework import status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 from safedelete import HARD_DELETE
 
@@ -19,7 +19,13 @@ from safedelete import HARD_DELETE
 
 
 
-class PatientViewSet(viewsets.ModelViewSet):
+class PatientViewSet(
+
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   viewsets.GenericViewSet):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     permission_classes = [ProfilePermission]
@@ -30,6 +36,12 @@ class PatientViewSet(viewsets.ModelViewSet):
             rest_filters.OrderingFilter,
         ]
     filterset_class = PatientFilter
+    def list(self, request, *args, **kwargs):
+
+        if not self.request.user.is_staff:
+            patient= Patient.objects.filter(user=self.request.user).first()
+            return Response(PatientSerializer(patient).data,status=status.HTTP_200_OK)
+        return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(
         manual_parameters=[
