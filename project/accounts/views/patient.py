@@ -39,8 +39,7 @@ class PatientViewSet(
     def list(self, request, *args, **kwargs):
 
         if not self.request.user.is_staff:
-            patient= Patient.objects.filter(user=self.request.user).first()
-            return Response(PatientSerializer(patient).data,status=status.HTTP_200_OK)
+            self.queryset= Patient.objects.filter(user=self.request.user)
         return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(
