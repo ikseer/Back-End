@@ -34,6 +34,8 @@ class OrderTest(TestCase):
             description="Test description",
             price=50.00,
             pharmacy=self.pharmacy,
+                        stock=10
+
         )
         self.product2 = Product.objects.create(
             category=self.category,
@@ -41,6 +43,7 @@ class OrderTest(TestCase):
             description="Test description",
             price=100.00,
             pharmacy=self.pharmacy,
+            stock=10
         )
 
         self.client = APIClient()
@@ -51,7 +54,7 @@ class OrderTest(TestCase):
         self.access_token = response.data["access"]
         self.order_data = {
             "user": self.user.id,
-            "pharmacy": self.pharmacy.id,
+            # "pharmacy": self.pharmacy.id,
         }
         cart = self.client.get("/orders/cart/",HTTP_AUTHORIZATION=f"Bearer {self.access_token}").data
         self.data={
@@ -66,9 +69,18 @@ class OrderTest(TestCase):
     def create_order(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
         response = self.client.post("/orders/orders/", self.order_data, format="json")
+        # print(response.data)
         return response.data
 
     def test_create_order(self):
+        self.product1.stock=2
+        self.product1.save()
+        response = self.client.post("/orders/orders/", self.order_data, format="json",HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
+        # print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.product1.stock=10
+        self.product1.save()
         response = self.client.post("/orders/orders/", self.order_data, format="json",HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(OrderItem.objects.count(),1)
@@ -80,6 +92,7 @@ class OrderTest(TestCase):
         response = self.client.put(
             "/orders/orders/" + str(order["id"]) + "/", self.order_data, format="json"
         )
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_order(self):

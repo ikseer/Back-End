@@ -43,6 +43,8 @@ class PermissionTest(TestCase):
             description="Test description",
             price=50.00,
             pharmacy=self.pharmacy,
+                        stock=10
+
         )
         self.cart=Cart.objects.get(user=self.user)
         CartItem.objects.create(cart=self.cart,product=self.product1,quantity=3)

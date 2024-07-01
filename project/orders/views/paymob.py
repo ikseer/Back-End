@@ -36,51 +36,11 @@ class PaymobCallbackViewSet(APIView):
             paymob=PaymobOrder.objects.get(paymob_order_id=callback.obj.order.id)
             paymob.paid=True
             paymob.save()
+            paymob.order.remove_items()
             return Response({"success":True})
         return Response({"success":False})
 
 
-# class PaymobOrderView(GenericAPIView):
-
-#     queryset = PaymobOrder.objects.all()
-#     serializer_class = PaymobOrderSerializer
-#     pagination_class=CustomPagination
-#     filter_backends = [
-#         DjangoFilterBackend,
-#         rest_filters.SearchFilter,
-#         rest_filters.OrderingFilter,
-#     ]
-#     # filter_backends = [
-#     #     PaymobOrderFilter
-#     # ]
-
-#     @swagger_auto_schema(
-#         manual_parameters=[
-#             openapi.Parameter('order_id', in_=openapi.IN_QUERY, type=openapi.TYPE_INTEGER, description='Order ID', required=True),
-#             openapi.Parameter('check_paid', in_=openapi.IN_QUERY, type=openapi.TYPE_BOOLEAN, description='Check if order is paid', required=False),
-#         ]
-#     )
-
-
-#     def get(self, request, *args, **kwargs):
-#         orderId = request.query_params.get("order_id", None)
-#         get_object_or_404(Order, id=orderId)
-
-#         check_paid = request.query_params.get("check_paid", None)
-
-#         paymob=PaymobOrder.objects.filter(order__id=orderId).first()
-#         if paymob is not None:
-
-#             if check_paid and paymob.paid is False:
-#                 if check_paymob_order_status(paymob.paymob_order_id):
-#                     paymob.paid=True
-#                     paymob.save()
-
-#         else:
-#             paymob=create_paymob(orderId)
-#             if paymob is None:
-#                 return Response({"message": "Cannot create paymob order"}, status=status.HTTP_404_NOT_FOUND)
-#         return  Response(PaymobOrderSerializer(paymob).data)
 
 
 
@@ -153,6 +113,10 @@ class PaymobOrderViewSet(   viewsets.ModelViewSet):
         if check_paid  and not paymob.paid and  check_paymob_order_status(paymob.paymob_order_id):
                 paymob.paid=True
                 paymob.save()
+                paymob.order.remove_items()
+
+                print('*'*50)
+
 
         return super().retrieve(request, *args, **kwargs)
 
@@ -192,24 +156,3 @@ class PaymobOrderViewSet(   viewsets.ModelViewSet):
 #                 return Response({"message": "Cannot create paymob order"}, status=status.HTTP_404_NOT_FOUND)
 
 #         return  Response(PaymobOrderSerializer(paymob).data)
-
-    # def check(self, request, *args, **kwargs):
-
-
-
-
-        # check_paid = request.query_params.get("check_paid", None)
-
-        # paymob=PaymobOrder.objects.filter(order__id=orderId).first()
-        # if paymob is not None:
-
-            # if check_paid and paymob.paid is False:
-                # if check_paymob_order_status(paymob.paymob_order_id):
-                #     paymob.paid=True
-                #     paymob.save()
-
-        # else:
-        #     paymob=create_paymob(orderId)
-        #     if paymob is None:
-        #         return Response({"message": "Cannot create paymob order"}, status=status.HTTP_404_NOT_FOUND)
-        # return  Response(PaymobOrderSerializer(paymob).data)

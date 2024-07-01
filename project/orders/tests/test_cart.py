@@ -38,6 +38,7 @@ class CartTest(TestCase):
             description="Test description",
             price=50.00,
             pharmacy=self.pharmacy,
+            stock=5
         )
         self.product2 = Product.objects.create(
             category=self.category,
@@ -109,6 +110,27 @@ class CartTest(TestCase):
         # print(response.data)
         # self.assertEqual(len(response.data),1)
 
+    def test_add_cart_items_bad(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
+        response = self.client.get("/orders/cart/")
+        cart=response.data
+
+        data={
+            'product':self.product1.id,
+            'quantity':6,
+            'cart':cart['id']
+
+        }
+        response = self.client.post("/orders/cart-item/",data=data,format='json')
+
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
 class PermissionsCartTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -135,6 +157,8 @@ class PermissionsCartTest(TestCase):
             description="Test description",
             price=50.00,
             pharmacy=self.pharmacy,
+                        stock=10
+
         )
         self.product2 = Product.objects.create(
             category=self.category,
@@ -142,6 +166,8 @@ class PermissionsCartTest(TestCase):
             description="Test description",
             price=100.00,
             pharmacy=self.pharmacy,
+                        stock=10
+
         )
 
         self.client = APIClient()

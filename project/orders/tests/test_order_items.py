@@ -40,6 +40,7 @@ class OrderItemTest(TestCase):
             description="Test description",
             price=50.00,
             pharmacy=self.pharmacy,
+            stock=10
         )
         self.product2 = Product.objects.create(
             category=self.category,
@@ -47,6 +48,8 @@ class OrderItemTest(TestCase):
             description="Test description",
             price=100.00,
             pharmacy=self.pharmacy,
+            stock=10
+
         )
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
         cart=Cart.objects.get(user=user)
@@ -74,42 +77,3 @@ class OrderItemTest(TestCase):
         # self.create_order_item()
         response = self.client.get("/orders/order-item/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    # def test_create_order_item(self):
-    #     order_item = {
-    #         "product": self.product1.id,
-    #         "quantity": 2,
-    #         "order": self.order["id"],
-    #     }
-    #     response = self.client.post("/orders/orderItem/", order_item, format="json")
-    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    #     order = self.client.get("/orders/orders/" + str(self.order["id"]) + "/")
-    #     # print(order.data)
-    #     self.assertEqual(order.status_code, status.HTTP_200_OK)
-
-    # def test_update_order_item(self):
-    #     self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
-    #     order_item = self.client.post(
-    #         "/orders/orderItem/", self.order_item_data, format="json"
-    #     ).data
-    #     order_item_data = {
-    #         # "id": order_item["id"],
-    #         "product": self.product1.id,
-    #         "quantity": 5,
-    #         "order": self.order["id"],
-    #     }
-    #     response = self.client.put(
-    #         "/orders/orderItem/" + order_item["id"] + "/",
-    #         order_item_data,
-    #         format="json",
-    #     )
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    # def test_delete_order_item(self):
-    #     order_item = self.create_order_item()
-    #     response = self.client.delete(
-    #         "/orders/orderItem/" + str(order_item["id"]) + "/",
-    #         order_item,
-    #         format="json",
-    #     )
-    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
