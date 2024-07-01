@@ -1,29 +1,11 @@
-# -*- coding: utf-8 -*-
+
 from products.models import *
 from rest_framework import serializers
 
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = "__all__"
-
-
-class DiscountSerializer(serializers.ModelSerializer):
-    before_price = serializers.SerializerMethodField()
-    after_price=serializers.SerializerMethodField()
-    image=serializers.SerializerMethodField()
-    class Meta:
-        model = Discount
-        fields = "__all__"
-    def get_image(self,obj):
-        image= ProductImage.objects.filter(product=obj.product).order_by('priority').first()
-        return ProductImageSerializer(image).data['image']
-    def get_before_price(self,obj):
-        return obj.product.price
-    def get_after_price(self, obj):
-        return obj.apply_discount(obj.product.price)
-    #     return round(obj.product.price - (obj.percentage * obj.product.price / 100), 0)
+from .discount import *
+from .image import *
+from .rating import *
+from .wishlist import *
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -60,24 +42,7 @@ class ProductSerializer(serializers.ModelSerializer):
     #     representation = super().to_representation(instance)
     #     representation['final_price'] = instance.get_final_price()
 
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = "__all__"
 
-
-class ProductRatingSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source="user.username", read_only=True)
-
-    class Meta:
-        model = ProductRating
-        fields = "__all__"
-
-
-class WishlistSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Wishlist
-        fields = "__all__"
 
 
 class HomeSerializer(serializers.ModelSerializer):
@@ -105,23 +70,3 @@ class HomeSerializer(serializers.ModelSerializer):
         review = ProductRating.objects.filter(product=obj)
         total_sum = sum([review.rating for review in review])
         return round(total_sum / ((len(review))))
-class CouponSerializer(serializers.ModelSerializer):
-    code=serializers.CharField(read_only=True)
-    class Meta:
-        model = Coupon
-        fields = "__all__"
-
-
-
-class DiscountHomeSerializer(serializers.ModelSerializer):
-    before_price = serializers.SerializerMethodField()
-    after_price=serializers.SerializerMethodField()
-    class Meta:
-        model = Discount
-        # fields = "__all__"
-        exclude=['product']
-
-    def get_before_price(self,obj):
-        return obj.product.price
-    def get_after_price(self, obj):
-        return obj.apply_discount(obj.product.price)

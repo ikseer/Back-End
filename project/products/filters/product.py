@@ -1,17 +1,9 @@
+
 # -*- coding: utf-8 -*-
 # filters.py
 import django_filters as filters
 from django.db.models import Sum
-
-from .models import *
-
-
-class CategoryFilter(filters.FilterSet):
-    class Meta:
-        model = Category
-        fields = {
-            "name": ["exact", "icontains", "istartswith"],
-        }
+from products.models import *
 
 
 class ProductFilter(filters.FilterSet):
@@ -38,31 +30,3 @@ class ProductFilter(filters.FilterSet):
                 total_quantity_sold=Sum("orderitem__quantity")
             ).order_by("-total_quantity_sold")
         return queryset
-
-
-class DiscountFilter(filters.FilterSet):
-    class Meta:
-        model = Discount
-        fields = "__all__"
-
-
-class WishlistFilter(filters.FilterSet):
-    class Meta:
-        model = Wishlist
-        fields = "__all__"
-
-
-class ProductRatingFilter(filters.FilterSet):
-    class Meta:
-        model = ProductRating
-        fields = "__all__"
-
-
-class ProductImageFilter(filters.FilterSet):
-    class Meta:
-        model = ProductImage
-        exclude = ["image"]
-class CouponFilter(filters.FilterSet):
-    class Meta:
-        model = Coupon
-        fields = "__all__"
