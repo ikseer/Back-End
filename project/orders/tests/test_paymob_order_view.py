@@ -37,6 +37,8 @@ class PaymobOrderView(TestCase):
             description="Test description",
             price=50.00,
             pharmacy=self.pharmacy,
+                        stock=10
+
         )
         self.product2 = Product.objects.create(
             category=self.category,
@@ -44,6 +46,7 @@ class PaymobOrderView(TestCase):
             description="Test description",
             price=100.00,
             pharmacy=self.pharmacy,
+            stock=10
         )
 
         self.factory = APIRequestFactory()
@@ -114,7 +117,9 @@ class PaymobOrderView(TestCase):
         # Ensure that PaymobOrder is updated to paid
         mock_paymob_order.refresh_from_db()
         self.assertTrue(mock_paymob_order.paid)
-
+        # print(self.product1.stock)
+        product=Product.objects.filter(id=self.product1.id).first()
+        self.assertEqual(product.stock,7)
         # Ensure response is as expected
         self.assertEqual(response.status_code, 200)
 

@@ -29,7 +29,7 @@ class Product(BaseModel):
     price = models.IntegerField(null=True, blank=True,default=0)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     pharmacy = models.ForeignKey("pharmacy.Pharmacy", on_delete=models.CASCADE)
-    stock  = models.IntegerField(null=True, blank=True)
+    stock  = models.IntegerField(default=0)
     code = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):

@@ -27,6 +27,19 @@ class Order(BaseModel):
         return f"Order #{self.id} - {self.user.username} - {self.status}"
 
 
+    def remove_items(self):
+        order_items = self.order_items.all()
+        for item in order_items:
+            product = item.product
+            product.stock -= item.quantity
+            product.save()
+
+        #     item.delete()
+        #  for item in self.items:
+        #       product=item.product
+        #       product.stock-=item.qquantity
+        #       product.save()
+
 class OrderItem(BaseModel):
 
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)

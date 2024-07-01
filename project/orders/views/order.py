@@ -6,8 +6,7 @@ from orders.pagination import *
 from orders.permissions import *
 from orders.serializers import *
 from rest_framework import filters as rest_filters
-from rest_framework import status, viewsets
-from rest_framework.response import Response
+from rest_framework import viewsets
 
 
 # Create your views here.
@@ -27,29 +26,33 @@ class OrderViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Order.objects.filter(user=user)
 
-    def create(self, request, *args, **kwargs):
-        serializer=OrderSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # def create(self, request, *args, **kwargs):
+    #     serializer=OrderSerializer(data=request.data)
+    #     if not serializer.is_valid():
+    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        cart_items=CartItem.objects.filter(cart__user=serializer.data['user'])
+    #     cart_items=CartItem.objects.filter(cart__user=serializer.data['user'])
 
-        if len( cart_items)==0:
-            return Response({"error": "Cannot create order. Add at least one product to the cart."},
-                            status=status.HTTP_400_BAD_REQUEST)
+    #     if len( cart_items)==0:
+    #         return Response({"error": "Cannot create order. Add at least one product to the cart."},
+    #                         status=status.HTTP_400_BAD_REQUEST)
 
-        response= super().create(request, *args, **kwargs)
-        order = Order.objects.get(id=response.data['id'])
-        total_price = 0
-        for cart_item in cart_items:
-            OrderItem.objects.create(order=order,product=cart_item.product,quantity=cart_item.quantity)
-            total_price+=cart_item.get_total_price()
-            cart_item.delete()
+    #     response= super().create(request, *args, **kwargs)
+    #     order = Order.objects.get(id=response.data['id'])
+    #     total_price = 0
+    #     for cart_item in cart_items:
+    #         order_item_serializer=OrderItemSerializer(data={'order':order.id,'product':cart_item.product.id,'quantity':cart_item.quantity})
+    #         if not order_item_serializer.is_valid():
+    #                 return Response(order_item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        order.total_price=total_price
-        order.save()
+    #         OrderItem.objects.create(order=order,product=cart_item.product,quantity=cart_item.quantity)
+    #         total_price+=cart_item.get_total_price()
+    #         cart_item.delete()
 
-        return Response(OrderSerializer(order).data,status=status.HTTP_201_CREATED)
+    #     order.total_price=total_price
+    #     order.save()
+
+    #     return Response(OrderSerializer(order).data,status=status.HTTP_201_CREATED)
 
 
 class OrderItemViewSet(viewsets.ModelViewSet):
