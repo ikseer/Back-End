@@ -31,12 +31,15 @@ class PaymobCallbackViewSet(APIView):
             incoming_hmac=request.query_params.get('hmac'),
             callback_dict=callback_dict
         )
-        print(    callback.is_valid , callback.obj.order.paid_amount_cents , callback.obj.order.amount_cents)
+        print(    callback.is_valid , callback.obj.order.paid_amount_cents , callback.obj.order.amount_cents,request.query_params.get('hmac'))
         if  int(callback.obj.order.paid_amount_cents) >= int(callback.obj.order.amount_cents):
             paymob=PaymobOrder.objects.get(paymob_order_id=callback.obj.order.id)
             paymob.paid=True
             paymob.save()
             paymob.order.remove_items()
+
+            paymob.order.status='processing'
+            paymob.order.save()
 
             return Response({"success":True})
         return Response({"success":False})
