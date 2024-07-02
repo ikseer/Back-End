@@ -45,7 +45,7 @@ def create_paymob(order):
     # order=Order.objects.get(id=order)
     identifier = order.id
     merchant_order_id = AcceptUtils.generate_merchant_order_id(mid_key=mid_key, identifier=identifier)
-    amount_cents = order.total_price
+    amount_cents = order.total_price*100
     currency = "EGP"
 
     response = accept_api_client.create_order(
