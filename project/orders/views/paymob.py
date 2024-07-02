@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # from urllib import request
-from decouple import config
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -28,9 +27,8 @@ class PaymobCallbackViewSet(APIView):
             [type]: [description]
         """
         callback_dict = request.data
-        incoming_hmac =  config("INCOMING_HMAC", None)
         callback = AcceptCallback(
-            incoming_hmac=incoming_hmac,
+            incoming_hmac=request.query_params.get('hmac'),
             callback_dict=callback_dict
         )
         print(    callback.is_valid , callback.obj.order.paid_amount_cents , callback.obj.order.amount_cents)
