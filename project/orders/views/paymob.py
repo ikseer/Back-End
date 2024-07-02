@@ -19,6 +19,8 @@ from rest_framework.views import APIView
 
 class PaymobCallbackViewSet(APIView):
     def post(self, request, *args, **kwargs):
+        print("*"*100)
+        print("request from paymob")
         """
         receive callback from paymob and update order status
         Args:
