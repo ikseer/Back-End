@@ -36,9 +36,9 @@ class PaymobCallbackViewSet(APIView):
             callback_dict=callback_dict
         )
         print(    callback.is_valid , callback_dict.obj.order.paid_amount_cents , callback_dict.obj.order.amount_cents)
-        if callback.is_valid and callback_dict.obj.order.paid_amount_cents >= callback_dict.obj.order.amount_cents:
+        if callback.is_valid and int(callback_dict.obj.order.paid_amount_cents) >= int(callback_dict.obj.order.amount_cents):
             print('*******done done ')
-            paymob=PaymobOrder.objects.get(paymob_order_id=callback.obj.order.id)
+            paymob=PaymobOrder.objects.get(paymob_order_id=callback_dict.obj.order.id)
             paymob.paid=True
             paymob.save()
             paymob.order.remove_items()
