@@ -19,9 +19,7 @@ from rest_framework.views import APIView
 
 class PaymobCallbackViewSet(APIView):
     def post(self, request, *args, **kwargs):
-        print("*"*100)
-        print("request from paymob")
-        print(request.data)
+
         """
         receive callback from paymob and update order status
         Args:
@@ -36,12 +34,12 @@ class PaymobCallbackViewSet(APIView):
             callback_dict=callback_dict
         )
         print(    callback.is_valid , callback.obj.order.paid_amount_cents , callback.obj.order.amount_cents)
-        if callback.is_valid and int(callback_dict.obj.order.paid_amount_cents) >= int(callback_dict.obj.order.amount_cents):
-            print('*******done done ')
+        if  int(callback_dict.obj.order.paid_amount_cents) >= int(callback_dict.obj.order.amount_cents):
             paymob=PaymobOrder.objects.get(paymob_order_id=callback_dict.obj.order.id)
             paymob.paid=True
             paymob.save()
             paymob.order.remove_items()
+
             return Response({"success":True})
         return Response({"success":False})
 
@@ -120,7 +118,6 @@ class PaymobOrderViewSet(   viewsets.ModelViewSet):
                 paymob.save()
                 paymob.order.remove_items()
 
-                print('*'*50)
 
 
         return super().retrieve(request, *args, **kwargs)
