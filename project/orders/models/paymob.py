@@ -9,4 +9,4 @@ class PaymobOrder(BaseModel):
     currency=models.CharField(max_length=255,default="EGP")
 
     def __str__(self):
-        return self.order.customer.username
+        return self.order.user.username

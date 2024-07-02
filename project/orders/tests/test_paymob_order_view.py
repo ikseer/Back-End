@@ -88,8 +88,8 @@ class PaymobOrderView(TestCase):
         # mock_serializer_valid.return_value=True
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
         response = self.client.post(self.url,{'order':order.id}, format="json")
-        # print(response.data)
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['paymob_order_id'], '2')
 
         # mock_paymob_create.assert_called_once_with(order_id=self.order_id, paymob_order_id=1, amount_cents=300)
 

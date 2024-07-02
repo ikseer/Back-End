@@ -82,7 +82,7 @@ class PaymobOrderViewSet(   viewsets.ModelViewSet):
             'amount_cents':order.total_price*100
         }
 
-        serializer = PaymobOrderSerializer(data=data)
+        serializer = SavePaymobOrderSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
