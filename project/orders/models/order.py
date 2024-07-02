@@ -4,7 +4,7 @@ from .models import *
 class Order(BaseModel):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
-        ('processing', 'Processing'),
+        ('', 'Processing'),
         ('shipped', 'Shipped'),
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
