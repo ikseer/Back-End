@@ -79,7 +79,7 @@ class PaymobOrderViewSet(   viewsets.ModelViewSet):
         data={
             'order':order.id,
             'paymob_order_id':paymob_order_id,
-            'amount_cents':order.total_price
+            'amount_cents':order.total_price*100
         }
 
         serializer = PaymobOrderSerializer(data=data)
