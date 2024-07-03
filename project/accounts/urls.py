@@ -51,14 +51,14 @@ urlpatterns += [
 
 urlpatterns+=[
 
-    path('patient/deleted/', PatientViewSet.as_view({'get': 'get_deleted'}), name='patient-get-deleted'),
-    path('doctor/deleted/', DoctorViewSet.as_view({'get': 'get_deleted'}), name='doctor-get-deleted'),
+    # path('patient/deleted/', PatientViewSet.as_view({'get': 'get_deleted'}), name='patient-get-deleted'),
+    # path('doctor/deleted/', DoctorViewSet.as_view({'get': 'get_deleted'}), name='doctor-get-deleted'),
 
-    path('deleted-patient/restore/<str:pk>/', DeletedPatientView.as_view({'post': 'restore'}), name='patient-restore'),
-    path('deleted-patient/delete/<str:pk>/', DeletedPatientView.as_view({'delete': 'destroy'}), name='deleted-patient-delete'),
+    # path('deleted-patient/restore/<str:pk>/', DeletedPatientView.as_view({'post': 'restore'}), name='patient-restore'),
+    # path('deleted-patient/delete/<str:pk>/', DeletedPatientView.as_view({'delete': 'destroy'}), name='deleted-patient-delete'),
 
-    path('deleted-doctor/restore/<str:pk>/', DeletedDoctorView.as_view({'post': 'restore'}), name='doctor-restore'),
-    path('deleted-doctor/delete/<str:pk>/', DeletedDoctorView.as_view({'delete': 'destroy'}), name='deleted-doctor-delete'),
+    # path('deleted-doctor/restore/<str:pk>/', DeletedDoctorView.as_view({'post': 'restore'}), name='doctor-restore'),
+    # path('deleted-doctor/delete/<str:pk>/', DeletedDoctorView.as_view({'delete': 'destroy'}), name='deleted-doctor-delete'),
 
 ]
 urlpatterns+=[

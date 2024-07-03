@@ -5,8 +5,7 @@ from django.db import models
 from safedelete.models import SOFT_DELETE_CASCADE, SafeDeleteModel,HARD_DELETE
 
 
-class BaseModel(SafeDeleteModel):
-    _safedelete_policy =HARD_DELETE
+class BaseModel(models.Model):
 
     id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True ,primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
