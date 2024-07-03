@@ -28,7 +28,7 @@ class ConversationSerializer(serializers.ModelSerializer):
     def get_message(self,obj):
         last_message = Message.objects.filter(conversation=obj).order_by('-created_at').first()
         if last_message is not None:
-            return last_message
+            return MessageSerializer(last_message).data
         else:
             return None
 

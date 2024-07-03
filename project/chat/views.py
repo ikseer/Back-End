@@ -20,6 +20,12 @@ class ConversationViewSet(viewsets.ModelViewSet):
         conversation.users.set([self.request.user])
         conversation.save()
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:  # Check if the user is an admin
+            return Conversation.objects.all()
+        else:
+            return Conversation.objects.filter(users=user)
 
 
 
@@ -28,7 +34,12 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated,IsParticipantInConversation]
-
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:  # Check if the user is an admin
+            return Message.objects.all()
+        else:
+            return Message.objects.filter(conversation__users=user)
     def perform_create(self, serializer):
         message = serializer.save(sender=self.request.user)
         unseen_message(message)
