@@ -5,9 +5,11 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail  # Import send_mail
 from PIL import Image
-from safedelete import HARD_DELETE
 
 from .models import EmailVerificationOTP
+
+# from safedelete import HARD_DELETE
+
 
 User = get_user_model()
 
@@ -69,6 +71,6 @@ class Otp:
         ).first()
         email_address.verified = True
         email_address.save()
-        email_verification.delete(force_policy=HARD_DELETE)
+        email_verification.delete()
 
         return user

@@ -62,6 +62,7 @@ class CouponViewSetTests(TestCase):
     def test_create_coupon(self):
         url = "/products/coupon/"
         data = {
+           "discount_type":"percentage",
             "product": self.product.id,
             "discount_amount": 30,
             "start_date": "2022-01-01",
@@ -80,7 +81,7 @@ class CouponViewSetTests(TestCase):
     def test_edit_coupon(self):
         url = f"/products/coupon/{self.coupon1.id}/"
         data = {
-
+            "discount_type":"percentage",
             "discount_amount": 30,
             "start_date": "2022-01-01",
             "end_date": "2022-12-31",

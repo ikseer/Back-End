@@ -145,10 +145,10 @@ class ProductAttachTestCase(TestCase):
         url = "/products/wishlist/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
         # delete the wishlist
-        wishlist_id = response.data[0]["id"]
+        wishlist_id = response.data['results'][0]["id"]
         url = f"/products/wishlist/{wishlist_id}/"
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
