@@ -31,7 +31,7 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         POSITIONS[user_type].objects.create(user=user)
 
         return response
-
+    
 
 
 
