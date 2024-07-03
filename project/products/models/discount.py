@@ -19,7 +19,7 @@ class Discount(BaseModel):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='discounts')
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
-    discount_type = models.CharField(max_length=10, choices=DISCOUNT_TYPE_CHOICES,blank=True, null=True)
+    discount_type = models.CharField(max_length=10, choices=DISCOUNT_TYPE_CHOICES)
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(default=True)

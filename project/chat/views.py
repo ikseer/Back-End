@@ -1,5 +1,6 @@
 # Create your views here.
 # myapp/views.py
+from chat.permissions import IsParticipant, IsParticipantInConversation
 from chat.utils import unseen_message
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -12,7 +13,7 @@ from .serializers import *
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsParticipant]
 
     def perform_create(self, serializer):
         conversation = serializer.save()
@@ -26,7 +27,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsParticipantInConversation]
 
     def perform_create(self, serializer):
         message = serializer.save(sender=self.request.user)

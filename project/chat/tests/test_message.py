@@ -23,6 +23,8 @@ class MessageTests(APITestCase):
         self.assertEqual(Message.objects.count(), 1)
         self.assertEqual(Message.objects.get().text, 'A test message')
         self.assertEqual(Message.objects.get().sender, self.user)
+        url= reverse('conversation-list')
+        response = self.client.get(url, format='json')
 
     def test_list_messages(self):
         Message.objects.create(conversation=self.conversation, sender=self.user, text='Test message 1')

@@ -17,13 +17,20 @@ class MessageSerializer(serializers.ModelSerializer):
         # fields = ['id', 'conversation', 'sender', 'text', 'created_at']
 
 class ConversationSerializer(serializers.ModelSerializer):
-    messages = MessageSerializer(many=True, read_only=True)
+    message = serializers.SerializerMethodField()
     users = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Conversation
-        fields = ['id', 'name', 'description', 'users', 'messages']
-
+        # fields = ['id', 'name', 'description', 'users', 'messages']
+        fields ='__all__'
+        extra_fields=['message']
+    def get_message(self,obj):
+        last_message = Message.objects.filter(conversation=obj).order_by('-created_at').first()
+        if last_message is not None:
+            return last_message
+        else:
+            return None
 
 class MessageSeenStatusSerializer(serializers.ModelSerializer):
     class Meta:

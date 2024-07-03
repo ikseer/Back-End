@@ -20,6 +20,8 @@ class Conversation(BaseModel):
     name = models.CharField(max_length=255)
     description = models.TextField()
     users = models.ManyToManyField(User, related_name='conversations')
+    image = models.ImageField(upload_to="conversation_images/", null=True, blank=True)
+
 
     def __str__(self):
         return self.name
