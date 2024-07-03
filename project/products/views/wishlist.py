@@ -18,3 +18,4 @@ class WishlistViewSet(viewsets.ModelViewSet):
     serializer_class = WishlistSerializer
     permission_classes = [SafePermission]
     filterset_class = WishlistFilter
+    pagination_class = ProductPagination

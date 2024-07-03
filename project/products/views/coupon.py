@@ -19,3 +19,4 @@ class CouponViewSet(viewsets.ModelViewSet):
     serializer_class = CouponSerializer
     permission_classes = [SafePermission]
     filterset_class = CouponFilter
+    pagination_class = ProductPagination

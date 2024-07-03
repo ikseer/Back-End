@@ -17,3 +17,4 @@ class ProductRatingViewSet(viewsets.ModelViewSet):
     serializer_class = ProductRatingSerializer
     permission_classes = [SafePermission]
     filterset_class = ProductRatingFilter
+    pagination_class = ProductPagination

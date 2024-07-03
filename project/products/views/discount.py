@@ -17,3 +17,4 @@ class DiscountViewSet(viewsets.ModelViewSet):
     serializer_class = DiscountSerializer
     filterset_class = DiscountFilter
     permission_classes = [SafePermission]
+    pagination_class = ProductPagination

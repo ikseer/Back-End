@@ -23,3 +23,4 @@ class CategoryViewSet(viewsets.ModelViewSet):
         rest_filters.OrderingFilter,
     ]
     filterset_class = CategoryFilter
+    pagination_class = ProductPagination

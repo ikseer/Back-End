@@ -17,3 +17,4 @@ class ProductImageViewSet(viewsets.ModelViewSet):
     serializer_class = ProductImageSerializer
     permission_classes = [SafePermission]
     filterset_class = ProductImageFilter
+    pagination_class = ProductPagination
