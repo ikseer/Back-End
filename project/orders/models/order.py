@@ -42,6 +42,7 @@ class Order(BaseModel):
         for item in order_items:
             product = item.product
             product.stock -= item.quantity
+            product.number_of_sales+=item.quantity
             product.save()
 
         #     item.delete()
