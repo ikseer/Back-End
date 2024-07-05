@@ -31,6 +31,7 @@ class Product(BaseModel):
     pharmacy = models.ForeignKey("pharmacy.Pharmacy", on_delete=models.CASCADE)
     stock  = models.IntegerField(default=0)
     code = models.CharField(max_length=255, null=True, blank=True)
+    number_of_sales  = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
