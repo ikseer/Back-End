@@ -23,8 +23,9 @@ class OrderSerializer(serializers.ModelSerializer):
         if not cart_items.exists():
             raise serializers.ValidationError("Cannot create order. Add at least one product to the cart.")
 
+        order = Order.objects.create(**validated_data)
 
-        order = Order.objects.create(user=user)
+        # order = Order.objects.create(user=user)
         total_price = 0
 
         for cart_item in cart_items:

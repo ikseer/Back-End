@@ -58,9 +58,21 @@ class PaymobOrderView(TestCase):
             url, {"email": "test@example.com", "password": "test_password"}
         )
         self.access_token = response.data["access"]
+        # self.order_data = {
+        #     "user": self.user.id,
+        #     "pharmacy": self.pharmacy.id,
+        # }
         self.order_data = {
             "user": self.user.id,
-            "pharmacy": self.pharmacy.id,
+             'first_name': 'John',
+            'last_name': 'Doe',
+            'country': 'USA',
+            'city': 'New York',
+            'street': '123 Main St',
+            'zip_code': '10001',
+            'phone': '123-456-7890',
+            'email': 'john.doe@example.com',
+            # "pharmacy": self.pharmacy.id,
         }
         self.view = OrderViewSet.as_view({'get': 'retrieve'})
         cart=Cart.objects.get(user=self.user)

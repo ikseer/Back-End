@@ -48,7 +48,18 @@ class PermissionTest(TestCase):
         )
         self.cart=Cart.objects.get(user=self.user)
         CartItem.objects.create(cart=self.cart,product=self.product1,quantity=3)
-
+        self.order_data = {
+            "user": self.user.id,
+             'first_name': 'John',
+            'last_name': 'Doe',
+            'country': 'USA',
+            'city': 'New York',
+            'street': '123 Main St',
+            'zip_code': '10001',
+            'phone': '123-456-7890',
+            'email': 'john.doe@example.com',
+            # "pharmacy": self.pharmacy.id,
+        }
     def get_token(self, user):
         url = reverse("rest_login")
         response = self.client.post(
@@ -65,7 +76,7 @@ class PermissionTest(TestCase):
 
         response = self.client.post(
             "/orders/orders/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+             self.order_data,
             format="json",
         )
 
@@ -76,7 +87,7 @@ class PermissionTest(TestCase):
 
         response = self.client.post(
             "/orders/orders/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+             self.order_data,
             format="json",
         )
 
@@ -86,16 +97,12 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+             self.order_data,
             format="json",
         ).data
         response = self.client.put(
             "/orders/orders/" + str(order["id"]) + "/",
-            {
-                "user": self.user.id,
-                "pharmacy": self.pharmacy.id,
-                # "status": "Delivered",
-            },
+             self.order_data,
             format="json",
         )
         # print(response.data)
@@ -105,12 +112,12 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+         self.order_data,
             format="json",
         ).data
         response = self.client.put(
             "/orders/orders/" + str(order["id"]) + "/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+             self.order_data,
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -119,7 +126,7 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+             self.order_data,
             format="json",
         ).data
         response = self.client.delete(
@@ -131,7 +138,7 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
         order = self.client.post(
             "/orders/orders/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+             self.order_data,
             format="json",
         ).data
         response = self.client.delete(
@@ -143,7 +150,7 @@ class PermissionTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
         self.client.post(
             "/orders/orders/",
-            {"user": self.user.id, "pharmacy": self.pharmacy.id},
+             self.order_data,
             format="json",
         ).data
         user2 = User.objects.create_user(
@@ -153,11 +160,14 @@ class PermissionTest(TestCase):
 
         cart=Cart.objects.get(user=user2)
         CartItem.objects.create(cart=cart,product=self.product1,quantity=2)
+        # usr2=User.objects.get(  username="user2")
+        self.order_data['user']=user2.id
         order_another_user = self.client.post(
             "/orders/orders/",
-            {"user": user2.id, "pharmacy": self.pharmacy.id},
+            self.order_data,
             format="json",
         ).data
+        # print(order_another_user)
         response = self.client.delete(
             "/orders/orders/" + str(order_another_user["id"]) + "/", format="json"
         )

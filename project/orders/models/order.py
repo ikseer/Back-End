@@ -23,6 +23,16 @@ class Order(BaseModel):
         "pharmacy.Pharmacy", on_delete=models.SET_NULL, null=True, blank=True
     )
 
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    street = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+
     def __str__(self):
         return f"Order #{self.id} - {self.user.username} - {self.status}"
 
