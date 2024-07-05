@@ -69,4 +69,6 @@ class HomeSerializer(serializers.ModelSerializer):
     def get_review(self, obj):
         review = ProductRating.objects.filter(product=obj)
         total_sum = sum([review.rating for review in review])
-        return round(total_sum / ((len(review))))
+        if len(review)!=0:
+            return round(total_sum / ((len(review))))
+        return 0
