@@ -11,7 +11,7 @@ from .wishlist import *
 class ProductSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     review = serializers.SerializerMethodField()
-    wishlist = serializers.SerializerMethodField()
+    # wishlist = serializers.SerializerMethodField()
     discount = serializers.SerializerMethodField()
     # final_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     final_price=serializers.SerializerMethodField()
@@ -28,9 +28,9 @@ class ProductSerializer(serializers.ModelSerializer):
         review = ProductRating.objects.filter(product=obj)
         return ProductRatingSerializer(review, many=True).data
 
-    def get_wishlist(self, obj):
-        # wishlist = Wishlist.objects.filter(product=obj)
-        return WishlistSerializer(obj.wishlists, many=True).data
+    # def get_wishlist(self, obj):
+    #     # wishlist = Wishlist.objects.filter(product=obj)
+    #     return WishlistSerializer(obj.wishlists, many=True).data
 
     def get_discount(self, obj):
         discount = Discount.objects.filter(product=obj)
