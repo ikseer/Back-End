@@ -11,12 +11,12 @@ class SafePermission(BasePermission):
         return False
 
 
-class WishlistPermission(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return  request.user.is_staff or request.user==obj.user
+# class WishlistPermission(BasePermission):
+#     def has_object_permission(self, request, view, obj):
+#         return  request.user.is_staff or request.user==obj.user
 
 
 
 class WishlistItemPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
-        return  request.user.is_staff or request.user==obj.wishlist.user
+        return  request.user.is_staff or request.user==obj.user

@@ -14,16 +14,16 @@ from rest_framework.permissions import IsAuthenticated
 use_cache=config('use_cache',0)
 
 
-class WishlistViewSet(viewsets.ModelViewSet):
-    queryset = Wishlist.objects.all()
-    serializer_class = WishlistSerializer
-    permission_classes = [IsAuthenticated]
-    filterset_class = WishlistFilter
-    pagination_class = ProductPagination
-    def list(self, request, *args, **kwargs):
-        if not self.request.user.is_staff:
-            self.queryset= Wishlist.objects.filter(user=self.request.user)
-        return super().list(request, *args, **kwargs)
+# class WishlistViewSet(viewsets.ModelViewSet):
+#     queryset = Wishlist.objects.all()
+#     serializer_class = WishlistSerializer
+#     permission_classes = [IsAuthenticated]
+#     filterset_class = WishlistFilter
+#     pagination_class = ProductPagination
+#     def list(self, request, *args, **kwargs):
+#         if not self.request.user.is_staff:
+#             self.queryset= Wishlist.objects.filter(user=self.request.user)
+#         return super().list(request, *args, **kwargs)
 
 
 class WishlistItemViewSet(viewsets.ModelViewSet):
@@ -34,5 +34,5 @@ class WishlistItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if not self.request.user.is_staff:
-            return WishlistItem.objects.filter(wishlist__user=self.request.user)
+            return WishlistItem.objects.filter(user=self.request.user)
         return super().get_queryset()

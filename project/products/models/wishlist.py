@@ -11,19 +11,13 @@ from .product import *
 User = get_user_model()
 
 
-class Wishlist(BaseModel):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    def __str__(self):
-        return f'{self.user.username} - "Wishlist"'
 
 class WishlistItem(BaseModel):
-
-    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
 
     class Meta:
-            unique_together = ('wishlist', 'product')
-
+            unique_together = ('user', 'product')
     def __str__(self):
-        return f"{self.product.name} in cart of {self.wishlist.user.username}"
+        return f"{self.product.name} in cart of {self.user.username}"

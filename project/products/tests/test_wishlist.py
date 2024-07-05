@@ -1,50 +1,23 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from pharmacy.models import \
-    Pharmacy  # Assuming there is a Product model in the products app
-from products.models import Product, Wishlist, WishlistItem
+from pharmacy.models import Pharmacy
+from products.models import Product, WishlistItem
 from products.models.category import Category
 from rest_framework import status
 from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
-User = get_user_model()
-
-class WishlistModelTests(TestCase):
-
-    def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.pharmacy = Pharmacy.objects.create(name="Test Pharmacy")
-
-        self.category = Category.objects.create(name="Test Category1")
-        self.product = Product.objects.create(
-                    name="Test Product",
-                    price=20.0,
-                    strength=5,
-                    category=self.category,
-                    pharmacy=self.pharmacy,
-                )
-
-
-    def test_wishlist_item_creation(self):
-        wishlist = Wishlist.objects.create(user=self.user)
-        wishlist_item = WishlistItem.objects.create(wishlist=wishlist, product=self.product)
-        self.assertEqual(str(wishlist_item), 'Test Product in cart of testuser')
-
-    def test_wishlist_item_unique_together(self):
-        wishlist = Wishlist.objects.create(user=self.user)
-        WishlistItem.objects.create(wishlist=wishlist, product=self.product)
-        with self.assertRaises(Exception):
-            WishlistItem.objects.create(wishlist=wishlist, product=self.product)
-
-class WishlistViewSetTests(TestCase):
-
+User=get_user_model()
+class WishlistItemTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.staff_user = User.objects.create_user(username='staffuser', password='staffpass', is_staff=True)
+        self.user2 = User.objects.create_user(username='testuser2', password='testpass2')
+        self.category = Category.objects.create(name="Test Category1")
+
+                # self.product = Product.objects.create(name='Test Product', price=100)
         self.pharmacy = Pharmacy.objects.create(name="Test Pharmacy")
 
-        self.category = Category.objects.create(name="Test Category1")
         self.product = Product.objects.create(
                     name="Test Product",
                     price=20.0,
@@ -52,115 +25,74 @@ class WishlistViewSetTests(TestCase):
                     category=self.category,
                     pharmacy=self.pharmacy,
                 )
-        self.wishlist = Wishlist.objects.get(user=self.user)
-        self.wishlist_item = WishlistItem.objects.create(wishlist=self.wishlist, product=self.product)
+        self.wishlist_item = WishlistItem.objects.create(user=self.user, product=self.product)
 
-    def test_wishlist_list_staff_user(self):
-        self.client.force_authenticate(user=self.staff_user)
-        response = self.client.get('/products/wishlist/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # print(response.data)
-        self.assertEqual(len(response.data['results']), 2)
+        self.user_token = self.get_token(self.user)
+        self.user2_token = self.get_token(self.user2)
+    def get_token(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
 
-    def test_wishlist_list_non_staff_user(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.get('/products/wishlist/')
+    def auth_client(self, token):
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+
+    def test_wishlist_item_str(self):
+        self.assertEqual(str(self.wishlist_item), 'Test Product in cart of testuser')
+
+    def test_unique_together_constraint(self):
+        with self.assertRaises(Exception):
+            WishlistItem.objects.create(user=self.user, product=self.product)
+
+    def test_get_wishlist_items_authenticated_user(self):
+        self.auth_client(self.user_token)
+
+        response = self.client.get('/products/wishlistitem/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 1)
-        self.assertEqual(response.data['results'][0]['user'], self.user.id)
+        self.assertEqual(response.data['results'][0]['product'], self.product.id)
 
-
-    def test_wishlist_item_create(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.post('/products/wishlistitem/', {'wishlist': self.wishlist.id, 'product': self.product.id})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        self.product2 = Product.objects.create(
-                                name="Test Product2",
-                                price=20.0,
-                                strength=5,
-                                category=self.category,
-                                pharmacy=self.pharmacy,
-                            )
-        response = self.client.post('/products/wishlistitem/', {'wishlist': self.wishlist.id, 'product': self.product2.id})
-        # print(response.data,WishlistItem.objects.all())
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-
-
-    def test_wishlist_permissions(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.get('/products/wishlist/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        self.client.logout()
-        response = self.client.get('/products/wishlist/')
-        # print(response.data)
+    def test_get_wishlist_items_unauthenticated_user(self):
+        response = self.client.get('/products/wishlistitem/')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-# from django.contrib.auth import get_user_model
-# from django.test import TestCase
-# from products.models import Wishlist
-# from rest_framework import status
-# from rest_framework.test import APIClient
+    def test_get_wishlist_items_different_user(self):
+        self.auth_client(self.user2_token)
 
-# User= get_user_model()
-# class WishlistViewSetTests(TestCase):
+        response = self.client.get('/products/wishlistitem/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), 0)
 
-#     def setUp(self):
-#         self.user = User.objects.create_user(username='testuser', password='testpassword')
-#         self.client = APIClient()
-#         self.client.force_authenticate(user=self.user)
+    def test_create_wishlist_item(self):
+        self.auth_client(self.user2_token)
 
-#         # Create test data
-#         self.wishlist1 = Wishlist.objects.create(user=self.user, name='Wishlist 1')
-#         self.wishlist2 = Wishlist.objects.create(user=self.user, name='Wishlist 2')
+        response = self.client.post('/products/wishlistitem/', {'user': self.user2.id, 'product': self.product.id})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(WishlistItem.objects.count(), 2)
 
-#     def test_get_wishlists(self):
-#         response = self.client.get('/products/wishlist/')
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(len(response.data['results']), 2)
+    def test_create_wishlist_item_duplicate(self):
+        self.auth_client(self.user_token)
 
-#     def test_create_wishlist(self):
-#         new_wishlist_data = {
-#             'user': self.user.id,
-#             'name': 'New Wishlist',
-#         }
-#         response = self.client.post('/products/wishlist/', new_wishlist_data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#         self.assertEqual(Wishlist.objects.count(), 3)
+        response = self.client.post('/products/wishlistitem/', {'user': self.user.id, 'product': self.product.id})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-#     def test_get_single_wishlist(self):
-#         response = self.client.get(f'/products/wishlist/{self.wishlist1.id}/')
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(response.data['name'], 'Wishlist 1')
+    def test_delete_wishlist_item(self):
+        self.auth_client(self.user_token)
 
-#     def test_update_wishlist(self):
-#         updated_data = {
-#             'name': 'Updated Wishlist Name',
-#         }
-#         response = self.client.patch(f'/products/wishlist/{self.wishlist1.id}/', updated_data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(response.data['name'], 'Updated Wishlist Name')
+        response = self.client.delete(f'/products/wishlistitem/{self.wishlist_item.id}/')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(WishlistItem.objects.count(), 0)
 
-#     def test_delete_wishlist(self):
-#         response = self.client.delete(f'/products/wishlist/{self.wishlist1.id}/')
-#         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-#         self.assertEqual(Wishlist.objects.count(), 1)
+    def test_update_wishlist_item(self):
+        self.auth_client(self.user_token)
 
-#     def test_pagination(self):
-#         for i in range(10):
-#             Wishlist.objects.create(user=self.user, name=f'Wishlist {i + 3}')
-
-#         response = self.client.get('/products/wishlist/')
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(len(response.data['results']), 12)  # Assuming default pagination limit is 10
-
-#     def test_permission_denied(self):
-#         # Create a new user without admin permissions
-#         unauthorized_user = User.objects.create_user(username='unauthorized', password='testpassword')
-#         unauthorized_client = APIClient()
-#         unauthorized_client.force_authenticate(user=unauthorized_user)
-
-#         response = unauthorized_client.get('/products/wishlist/')
-#         self.assertEqual(len(response.data['results']), 0)
+        new_product =  Product.objects.create(
+                    name="Test Product",
+                    price=20.0,
+                    strength=5,
+                    category=self.category,
+                    pharmacy=self.pharmacy,
+                )
+        response = self.client.patch(f'/products/wishlistitem/{self.wishlist_item.id}/', {'product': new_product.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.wishlist_item.refresh_from_db()
+        self.assertEqual(self.wishlist_item.product.id, new_product.id)

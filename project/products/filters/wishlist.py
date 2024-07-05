@@ -4,7 +4,7 @@ import django_filters as filters
 from products.models import *
 
 
-class WishlistFilter(filters.FilterSet):
+class WishlistItemFilter(filters.FilterSet):
     class Meta:
-        model = Wishlist
+        model = WishlistItem
         fields = "__all__"
