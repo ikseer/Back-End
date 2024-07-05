@@ -55,7 +55,7 @@ class OrderItemTest(TestCase):
         cart=Cart.objects.get(user=user)
         CartItem.objects.create(cart=cart,product=self.product1,quantity=3)
         self.order_data = {
-            "user": self.user.id,
+            "user": user.id,
              'first_name': 'John',
             'last_name': 'Doe',
             'country': 'USA',
