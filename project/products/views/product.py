@@ -2,10 +2,8 @@
 
 # -*- coding: utf-8 -*-
 from decouple import config
-from django.utils.decorators import method_decorator
 from django_filters.rest_framework import DjangoFilterBackend
 from orders.models import *
-from products.decorators import cache_production
 from products.filters import *
 from products.models import *
 from products.pagination import *
@@ -38,11 +36,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = ProductSerializer(top_products, many=True)
         return Response(serializer.data)
 
-    @method_decorator(cache_production(60*5*use_cache))  # Cache for 60 seconds
+    # @method_decorator(cache_production(60*5*use_cache))  # Cache for 60 seconds
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
-    @method_decorator(cache_production(60*5*use_cache))  # Cache for 60 seconds
+    # @method_decorator(cache_production(60*5*use_cache))  # Cache for 60 seconds
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
 
@@ -54,7 +52,7 @@ class HomeView(GenericViewSet, mixins.ListModelMixin):
     serializer_class = HomeSerializer
     # permission_classes = [SafePermission]
     pagination_class = ProductPagination
-    filterset_class = ProductFilter
+    filterset_class = HomeFilter
     filter_backends = [
         DjangoFilterBackend,
         rest_filters.SearchFilter,
@@ -68,6 +66,6 @@ class HomeView(GenericViewSet, mixins.ListModelMixin):
         serializer = ProductSerializer(top_products, many=True)
         return Response(serializer.data)
 
-    @method_decorator(cache_production(60*5))  # Cache for 60 seconds
+    # @method_decorator(cache_production(60*5))  # Cache for 60 seconds
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)

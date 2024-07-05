@@ -14,7 +14,7 @@ User = get_user_model()
 
 
 class WishlistItem(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
 
     class Meta:
