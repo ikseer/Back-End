@@ -11,16 +11,13 @@ from .product import *
 User = get_user_model()
 
 
-class Wishlist(BaseModel):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
-    items = models.ManyToManyField(Product, related_name='wishlists', blank=True)
 
-    def __str__(self):
-        return f'{self.user.username} - {self.name if self.name else "Wishlist"}'
+class WishlistItem(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('user', 'name')
+            unique_together = ('user', 'product')
+    def __str__(self):
+        return f"{self.product.name} in cart of {self.user.username}"

@@ -9,3 +9,4 @@ class PharmacyFilter(filters.FilterSet):
     class Meta:
         model = Pharmacy
         fields = "__all__"
+        exclude='image'

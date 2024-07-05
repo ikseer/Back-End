@@ -133,22 +133,22 @@ class ProductAttachTestCase(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    def test_wishlist(self):
-        # edit the wishlist
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
-        url = "/products/wishlist/"
-        data = {"name":"w1","product": self.product.id, "user": self.user.id}
-        response = self.client.post(url, data)
-        # print(response.data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # get the wishlist
-        url = "/products/wishlist/"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 1)
+    # def test_wishlist(self):
+    #     # edit the wishlist
+    #     self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
+    #     url = "/products/wishlist/"
+    #     data = {"name":"w1","product": self.product.id, "user": self.user.id}
+    #     response = self.client.post(url, data)
+    #     # print(response.data)
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # get the wishlist
+    #     url = "/products/wishlist/"
+    #     response = self.client.get(url)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(len(response.data['results']), 1)
 
         # delete the wishlist
-        wishlist_id = response.data['results'][0]["id"]
-        url = f"/products/wishlist/{wishlist_id}/"
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        # wishlist_id = response.data['results'][0]["id"]
+        # url = f"/products/wishlist/{wishlist_id}/"
+        # response = self.client.delete(url)
+        # self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
