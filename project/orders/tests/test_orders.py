@@ -54,6 +54,14 @@ class OrderTest(TestCase):
         self.access_token = response.data["access"]
         self.order_data = {
             "user": self.user.id,
+             'first_name': 'John',
+            'last_name': 'Doe',
+            'country': 'USA',
+            'city': 'New York',
+            'street': '123 Main St',
+            'zip_code': '10001',
+            'phone': '123-456-7890',
+            'email': 'john.doe@example.com',
             # "pharmacy": self.pharmacy.id,
         }
         cart = self.client.get("/orders/cart/",HTTP_AUTHORIZATION=f"Bearer {self.access_token}").data
