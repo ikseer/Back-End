@@ -8,7 +8,7 @@ DATABASES = {
         "USER": config("DATABASE_USER"),
         "PASSWORD": config("DATABASE_PASSWORD"),
         "HOST": config("DATABASE_HOST"),
-        "PORT": "5432",
+        "PORT": config("PORT",default=5432),
         "TEST": {
             "NAME": "my_testdatabase",
         },
