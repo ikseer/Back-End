@@ -1,6 +1,7 @@
 # Create your views here.
 # myapp/views.py
 
+
 from chat.pagination import CustomPagination
 from chat.permissions import IsParticipant, IsParticipantInConversation
 from chat.utils import unseen_message
@@ -42,7 +43,14 @@ class MessageViewSet(viewsets.ModelViewSet):
         if user.is_staff:  # Check if the user is an admin
             return Message.objects.all()
         else:
-            return Message.objects.filter(conversation__users=user)
+            pass
+            if user.user_type=='patient':
+
+                return  Message.objects.filter(conversation__patient__user=self.request.user)
+            elif user.user_type=='doctor':
+                return Message.objects.filter(conversation__doctor__user=self.request.user)
+        # return  Message.objects.all()
+
     def perform_create(self, serializer):
         message = serializer.save(sender=self.request.user)
         unseen_message(message)
