@@ -49,7 +49,7 @@ class ProductAttachTestCase(TestCase):
             price=20.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
 
     def test_product_image_upload(self):
