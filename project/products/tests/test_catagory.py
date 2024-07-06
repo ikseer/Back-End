@@ -45,22 +45,22 @@ class CategoryViewSetTests(TestCase):
     def test_get_all_categories(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
     def test_filter_by_name(self):
         response = self.client.get(
             "/products/category/", {"name__icontains": "Electronics"}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]["name"], "Electronics")
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]["name"], "Electronics")
 
         response = self.client.get(
             "/products/category/", {"name__icontains": "Electronics"}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]["name"], "Electronics")
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]["name"], "Electronics")
 
     def test_create_category_not_auth(self):
         data = {"name": "Furniture"}

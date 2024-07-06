@@ -1,5 +1,6 @@
 import uuid
 
+from accounts.models import Doctor, Patient
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -17,10 +18,11 @@ class BaseModel(models.Model):
         abstract = True
 
 class Conversation(BaseModel):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    users = models.ManyToManyField(User, related_name='conversations')
 
+    patient=models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient_conv')
+    doctor=models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='doctor_conv')
+    class Meta:
+        unique_together = ('doctor', 'patient')
     def __str__(self):
         return self.name
 class Message(BaseModel):

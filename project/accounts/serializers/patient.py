@@ -18,7 +18,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
-    date_of_birth = serializers.DateField(required=True)
+    date_of_birth = serializers.CharField(required=True)
     gender = serializers.CharField(required=True)
 
     def to_representation(self, instance):

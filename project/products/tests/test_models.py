@@ -51,7 +51,7 @@ class CouponViewSetTests(TestCase):
             description="test_description",
             price=100,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
             stock=10,
             code="test_code",
         )

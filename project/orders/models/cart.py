@@ -4,7 +4,7 @@ from .models import *
 
 class Cart(BaseModel):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart',null=True ,unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
 
     # products = models.ManyToManyField('products.Product', through='CartItem',related_name='items')
     def get_items(self):

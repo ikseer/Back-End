@@ -7,15 +7,16 @@ from safedelete.managers import SafeDeleteManager
 from .model import *
 
 
-class CustomUserManager(SafeDeleteManager, UserManager):
+# class CustomUserManager(SafeDeleteManager, UserManager):
+class CustomUserManager( UserManager):
+
     pass
 
 
 class CustomUser(BaseModel,AbstractUser):
 
-    _safedelete_policy =SOFT_DELETE_CASCADE
     objects = CustomUserManager()
-    user_type = models.CharField(max_length=255, choices=(('patient', 'Patient'), ('doctor', 'Doctor')),default='patient')
+    user_type = models.CharField(max_length=255, choices=(('patient', 'Patient'), ('doctor', 'Doctor'),('employee','Employee')),default='patient')
 
 
 
@@ -27,7 +28,7 @@ class Profile(BaseModel):
     bio = models.TextField(blank=True)
     first_name = models.CharField(max_length=255, blank=True)
     last_name = models.CharField(max_length=255, blank=True)
-    date_of_birth = models.DateField(blank=True, null=True)
+    date_of_birth = models.CharField(max_length=255,blank=True, null=True)
     gender = models.CharField(max_length=255, blank=True)
     timezone = models.CharField(max_length=255, blank=True, default="Africa/Cairo")
 

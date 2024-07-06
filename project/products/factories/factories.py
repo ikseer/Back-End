@@ -214,12 +214,12 @@ class ProductRatingFactory(factory.Factory):
     review = factory.Faker("text")
 
 
-class WishlistFactory(factory.Factory):
-    class Meta:
-        model = Wishlist
+# class WishlistFactory(factory.Factory):
+#     class Meta:
+#         model = Wishlist
 
-    user = None
-    items = factory.SubFactory("products.factories.ProductFactory")
+#     user = None
+#     items = factory.SubFactory("products.factories.ProductFactory")
 class CouponFactory(factory.Factory):
     class Meta:
         model = Coupon

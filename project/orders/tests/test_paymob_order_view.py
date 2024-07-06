@@ -36,14 +36,17 @@ class PaymobOrderView(TestCase):
             name="Product 1",
             description="Test description",
             price=50.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
+                        stock=10
+
         )
         self.product2 = Product.objects.create(
             category=self.category,
             name="Product 2",
             description="Test description",
             price=100.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
+            stock=10
         )
 
         self.factory = APIRequestFactory()
@@ -55,9 +58,21 @@ class PaymobOrderView(TestCase):
             url, {"email": "test@example.com", "password": "test_password"}
         )
         self.access_token = response.data["access"]
+        # self.order_data = {
+        #     "user": self.user.id,
+        #     "pharmacy": self.pharmacy.id,
+        # }
         self.order_data = {
             "user": self.user.id,
-            "pharmacy": self.pharmacy.id,
+             'first_name': 'John',
+            'last_name': 'Doe',
+            'country': 'USA',
+            'city': 'New York',
+            'street': '123 Main St',
+            'zip_code': '10001',
+            'phone': '123-456-7890',
+            'email': 'john.doe@example.com',
+            # "pharmacy": self.pharmacy.id,
         }
         self.view = OrderViewSet.as_view({'get': 'retrieve'})
         cart=Cart.objects.get(user=self.user)
@@ -85,8 +100,8 @@ class PaymobOrderView(TestCase):
         # mock_serializer_valid.return_value=True
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
         response = self.client.post(self.url,{'order':order.id}, format="json")
-        # print(response.data)
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['paymob_order_id'], '2')
 
         # mock_paymob_create.assert_called_once_with(order_id=self.order_id, paymob_order_id=1, amount_cents=300)
 
@@ -114,7 +129,9 @@ class PaymobOrderView(TestCase):
         # Ensure that PaymobOrder is updated to paid
         mock_paymob_order.refresh_from_db()
         self.assertTrue(mock_paymob_order.paid)
-
+        # print(self.product1.stock)
+        product=Product.objects.filter(id=self.product1.id).first()
+        self.assertEqual(product.stock,7)
         # Ensure response is as expected
         self.assertEqual(response.status_code, 200)
 

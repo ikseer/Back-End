@@ -9,9 +9,10 @@ router.register("product", ProductViewSet)
 router.register("discount", DiscountViewSet)
 router.register("product_image", ProductImageViewSet)
 router.register("product_rating", ProductRatingViewSet)
-router.register("wishlist", WishlistViewSet)
+# router.register("wishlist", WishlistViewSet)
 router.register("home", HomeView)
 router.register("coupon", CouponViewSet)
+router.register(r'wishlistitem', WishlistItemViewSet)  # Register the WishlistItem viewset
 
 urlpatterns = [
     path("", include(router.urls)),

@@ -16,7 +16,7 @@ class PharmacyViewSetTests(TestCase):
             price=10.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
 
         self.url = reverse("pharmacy-list")

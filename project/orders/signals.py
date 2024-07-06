@@ -5,6 +5,9 @@ from django.dispatch import receiver
 
 from .models import *
 
+# from products.models.wishlist import Wishlist
+
+
 User = get_user_model()
 
 
@@ -13,3 +16,4 @@ def create_user_cart(sender, instance, created, **kwargs):
 
     if created:
         Cart.objects.create(user=instance)
+        # Wishlist.objects.create(user=instance)
