@@ -37,7 +37,7 @@ class CartTest(TestCase):
             name="Product1",
             description="Test description",
             price=50.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
             stock=5
         )
         self.product2 = Product.objects.create(
@@ -45,7 +45,7 @@ class CartTest(TestCase):
             name="Product2",
             description="Test description",
             price=100.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
             stock=5
 
         )
@@ -158,7 +158,7 @@ class PermissionsCartTest(TestCase):
             name="Product1",
             description="Test description",
             price=50.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
                         stock=10
 
         )
@@ -167,7 +167,7 @@ class PermissionsCartTest(TestCase):
             name="Product2",
             description="Test description",
             price=100.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
                         stock=10
 
         )

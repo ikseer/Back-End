@@ -21,21 +21,21 @@ class ProductViewSetTests(TestCase):
             price=20.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
         self.product2 = Product.objects.create(
             name="Test Product2",
             price=30.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
         self.product3 = Product.objects.create(
             name="Test Product3",
             price=25.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
         # order = Order.objects.create(pharmacy=self.pharmacy)
         # self.order_item = OrderItem.objects.create(
@@ -51,7 +51,7 @@ class ProductViewSetTests(TestCase):
             "form": "Form",
             "factory_company": "Factory Company",
             "description": "Description",
-            "pharmacy": self.pharmacy.id,
+            # "pharmacy": self.pharmacy.id,
         }
         self.client = APIClient()
         self.user = User.objects.create_user(
@@ -140,21 +140,21 @@ class FilterProductViewSetTests(TestCase):
             price=20.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
         self.product2 = Product.objects.create(
             name="Test Product2",
             price=30.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
         self.product3 = Product.objects.create(
             name="Test Product3",
             price=25.0,
             strength=5,
             category=self.category,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
         )
         self.url = "/products/product/"
         self.data = {
@@ -166,7 +166,7 @@ class FilterProductViewSetTests(TestCase):
             "form": "Form",
             "factory_company": "Factory Company",
             "description": "Description",
-            "pharmacy": self.pharmacy.id,
+            # "pharmacy": self.pharmacy.id,
         }
         self.client = APIClient()
 
@@ -206,7 +206,7 @@ class FilterProductViewSetTests(TestCase):
                 price=20.0,
                 strength=5,
                 category=self.category,
-                pharmacy=self.pharmacy,
+                # pharmacy=self.pharmacy,
             )
         url = "/products/product/"
         response = self.client.get(url + "?page=1&limit=15")

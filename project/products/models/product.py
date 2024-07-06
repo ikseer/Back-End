@@ -28,7 +28,7 @@ class Product(BaseModel):
     description = models.TextField(null=True, blank=True)
     price = models.IntegerField(null=True, blank=True,default=0)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
-    pharmacy = models.ForeignKey("pharmacy.Pharmacy", on_delete=models.CASCADE)
+    # pharmacy = models.ForeignKey("pharmacy.Pharmacy", on_delete=models.CASCADE)
     stock  = models.IntegerField(default=0)
     code = models.CharField(max_length=255, null=True, blank=True)
     number_of_sales  = models.IntegerField(default=0)

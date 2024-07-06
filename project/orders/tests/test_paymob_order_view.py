@@ -36,7 +36,7 @@ class PaymobOrderView(TestCase):
             name="Product 1",
             description="Test description",
             price=50.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
                         stock=10
 
         )
@@ -45,7 +45,7 @@ class PaymobOrderView(TestCase):
             name="Product 2",
             description="Test description",
             price=100.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
             stock=10
         )
 

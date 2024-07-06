@@ -42,7 +42,7 @@ class PermissionTest(TestCase):
             name="Product 1",
             description="Test description",
             price=50.00,
-            pharmacy=self.pharmacy,
+            # pharmacy=self.pharmacy,
                         stock=10
 
         )

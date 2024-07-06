@@ -23,7 +23,7 @@ class WishlistItemTestCase(TestCase):
                     price=20.0,
                     strength=5,
                     category=self.category,
-                    pharmacy=self.pharmacy,
+                    # pharmacy=self.pharmacy,
                 )
         self.wishlist_item = WishlistItem.objects.create(user=self.user, product=self.product)
 
@@ -90,7 +90,7 @@ class WishlistItemTestCase(TestCase):
                     price=20.0,
                     strength=5,
                     category=self.category,
-                    pharmacy=self.pharmacy,
+                    # pharmacy=self.pharmacy,
                 )
         response = self.client.patch(f'/products/wishlistitem/{self.wishlist_item.id}/', {'product': new_product.id})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
