@@ -13,5 +13,5 @@ class IsParticipant(BasePermission):
 class IsParticipantInConversation(BasePermission):
     def has_object_permission(self, request, view, obj):
         # Check if the user is part of the conversation associated with the message
-        return request.user in obj.conversation.users.all()
 #
+        return request.user == obj.conversation.patient.user or  request.user == obj.conversation.doctor.user
