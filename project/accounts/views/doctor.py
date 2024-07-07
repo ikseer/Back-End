@@ -4,7 +4,7 @@
 from accounts.filters import *
 from accounts.models import *
 from accounts.pagination import *
-from accounts.permissions import ProfilePermission
+from accounts.permissions import DoctorPermission
 from accounts.serializers import *
 from accounts.utils import *
 from django_filters.rest_framework import DjangoFilterBackend
@@ -26,7 +26,7 @@ class DoctorViewSet(
 ):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
-    permission_classes = [ProfilePermission]
+    permission_classes = [DoctorPermission]
     pagination_class=CustomPagination
     filter_backends = [
             DjangoFilterBackend,
