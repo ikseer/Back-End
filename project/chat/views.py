@@ -2,6 +2,7 @@
 # myapp/views.py
 
 
+from chat.filters import ConversationFilter, MessageFilter
 from chat.pagination import CustomPagination
 from chat.permissions import IsParticipant, IsParticipantInConversation
 from chat.utils import unseen_message
@@ -11,8 +12,6 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from project.chat.filters import ConversationFilter, MessageFilter
 
 from .serializers import *
 
