@@ -5,10 +5,14 @@
 from chat.pagination import CustomPagination
 from chat.permissions import IsParticipant, IsParticipantInConversation
 from chat.utils import unseen_message
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from project.chat.filters import ConversationFilter, MessageFilter
 
 from .serializers import *
 
@@ -17,7 +21,16 @@ class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
     permission_classes = [IsAuthenticated,IsParticipant]
-    pagination_class =CustomPagination
+
+    filter_backends = [
+        DjangoFilterBackend,
+        rest_filters.SearchFilter,
+        rest_filters.OrderingFilter,
+    ]
+
+    filterset_class = ConversationFilter
+    pagination_class = CustomPagination
+
 
 
     def get_queryset(self):
@@ -38,6 +51,18 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated,IsParticipantInConversation]
+
+    filter_backends = [
+        DjangoFilterBackend,
+        rest_filters.SearchFilter,
+        rest_filters.OrderingFilter,
+    ]
+
+    filterset_class = MessageFilter
+    pagination_class = CustomPagination
+
+
+
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:  # Check if the user is an admin
