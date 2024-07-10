@@ -28,7 +28,8 @@ urlpatterns = [
     path("products/", include("products.urls")),
     path("pharmacy/", include("pharmacy.urls")),
     path("orders/", include("orders.urls")),
-    path("chat/",include("chat.urls"))
+    path("chat/",include("chat.urls")),
+    path("ai/",include("ai.urls"))
 ]
 
 # swagger

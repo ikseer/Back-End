@@ -79,7 +79,7 @@ class PaymobOrderViewSet(   viewsets.ModelViewSet):
 
         paymob_order_id=create_paymob(order)
         if paymob_order_id is None:
-                return Response({"message": "Cannot create paymob order"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"message": "Cannot create paymob order"}, status=status.HTTP_400_BAD_REQUEST)
         data={
             'order':order.id,
             'paymob_order_id':paymob_order_id,
