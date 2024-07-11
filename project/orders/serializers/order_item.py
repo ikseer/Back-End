@@ -5,11 +5,18 @@ from products.serializers import *
 from rest_framework import serializers
 
 
+class ProductOfOrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Product
+        fields="__all__"
+
 class OrderItemSerializer(serializers.ModelSerializer):
     status=serializers.CharField(read_only=True)
+    product_details = ProductOfOrderItemSerializer(source="product",read_only=True)
     class Meta:
         model = OrderItem
         fields = "__all__"
+        extra_fields=['product_details']
 
     def validate(self, attrs):
         response= super().validate(attrs)
