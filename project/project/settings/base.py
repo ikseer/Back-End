@@ -412,8 +412,8 @@ EXPIRY_TIME = 120  # seconds
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
-            "client_id": config("gclient_id"),  # replace me
-            "secret":config('gsecret') ,        # replace me
+            "client_id": config("gclient_id",''),  # replace me
+            "secret":config('gsecret','') ,        # replace me
             "key": "",                               # leave empty
         },
         "SCOPE": [
