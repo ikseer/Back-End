@@ -48,7 +48,7 @@ class Otp:
     @staticmethod
     def returnValue_email():
         secret = pyotp.random_base32()
-        totp = pyotp.TOTP(secret, interval=86400)
+        totp = pyotp.TOTP(secret, interval=120)
         OTP = totp.now()
         return {"totp": secret, "OTP": OTP}
 
@@ -61,7 +61,7 @@ class Otp:
 
         # user = email_verification.user
         activation_key = email_verification.activation_key
-        totp = pyotp.TOTP(activation_key, interval=86400)
+        totp = pyotp.TOTP(activation_key, interval=120)
 
         if not totp.verify(otp):
             return None
