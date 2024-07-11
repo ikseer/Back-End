@@ -14,7 +14,7 @@ class ProductOfOrderItemSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.ModelSerializer):
-    product_details = ProductOfOrderItemSerializer(source="product",read_only=True)
+    # product_details = ProductOfOrderItemSerializer(source="product",read_only=True)
 
     product_name=serializers.CharField(source='product.name',read_only=True)
     product_final_price=serializers.CharField(source='product.get_final_price',read_only=True)
