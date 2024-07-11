@@ -28,6 +28,7 @@ django-soft-delete==1.0.13
 django-storages==1.14.3
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
+docstring-to-markdown==0.15
 drf-yasg==1.21.7
 dropbox==12.0.2
 factory-boy==3.3.0
@@ -53,6 +54,7 @@ idna==3.4
 inflection==0.5.1
 iniconfig==2.0.0
 jedi==0.19.1
+joblib==1.4.2
 kombu==5.3.7
 lsprotocol==2024.0.0a1
 msgpack==1.0.8
@@ -70,7 +72,7 @@ Pillow==10.1.0
 platformdirs==4.2.0
 pluggy==1.4.0
 ply==3.11
-pre-commit==3.6.1
+pre-commit==3.7.1
 prompt_toolkit==3.0.47
 proto-plus==1.24.0
 protobuf==4.25.3
@@ -96,10 +98,14 @@ requests==2.31.0
 requests-oauthlib==1.3.1
 rsa==4.9
 ruff==0.1.15
+scikit-learn==1.5.1
+scipy==1.14.0
+setuptools==70.2.0
 shortuuid==1.0.11
 six==1.16.0
 sqlparse==0.4.4
 stone==3.3.1
+threadpoolctl==3.5.0
 typing_extensions==4.9.0
 tzdata==2024.1
 ujson==5.9.0

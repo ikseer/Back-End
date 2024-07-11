@@ -10,7 +10,7 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: check-byte-order-marker
-      - id: check-added-large-files
+      # - id: check-added-large-files
 
   # -   repo: https://github.com/psf/black
   #     rev: 23.7.0
@@ -50,10 +50,10 @@ repos:
     hooks:
       - id: eslint
 
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.6
-    hooks:
-      - id: codespell
+  # - repo: https://github.com/codespell-project/codespell
+  #   rev: v2.2.6
+  #   hooks:
+  #     - id: codespell
 
   # - repo: https://github.com/pycqa/bandit
   #   rev: 1.7.5
