@@ -88,3 +88,4 @@ class OrderItemTest(TestCase):
         # self.create_order_item()
         response = self.client.get("/orders/order-item/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print(response.data)
