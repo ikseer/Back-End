@@ -100,9 +100,43 @@ class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 
 
-class GoogleLogin(
-    SocialLoginView
-):  # if you want to use Authorization Code Grant, use this
+
+
+
+
+
+# class GoogleLogin(
+#     SocialLoginView
+# ):  # if you want to use Authorization Code Grant, use this
+#     adapter_class = GoogleOAuth2Adapter
+#     callback_url = "http://localhost:3000"
+#     client_class = OAuth2Client
+class GoogleLogin(SocialLoginView): # if you want to use Implicit Grant, use this
     adapter_class = GoogleOAuth2Adapter
-    # callback_url = CALLBACK_URL_YOU_SET_ON_GOOGLE
+    callback_url = 'http://localhost:8000/accounts/google/login/callback/'  # Replace with your callback URI
     client_class = OAuth2Client
+    def post(self, request, *args, **kwargs):
+
+        response= super().post(request, *args, **kwargs)
+
+
+
+
+        user = User.objects.get(id=response.data['user']['pk'])
+
+        try:
+
+            Patient.objects.create(
+                user=user)
+        except Exception:
+            pass
+
+        response.data['user']=CustomUserSerializer(self.user).data
+
+        try:
+            response.data['profile_id']=Patient.objects.get(user=self.user).id
+        except ObjectDoesNotExist:
+            response.data['profile_id']=None
+            pass
+        print(response.data)
+        return response

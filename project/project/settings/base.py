@@ -426,3 +426,8 @@ SOCIALACCOUNT_PROVIDERS = {
         "VERIFIED_EMAIL": True,
     },
 }
+
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY =config("gclient_id",'')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("gclient_id",'')
