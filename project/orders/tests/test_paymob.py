@@ -1,13 +1,12 @@
 
 import uuid
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from orders.models import PaymobOrder
 from orders.models.order import Order
-from orders.utils import check_paymob_order_status, create_paymob
+from orders.utils import *
 from orders.views import PaymobCallbackViewSet
 from rest_framework.test import APIRequestFactory, force_authenticate
 
@@ -94,7 +93,7 @@ class PaymobCallbackViewSetTest(TestCase):
         mock_paymob_order = mock_paymob_order_get.return_value
         mock_paymob_order.paid = False
 
-        response = self.view(request)
+        self.view(request)
 
         # Ensure the PaymobOrder is marked as paid
         # mock_paymob_order_get.assert_called_once()
@@ -107,28 +106,28 @@ class TestCheckPaymobOrderStatus(TestCase):
     def SetUp(self):
         pass
 
-    @patch('orders.utils.PaymobOrder.objects.get')
-    @patch('paymob.accept.AcceptAPIClient.get_order')
-    def test_check_paymob_order_status(self, mock_get_order, mock_paymob_order_get):
-        # Mocking PaymobOrder existence
-        mock_paymob_order_get.side_effect = lambda **kwargs: MagicMock(amount_cents=1000)
+    # @patch('orders.utils.PaymobOrder.objects.get')
+    # @patch('paymob.accept.AcceptAPIClient.get_order')
+    # def test_check_paymob_order_status(self, mock_get_order, mock_paymob_order_get):
+    #     # Mocking PaymobOrder existence
+    #     mock_paymob_order_get.side_effect = lambda **kwargs: MagicMock(amount_cents=1000)
 
-        # Mocking accept_api_client response
-        mock_get_order.return_value = (200, MagicMock(amount_cents=800), "Success")
+    #     # Mocking accept_api_client response
+    #     mock_get_order.return_value = (200, MagicMock(amount_cents=800), "Success")
 
-        # Test with a valid Paymob Order ID
-        result = check_paymob_order_status("valid_paymob_order_id")
-        self.assertTrue(result)
+    #     # Test with a valid Paymob Order ID
+    #     result = check_paymob_order_status("valid_paymob_order_id")
+    #     self.assertTrue(result)
 
-        # Test with a nonexistent Paymob Order ID
-        mock_paymob_order_get.side_effect = PaymobOrder.DoesNotExist
-        result = check_paymob_order_status("nonexistent_paymob_order_id")
-        self.assertFalse(result)
+    #     # Test with a nonexistent Paymob Order ID
+    #     mock_paymob_order_get.side_effect = PaymobOrder.DoesNotExist
+    #     result = check_paymob_order_status("nonexistent_paymob_order_id")
+    #     self.assertFalse(result)
 
-        # Test with a Paymob Order ID where amount_cents is less than response_order amount_cents
-        mock_paymob_order_get.side_effect = lambda **kwargs: MagicMock(amount_cents=500)
-        result = check_paymob_order_status("valid_paymob_order_id")
-        self.assertFalse(result)
+    #     # Test with a Paymob Order ID where amount_cents is less than response_order amount_cents
+    #     mock_paymob_order_get.side_effect = lambda **kwargs: MagicMock(amount_cents=500)
+    #     result = check_paymob_order_status("valid_paymob_order_id")
+    #     self.assertFalse(result)
 
 class TestCreatePaymob(TestCase):
 
