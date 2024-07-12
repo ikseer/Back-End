@@ -10,27 +10,36 @@ code, order, feedback = accept_api_client.get_order(
     order_id=order_id,
 )
 '''
-def check_paymob_order_status(paymob_order_id : str) -> bool:
-    """
-    get order from paymob and check if order is paid
-    Args:
-        paymob_order_id (str): Paymob Order Id
-    Returns:
-        bool: True if order is paid else False
-    """
-    # integration_id = "<Your Integration ID>"
-    #https://github.com/muhammedattif/Paymob-Solutions/blob/master/docs/services/accept.md#33-get-order
-    try:
-        PaymobOrder.objects.get(paymob_order_id=paymob_order_id)
-    except PaymobOrder.DoesNotExist:
-        return False
-    # print(config('ACCEPT_API_KEY'))
-    accept_api_client = AcceptAPIClient()
-    code, response_order, feedback = accept_api_client.get_order(
-        order_id=paymob_order_id
-    )
-    order_paying=PaymobOrder.objects.get(paymob_order_id=paymob_order_id)
-    return order_paying.amount_cents>=response_order.amount_cents
+# def check_paymob_order_status(paymob_order_id : str) -> bool:
+#     """
+#     get order from paymob and check if order is paid
+#     Args:
+#         paymob_order_id (str): Paymob Order Id
+#     Returns:
+#         bool: True if order is paid else False
+#     """
+#     # integration_id = "<Your Integration ID>"
+#     #https://github.com/muhammedattif/Paymob-Solutions/blob/master/docs/services/accept.md#33-get-order
+#     try:
+#         PaymobOrder.objects.get(paymob_order_id=paymob_order_id)
+#     except PaymobOrder.DoesNotExist:
+#         return False
+#     if  order_paying.paid:
+#         return True
+#     # print(config('ACCEPT_API_KEY'))
+#     accept_api_client = AcceptAPIClient()
+#     code, response_order, feedback = accept_api_client.get_order(
+#         order_id=paymob_order_id
+#     )
+#     order_paying=PaymobOrder.objects.get(paymob_order_id=paymob_order_id)
+#     if  order_paying.amount_cents>=response_order.amount_cents:
+#         order_paying.paid=True
+#         order_paying.save()
+#         order_paying.order.remove_items()
+
+#         order_paying.order.status='processing'
+#         order_paying.order.save()
+
 
 def create_paymob(order):
     """
@@ -82,3 +91,35 @@ def create_paymob(order):
 #     for item in order_items:
 #         amount_cents+=calculate_product_price(item.product)
 #     return amount_cents
+
+
+
+
+def check_all_paymob( ) -> bool:
+    """
+    get order from paymob and check if order is paid
+    Args:
+        paymob_order_id (str): Paymob Order Id
+    Returns:
+        bool: True if order is paid else False
+    """
+    # integration_id = "<Your Integration ID>"
+    #https://github.com/muhammedattif/Paymob-Solutions/blob/master/docs/services/accept.md#33-get-order
+    for paymob in  PaymobOrder.objects.all():
+
+    # print(config('ACCEPT_API_KEY'))
+        if paymob.paid:
+            continue
+        accept_api_client = AcceptAPIClient()
+        code, response_order, feedback = accept_api_client.get_order(
+            order_id=paymob.paymob_order_id
+        )
+
+        print(paymob.amount_cents,feedback.data['paid_amount_cents'])
+        if  paymob.amount_cents<=feedback.data['paid_amount_cents']:
+            paymob.paid=True
+            paymob.save()
+            paymob.order.remove_items()
+
+            paymob.order.status='processing'
+            paymob.order.save()

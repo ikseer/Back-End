@@ -319,7 +319,7 @@ SWAGGER_SETTINGS = {
 # }
 
 
-CSRF_TRUSTED_ORIGINS = ["https://ikseer.azurewebsites.net","https://ikseer.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://ikseer.azurewebsites.net","https://ikseer.onrender.com","https://ikseer2.azurewebsites.net"]
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=20),  # Short expiration for security
@@ -408,3 +408,26 @@ LOGGING = {
 
 # Time after which OTP will expire
 EXPIRY_TIME = 120  # seconds
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": config("gclient_id",''),  # replace me
+            "secret":config('gsecret','') ,        # replace me
+            "key": "",                               # leave empty
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "VERIFIED_EMAIL": True,
+    },
+}
+
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY =config("gclient_id",'')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("gclient_id",'')

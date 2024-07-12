@@ -5,6 +5,7 @@ from orders.models import *
 from orders.pagination import *
 from orders.permissions import *
 from orders.serializers import *
+from orders.utils import check_all_paymob
 from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
@@ -25,7 +26,10 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Order.objects.all()
         user = self.request.user
         return Order.objects.filter(user=user)
+    def list(self, request, *args, **kwargs):
 
+        check_all_paymob()
+        return super().list(request, *args, **kwargs)
     # def create(self, request, *args, **kwargs):
     #     serializer=OrderSerializer(data=request.data)
     #     if not serializer.is_valid():
