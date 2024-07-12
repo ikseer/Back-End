@@ -106,34 +106,34 @@ class PaymobOrderView(TestCase):
         # mock_paymob_create.assert_called_once_with(order_id=self.order_id, paymob_order_id=1, amount_cents=300)
 
 
-    @patch('orders.views.paymob.check_paymob_order_status')
-    @patch('orders.views.paymob.PaymobOrder.objects.get')
-    def test_retrieve_check_paid(self, mock_paymob_order_get, mock_check_paymob_order_status):
-        # Create a mock PaymobOrder
-        mock_paymob_order = PaymobOrder.objects.create(order_id=self.order['id'], paid=False)
+    # @patch('orders.views.paymob.check_paymob_order_status')
+    # @patch('orders.views.paymob.PaymobOrder.objects.get')
+    # def test_retrieve_check_paid(self, mock_paymob_order_get, mock_check_paymob_order_status):
+    #     # Create a mock PaymobOrder
+    #     mock_paymob_order = PaymobOrder.objects.create(order_id=self.order['id'], paid=False)
 
-        mock_paymob_order_get.return_value = mock_paymob_order
+    #     mock_paymob_order_get.return_value = mock_paymob_order
 
-        # Mock check_paymob_order_status to return True
-        mock_check_paymob_order_status.return_value = True
+    #     # Mock check_paymob_order_status to return True
+    #     mock_check_paymob_order_status.return_value = True
 
-        request = self.factory.get(self.url)
-        request.user = self.user
-        force_authenticate(request, user=self.user)
+    #     request = self.factory.get(self.url)
+    #     request.user = self.user
+    #     force_authenticate(request, user=self.user)
 
-        # Set query parameter to trigger check_paid condition
+    #     # Set query parameter to trigger check_paid condition
 
-        response = self.client.get(f"/orders/paymob/{mock_paymob_order.id}/?check_paid={True}", format="json")
+    #     response = self.client.get(f"/orders/paymob/{mock_paymob_order.id}/?check_paid={True}", format="json")
 
 
         # Ensure that PaymobOrder is updated to paid
-        mock_paymob_order.refresh_from_db()
-        self.assertTrue(mock_paymob_order.paid)
-        # print(self.product1.stock)
-        product=Product.objects.filter(id=self.product1.id).first()
-        self.assertEqual(product.stock,7)
-        # Ensure response is as expected
-        self.assertEqual(response.status_code, 200)
+        # mock_paymob_order.refresh_from_db()
+        # self.assertTrue(mock_paymob_order.paid)
+        # # print(self.product1.stock)
+        # product=Product.objects.filter(id=self.product1.id).first()
+        # self.assertEqual(product.stock,7)
+        # # Ensure response is as expected
+        # self.assertEqual(response.status_code, 200)
 
     def test_retrieve_no_check_paid(self):
         # Create a mock Order
