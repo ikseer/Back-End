@@ -1,6 +1,26 @@
 # E-commerce Smart Pharmacy
 
-### db
+### video
+
+
+https://github.com/user-attachments/assets/c24762e7-1537-4cf8-870e-578048abc8de
+
+
+## General Links
+
+- [Swagger](https://ikseer.azurewebsites.net/swagger/)
+- [Database](https://dbdiagram.io/d/phar-6686b3939939893dae0fde8a)
+- [Linear Link](https://linear.app/iksirs/team/SOFT/all)
+
+
+### Front End
+| App             | Deployment status                                                                                                                                                 | Link                             |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Ikseer          | [![Netlify Status](https://api.netlify.com/api/v1/badges/1cc24593-7229-46c0-8563-364fb9ccb9c0/deploy-status)](https://app.netlify.com/sites/ikseer/deploys)       |https://ikseer.vercel.app      |
+| Admin dashboard | [![Netlify Status](https://api.netlify.com/api/v1/badges/04482d2b-b30b-4ecd-8d72-8ce841906da3/deploy-status)](https://app.netlify.com/sites/ikseer-admin/deploys) | https://ikseer-admin.netlify.app |
+
+
+### Database
 
 ![alt text](design/database/db.png)
 
@@ -17,6 +37,8 @@ E-commerce Smart Pharmacy is a web application built using Django Rest Framework
 - Prescription Handling: Users can upload prescriptions, which include details like patient name, doctor, medication, quantity, and total price.
 - Order Management: Users can place orders for products and track their order history.
 - Authentication and Authorization: Implemented authentication mechanisms to ensure secure access to the application's functionalities.
+- File Management: Integrated with Dropbox for handling and storing files securely.
+- Secure Payments: Integrated secure payment processing with Paymob 
 
 ## Technologies Used
 
